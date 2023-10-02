@@ -11,25 +11,42 @@ const duplicates = [
     'pasta',
     'soda'
   ];
-  function removeDuplicates(param) {
 
-}
-
-
-const alumno = {
-    name: "Luis",
-    apellido: "Lopez",
-    direccion: {
-      calle: "castellana",
-      numero: 45,
-    },
-  };
-  console.log(alumno)
   
-  alumno.name = "Abel";
+  function removeDuplicates(arr) {
+    //iterar sobre el array con un loop
+    //por cada elemento del array, tiene que iterar por el noDuplicates para ver si ya esta
+    //si no esta, se introduce en el array
+    //si esta, no se introduce
+    //lo intento hacer con forof y con includes
+    const Duplicates1 = []  
+    for (let i = 0; i < arr.length; i++){
+    //Duplicates1.includes(arr.i) ? Duplicates1.push(arr[i]) : "" ;
+    if (!Duplicates1.includes(arr[i])) {
+        Duplicates1.push(arr[i])
+    } else {null}
+  }
+return Duplicates1
+    }
 
-  console.log(alumno)
-  
+    console.log(`Funcion` , removeDuplicates(duplicates))
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* function showPokemon(name) {
     // si name es indefinida o falsa, la establece a 'Magikarp'
     name = name || 'Magikarp';
