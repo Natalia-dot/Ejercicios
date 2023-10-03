@@ -38,16 +38,41 @@ const mutations = [
 	{name: 'Andando que es gerundio', description: 'Invoca a un señor mayor como Personal Trainer'}
 ]
 
-const alienFunction = (arr,alien) =>{
-    let favealien = arr.find(alienitem => arr.name === alien )
-    return favealien
+const alienFunction = (arr, filter1) => {
+    return arr.find((item) => item.name === filter1)   
 }
 
-const mutationFunction = (arr,mutation) =>{
-    let favemutation = arr.find( mutationitem => arr.name === mutation )
-    return favemutation
+
+const mutationFunction = (arr, filter2) => {
+    return arr.find((mutation) => mutation.name === filter2)   
 }
-alienFunction(aliens, "Cucushumushu")
-mutationFunction(mutations, "Porompompero")
-console.log(favealien)
-console.log(favemutation)
+
+
+const alienFave = alienFunction(aliens, "Cucushumushu")
+const mutationFave = mutationFunction(mutations, "Porompompero")
+console.log(alienFave)
+console.log(mutationFave)
+
+const aaa = {...alienFave, mutation:mutationFave}
+console.log(aaa)
+
+
+// name: 'Cucushumushu', planet: 'Marte', age: 503021 }
+// mutation: [ name: 'Porompompero',
+//   description: 'Hace que el alien pueda adquirir la habilidad de tocar el tambor']
+// console.log(newAlien)
+
+
+// const alienFunction = (arr,alien) =>{
+//     let favealien = arr.find(alienitem => arr.name === alien )
+//     return favealien
+// }
+
+// const mutationFunction = (arr,mutation) =>{
+//     let favemutation = arr.find( mutationitem => arr.name === mutation )
+//     return favemutation
+// }
+// alienFunction(aliens, "Cucushumushu")
+// mutationFunction(mutations, "Porompompero")
+// console.log(favealien)
+// console.log(favemutation)
