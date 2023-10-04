@@ -1,0 +1,71 @@
+* {
+    padding:0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    background-image: url(media/pngimg.com\ -\ mars_planet_PNG26.png);
+    background-color: lightsalmon;
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: 100%;
+}
+
+header {
+    background-color: rgb(166, 22, 22, 0.2);
+    text-align: center;
+    padding: 20px;
+}
+
+nav{
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    justify-content:space-evenly;
+    background-color: rgb(166, 22, 22, 0.2);
+    align-content: center;
+
+}
+
+
+article{ 
+    display: flex;   
+    width: 100%;
+    background-color: rgba(217, 196, 154, 0.5);
+    border-left: 5px solid rgb(166, 22, 22) ;
+    border-radius: 6px;
+    padding: 20px, 0;
+
+}
+
+.artimg{
+    display: inline-block;
+    justify-content: right;
+}
+pre{
+    text-align: center;
+    font-size: 15px;
+    background-color: rgb(217, 196, 154, 0.5);
+    border-top:groove darkgrey 5px;
+    padding: 15px 0
+}
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: DarkSalmon;
+    color: white;
+    position:absolute;
+    width: 100%;
+}
+
+#articleSection{
+    display: flex;
+    flex-direction: column;
+
+}

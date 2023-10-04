@@ -32,5 +32,6 @@ const media = (arr) => {
     return arr.reduce((accumulator, nextexam) => accumulator += nextexam.score /2, 0)
 }
 media(exams)
+
 const funciooooom = media(exams)
 console.log(funciooooom)
