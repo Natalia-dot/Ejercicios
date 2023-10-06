@@ -14,7 +14,7 @@ body {
     background-size: 100%;
 }
 
-header {
+    header {
     background-color: rgb(166, 22, 22, 0.2);
     text-align: center;
     padding: 20px;
@@ -24,10 +24,7 @@ nav{
     height: 100px;
     display: flex;
     flex-direction: row;
-    text-align: left;
-    justify-content:space-evenly;
     background-color: rgb(166, 22, 22, 0.2);
-    align-content: center;
 
 }
 
@@ -39,6 +36,7 @@ article{
     border-left: 5px solid rgb(166, 22, 22) ;
     border-radius: 6px;
     padding: 20px, 0;
+    justify-content: space-between;
 
 }
 
