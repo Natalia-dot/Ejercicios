@@ -1,0 +1,46 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+.header  {
+    font-family: monospace;
+    background: #fa5252;
+    display:flex;
+    flex-direction: row;
+    height: 10%;
+    align-items: center;
+    max-width: 100vw;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    font-size: 4em;;
+    color: #82c91e;
+    background: white;
+    padding: 1%;
+    display: flex;
+  }
+  
+  ul {
+    /* this removes the dots on the list items*/
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  a {
+    font-size: 1rem;;
+    padding: 1vh 2vw;
+    /* this removes the line under the links */
+    text-decoration: none;
+  }
+
+  li{
+    padding: 1vh 2vw;
+    margin: 2vw;
+    background-color: aliceblue;
+    display: flex;
+    text-align: center;
+  }
