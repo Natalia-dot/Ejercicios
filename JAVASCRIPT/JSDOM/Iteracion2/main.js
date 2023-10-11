@@ -26,8 +26,7 @@ loopPSpace.appendChild(loopDiv);
 const insertP = (counter) =>{
 for(let i = 0; i < counter; i++ ) {
 let loopParagraph = document.createElement('p');
-let loopText = document.createTextNode('`${i}`') //no se como hacerlo ajajaj
-loopParagraph.append(loopText);
+loopParagraph.textContent('`${i}`') //no se como hacerlo ajajaj
 loopDiv.appendChild(loopParagraph);
 }
 }
