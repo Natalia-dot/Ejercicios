@@ -24,13 +24,15 @@ let loopDiv = document.createElement('div');
 loopPSpace.appendChild(loopDiv);
 
 const insertP = (counter) =>{
+  let count = 1;
 for(let i = 0; i < counter; i++ ) {
 let loopParagraph = document.createElement('p');
-loopParagraph.textContent('`${i}`') //no se como hacerlo ajajaj
+loopParagraph.textContent=count
 loopDiv.appendChild(loopParagraph);
+count++
 }
 }
-insertP(6)
+insertP(2)
 
 //!-----------------------------------------------------
 //2.4 Inserta dinamicamente con javascript en un html una p con el texto 'Soy dinámico!'.
@@ -61,3 +63,22 @@ const socialApps = (arr) =>{
     unorderedList.appendChild(newListItem); })
 }
 socialApps(apps)
+
+//2.7 Elimina todos los nodos que tengan la clase .fn-remove-me
+let quitar = document.querySelectorAll(".fn-remove-me");
+quitar.forEach(item => item.remove());
+
+//2.8 Inserta una p con el texto 'Voy en medio!' entre los dos div. 
+//	Recuerda que no solo puedes insertar elementos con .appendChild.
+let nuevoTexto = document.createElement('p');
+nuevoTexto.textContent = 'Voy en medio!';
+let divDeTexto = document.querySelector('div');
+divDeTexto.insertAdjacentElement('afterend', nuevoTexto);
+
+//2.9 Inserta p con el texto 'Voy dentro!', dentro de todos los div con la clase .fn-insert-here
+  let getDiv = document.querySelectorAll('.fn-insert-here');
+  getDiv.forEach((item, index) => {
+  let nuevoTexto = document.createElement('p');
+  nuevoTexto.textContent = 'Voy dentro!';
+  item.appendChild(nuevoTexto);
+})
