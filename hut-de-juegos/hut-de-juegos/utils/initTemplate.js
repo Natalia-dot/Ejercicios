@@ -1,0 +1,1 @@
+import { printTemplateHeader, printTemplateFooter } from "../components"
