@@ -1,0 +1,15 @@
+{
+  "name": "inquirer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "inquirer.js",
+  "scripts": {
+    "node": "node inquirer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.2.11"
+  }
+}

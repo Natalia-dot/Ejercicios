@@ -29,11 +29,11 @@ const getData = async (searchName) =>{
 
 //todo en el input tengo que poner searchName
 const addListeners = () => {
-let boton = document.getElementById("boton");
+const boton = document.getElementById("boton");
 boton.addEventListener("click", (e) => {
     let searchName = document.getElementById("input").value.toLowerCase()
     //------------------------------------
-let botonDelete = document.getElementById(searchName)
+let botonDelete = document.getElementById(input)
 botonDelete.addEventListener('click', (e) => {
     parent.remove();
 })

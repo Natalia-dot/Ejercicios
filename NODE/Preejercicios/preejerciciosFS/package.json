@@ -1,0 +1,13 @@
+{
+  "name": "preejercicios",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "read": "node read.js",
+    "write": "node write.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
