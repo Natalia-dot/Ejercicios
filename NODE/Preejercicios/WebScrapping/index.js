@@ -13,8 +13,8 @@ const scrapping = async (pokeType) => {
  })
  const page = await browser.newPage();
  await page.goto(BASE_URL);
- await page.waitForTimeout(8000);
- await page.waitForSelector("select #filter-pkmn-type")
+ await page.waitForTimeout(6000);
+ await page.waitForSelector("select #filter-pkmn-type");
  await page.select("select #filter-pkmn-type", pokeType);
  await page.waitForTimeout(3000);
  await page.click(page.$x("//div[contains(., 'HP')]"));
