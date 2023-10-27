@@ -5,7 +5,8 @@ const PokemonSchema = new Schema ({                     //!A SUBIR Y TIENEN QUE 
     name: {type: String, required: true, unique:false},
     type1: {type: String, required: true},
     type2: {type: String, required:false},
-    image: {type:String, required:false},
+    image: {type: String, required:false},
+    moves: [{ type: mongoose.Schema.Types.ObjectId, ref: "Move" }],
 },
 {  timestamps:true  });
 

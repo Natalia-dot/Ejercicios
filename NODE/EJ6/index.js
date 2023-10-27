@@ -22,8 +22,14 @@ app.use(express.json({limit:"5mb"}))                     //!NUM11. ESTABLECEMOS 
 app.use(express.urlencoded({limit:"5mb", extended:false}))      //!NUM12. CREAMOS CARPETAS DE CONTROLLERS MODELS Y ROUTES, Y EMPEZAMOS CON MODELS
 
 
-const PokeRoutes = require("./src/api/routes/Pokemon.route");       //! NUM17. ASIGNAMOS EL ENRUTADOR Y LO USAMOS. SIGNIFICA QUE LA URL BASE ES LA QUE ESTA ENTRECOMILLADA,
+const PokeRoutes = require("./src/api/routes/Pokemon.routes");       //! NUM17. ASIGNAMOS EL ENRUTADOR Y LO USAMOS. SIGNIFICA QUE LA URL BASE ES LA QUE ESTA ENTRECOMILLADA,
 app.use("/api/v1/Pokemon/", PokeRoutes)                         //! Y LUEGO DE ESTA URL BASE SE LE PASARA EL RESTO DE ENDPOINTS ESPECIFICADOS EN POKEROUTE
+
+
+const { MoveRoutes } = require("./src/api/routes/Move.routes");
+app.use("/api/v1/Moves/", MoveRoutes)
+
+
 
 app.use("*", (req, res, next) => {                      //! NUM18. GESTIONAMOS ERROR EN CASO DE QUE NO SE ENCUENTRE LA RUTA
     const error = new Error("Route not found");
