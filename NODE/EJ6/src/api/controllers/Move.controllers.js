@@ -42,14 +42,14 @@ const addAndRemovePokemon = async (req,res,next) =>{             //!NUM26. CONTR
             const requestPokemonInArray = pokemon.split(",");    //character hay que separarlo con comas para formar un array
 
             Promise.all(
-                requestPokemonInArray.map(async (singlePokemon, index) => {
-                    if (moveById.pokemon.includes(singlePokemon)){
+                requestPokemonInArray.map(async (singlePokemon, index) => { //hay que cumplir todas las promesas que se establecen en este bloque
+                    if (moveById.pokemon.includes(singlePokemon)){      //el array de pokemon del movimiento incluye el pokemon de la reqestbody?
                         try {  
-                            await Move.findByIdAndUpdate(id, {
+                            await Move.findByIdAndUpdate(id, {      //pues quitalo de ese array
                             $pull: {pokemon: singlePokemon}
                         });
                         try {
-                            await Pokemon.findByIdAndUpdate(singlePokemon, {
+                            await Pokemon.findByIdAndUpdate(singlePokemon, {    //lo mismo pero con pokemon
                                 $pull: {moves : id}
                             })
                         } catch (error) {
@@ -60,7 +60,7 @@ const addAndRemovePokemon = async (req,res,next) =>{             //!NUM26. CONTR
                     }
                  } else { //aqui el meterlo
                     try {  
-                        await Move.findByIdAndUpdate(id, {
+                        await Move.findByIdAndUpdate(id, {      //lo hacemos al reves, en caso de que no este, lo metemos
                         $push: {pokemon: singlePokemon}
                     });
                     try {
@@ -96,10 +96,21 @@ const addAndRemovePokemon = async (req,res,next) =>{             //!NUM26. CONTR
 const deleteMove = async(req,res,next) =>{
     try {
         const { id } = req.params
-        Move.findByIdAndDelete(id)
+        const move = await Move.findByIdAndDelete(id)
+
+        if (move) {
+            let moveFoundById = await Move.findById(id);
+            console.log(id)
+            
+            return res.status(moveFoundById ? 404 : 200).json(moveFoundById? "Error en el borrado" : "Movimiento borrado")
+           
+        } else {
+            return res.status(404).json("No existe este movimiento")
+        }
+
     } catch (error) {
         return res.status(404).json({error: error.message, message: "catch Delete Move"})
     }
 }
 
-module.exports = { createMove, getMoveByType, addAndRemovePokemon }
+module.exports = { createMove, getMoveByType, addAndRemovePokemon, deleteMove }
