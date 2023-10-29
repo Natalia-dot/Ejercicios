@@ -1,5 +1,6 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
-const { Pokemon } = require("../model/Pokemon.model");          //! NUM.14 REQUERIMOS EL MODELO PARA PODER METR LOS CONTROLADORES, Y EL DELETE DE CLOUDINARY
+const { Move } = require("../model/Move.model");
+const { Pokemon } = require("../model/Pokemon.model");          //! NUM14. REQUERIMOS EL MODELO PARA PODER METR LOS CONTROLADORES, Y EL DELETE DE CLOUDINARY
 
 //todo------------------------------------------------------------------
 //?--------------------------POST---------------------------------------
@@ -160,10 +161,17 @@ const deletePokemon = async (req, res, next) => {               //!NUM23.
   
       if (pokemon) {
         const findByIdPokemon = await Pokemon.findById(id);  //despues testeamos si aun existe en caso de que haya un error y no se haya borrado adecuadamente
+        try {
+          const test = await Move.updateMany(
+            {pokemon: id},
+            {$pull: {pokemon: id}}
+          );
+          console.log(test)
   
         return res.status(findByIdPokemon ? 404 : 200).json({   //segun si existe o no, creamos un ternario y devuelve el status y el json con su objecto que nos saca en consola
           deleteTest: findByIdPokemon ? false : true,
         });
+      } catch (error) {}
       } else {
         return res.status(404).json("Este Pokemon no existe");  //si no puede encontrar el id para hacer el findbyidanddelete no existe, dice que no existe
       }

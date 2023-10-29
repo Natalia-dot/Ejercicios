@@ -99,11 +99,17 @@ const deleteMove = async(req,res,next) =>{
         const move = await Move.findByIdAndDelete(id)
 
         if (move) {
-            let moveFoundById = await Move.findById(id);
+            const moveFoundById = await Move.findById(id);
+            try {
+                const test = await Pokemon.updateMany(
+                  {moves: id},
+                  {$pull: {moves: id}}
+                );
+                console.log(test)
             console.log(id)
             
             return res.status(moveFoundById ? 404 : 200).json(moveFoundById? "Error en el borrado" : "Movimiento borrado")
-           
+                } catch (error) {};
         } else {
             return res.status(404).json("No existe este movimiento")
         }

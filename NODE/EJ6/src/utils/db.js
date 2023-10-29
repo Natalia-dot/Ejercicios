@@ -4,7 +4,7 @@ dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI;
 
-const connect = async () =>{               //!NUM6. CREAMOS FUNCION CONNECT PARA CONNECT A LA BASE DATOS
+const connect = async () => {               //!NUM6. CREAMOS FUNCION CONNECT PARA CONNECT A LA BASE DATOS
     try {                                         //(TRY CATCH PARA ERRORES)
         const db = await mongoose.connect(MONGO_URI, {
             useNewUrlParser: true,                //(SALIDO DE LA DOCU)
