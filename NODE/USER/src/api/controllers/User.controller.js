@@ -2,6 +2,8 @@ const { deleteImgCloudinary } = require('../../middleware/files.middleware');
 const randomNumber = require('../../utils/randomNumber');
 const nodemailer = require('nodemailer');
 const User = require('../models/User.model');
+const sendEmail = require('../../utils/emailSender');
+const { getSentEmail, setSentEmail } = require('../../state/state.data');
 
 const userRegistration = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -108,7 +110,23 @@ const stateRegister = async (req, res, next) => {
 
         if (savedUser) {
           //aqui no hay else porque si no lo encuentra es porque no se ha guardado, y saltara en el try catch
-          
+          sendEmail(userEmail, name, confirmationEmailCode); //PRIMERO enviamos el email
+
+          setTimeout(() => {
+            //dejamos esperar un poco hasta que  send email gestione sus asincronias, y luego checkeamos el estado de getSentEmail
+            console.log(getSentEmail());
+            if (getSentEmail()) {
+              setSentEmail(false);
+              res.status(200).json({ user: savedUser, confirmationEmailCode });
+            } else {
+              setSentEmail(false);
+              return res.status(404).json({
+                user: savedUser,
+                confirmationEmailCode:
+                  'Error. Please resend confirmation code.',
+              });
+            }
+          }, 2000);
         }
       } catch (error) {
         req.file && deleteImgCloudinary(catchImage);
@@ -133,5 +151,8 @@ const stateRegister = async (req, res, next) => {
   }
 };
 
+//todo----------------REGISTRATION WITH REDIRECTION---------------------
+
+
 //?----------EXPORTS-----------------
-module.exports = { userRegistration };
+module.exports = { userRegistration, stateRegister };
