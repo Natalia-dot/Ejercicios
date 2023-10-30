@@ -1,0 +1,81 @@
+.gridContainer{
+    display:grid;
+    grid-template-rows: 150px 150px 150px;
+    grid-template-columns: 150px 150px 150px;
+    gap: 15px 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#whackGame{
+    width: 100%;
+    height: 70vh;
+    justify-content: center;
+    align-items: center;
+    display:flex;
+    flex-direction: column;
+}
+
+.hole{
+    justify-content:center ;
+    background-image: url("https://res.cloudinary.com/drbssyzr7/image/upload/v1697545512/GameHut/Rock_Pile_vijivn.png");
+    display: flex;
+    height:100%;
+    background-size: contain;
+}
+
+@media screen and (max-width: 600px) {
+    .gridContainer{
+        display:grid;
+        grid-template-rows: 100px 100px 100px;
+        grid-template-columns: 100px 100px 100px;
+        gap: 20px 20px;
+        height: 45vh;
+        justify-content: center;
+        align-items: center;
+    }
+
+    img{
+        height: auto;
+        max-width: 70vw;
+    }
+       #togepiPic {
+        max-height: 20vh;
+    }
+
+    /*#professorOak{
+        width: 80vw;
+       height: auto;
+    } */
+}
+
+.aquiHayTopo{
+    background-image: url("https://res.cloudinary.com/drbssyzr7/image/upload/v1697545937/GameHut/miawth_vtcilw.png");
+    justify-content:center ;
+    display: flex;
+    height:100%;
+    background-size: contain;
+}
+
+#printWinner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2em;
+    gap: 1em;
+
+    & h1 {
+        text-align: center;
+    }
+
+    & p{
+        text-align: center;
+    }
+
+}
+
+#meowth{
+    position: relative;
+}

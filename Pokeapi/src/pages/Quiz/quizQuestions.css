@@ -1,0 +1,44 @@
+#buttonsDiv{
+    display:flex;
+    width: 80vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    button{
+        cursor: pointer;
+        width:35vw;
+        height: 50px;
+        display: block;
+        font-size: 100%;
+        margin: 1vw;
+        font-family: "Mohave";
+        letter-spacing: 1px;
+        font-weight: bold;
+        
+    }
+}
+
+#buttonsDiv button:not([disabled]):hover{
+        background-image: url(https://res.cloudinary.com/drbssyzr7/image/upload/v1697459285/GameHut/awa_hwnie0.gif);
+        
+}
+
+#quizQuestions {
+    width: 80vw;
+
+    h2{
+      text-align: center;
+      padding: 0 0 2vh 0;
+
+    }
+}
+
+#nextQuestion {
+    margin: 1em 0 0 0;
+    width: 80vw;
+    height: 5vh;
+    justify-self: center;
+    font-family: 'Mohave';
+    letter-spacing: 1px;
+}

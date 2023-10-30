@@ -1,0 +1,27 @@
+#quiz{
+    max-width: 50vw;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+
+    & img {
+        max-width: 200px;
+    }
+
+    & h1{
+        justify-content: center;
+        display: flex;
+        text-align: center;
+    }
+
+    & #startQuizButton {
+        font-family: 'Mohave';
+        width: 40vw;
+        height: 5vh;
+        letter-spacing: 1px;
+
+    }
+}

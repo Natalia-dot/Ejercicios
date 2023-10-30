@@ -1,0 +1,32 @@
+#whack{
+    flex-direction: column;
+    width:100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+#info{
+    display: flex;
+    width: 90vw;
+    justify-content: center;
+    padding: 0 0 10px 0;
+}
+
+#grid{
+    justify-content: center;
+    display: flex;
+
+}
+
+#buttonWhack {
+    min-width:  50vw;
+    display: inline;
+    height: 20vh;
+    font-size: 30px;
+    font-family: 'Mohave';
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}

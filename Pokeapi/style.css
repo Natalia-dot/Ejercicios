@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Mohave:ital,wght@0,400;0,500;1,500&family=Pixelify+Sans&display=swap');
+
+
+*{
+  padding:0;
+  margin:0;
+  box-sizing:border-box;
+
+  & #app{
+    min-height: 100vh;
+  }
+ 
+
+
+  & body{
+    transition: ease-in-out 0.3s;
+  }
+}
+ main{
+  min-height: 90vh;
+  display:flex;
+  background-color: rgb(100, 170, 185);
+  align-items: center;
+  justify-content: center;
+  padding: 15vh 0 15vh 0vh;
+  width: 100vw;
+ }
+
+:root{
+  font-family: 'Pixelify Sans';
+}
+
+

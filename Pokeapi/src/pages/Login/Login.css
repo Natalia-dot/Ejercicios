@@ -1,0 +1,48 @@
+#login{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3em;
+
+    p{
+        padding: 2em 0 2em 0;
+        font-size: 16px;
+    }
+
+    input {
+        min-width: 40%; 
+        max-width: 20vw;
+        height: 40px;
+        font-size: 20px;
+        align-items: baseline;
+        background-color: rgb(172, 197, 255);
+        margin: 0 0 1em 0;
+        padding: 0 0 0 0.5em;
+        -webkit-box-shadow: inset 0px 0px 2px 2px rgba(0,0,0,0.4);
+        -moz-box-shadow: inset 0px 0px 2px 2px rgba(0,0,0,0.4);
+        box-shadow: inset 0px 0px 2px 2px rgba(0,0,0,0.4);
+    }
+
+    input:focus{
+        transition: ease-in-out 0.4s;
+        outline: none;
+        border-color: rgb(8, 57, 98);
+        border-style:ridge;
+        border-width: 2px;
+        -webkit-box-shadow: inset 0px 0px 4px 2px rgba(0,0,0,0.4);
+        -moz-box-shadow: inset 0px 0px 4px 2px rgba(0,0,0,0.4);
+        box-shadow: inset 0px 0px 4px 2px rgba(0,0,0,0.4);
+
+    }
+
+    button{
+        height: 3em;
+        min-width: 5em;
+        font-family: 'Mohave';
+        font-size: 16px;
+    }
+}
