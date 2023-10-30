@@ -5,7 +5,7 @@ const validator = require('validator');
 const UserSchema = new mongoose.Schema(
   //creamos template para los user
   {
-    useremail: {
+    userEmail: {
       type: String,
       required: true,
       trim: true,
