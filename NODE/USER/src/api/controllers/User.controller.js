@@ -4,6 +4,9 @@ const nodemailer = require('nodemailer');
 const User = require('../models/User.model');
 const sendEmail = require('../../utils/emailSender');
 const { getSentEmail, setSentEmail } = require('../../state/state.data');
+const bcrypt = require('bcrypt');
+
+//TODO---------REGISTRATION LARGO-----------------------------------
 
 const userRegistration = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -153,6 +156,67 @@ const stateRegister = async (req, res, next) => {
 
 //todo----------------REGISTRATION WITH REDIRECTION---------------------
 
+const redirectRegister = async (req, res, next) => {
+  let catchImage = req.file?.path;
+  try {
+    await User.syncIndexes();
+    let confirmationEmailCode = randomNumber();
+    const doesUserExist = await User.findOne(
+      { name: req.body.name },
+      { userEmail: req.body.userEmail }
+    );
+    if (!doesUserExist) {
+      const newUser = new User({ ...req.body, confirmationEmailCode });
+      if (req.file) {
+        newUser.image = req.file.path;
+      } else {
+        newUser.image = 'https://pic.onlinewebfonts.com/svg/img_181369.png';
+      }
+      try {
+        const savedUser = await newUser.save();
+        if (savedUser) {
+          return res.redirect(
+            307,
+            `http://localhost:8081/api/v1/users/register/sendMail/${savedUser._id}`
+          );
+        }
+      } catch (error) {
+        req.file && deleteImgCloudinary(catchImage);
+        return res.status(404).json({
+          error: 'Error in save catch',
+          message: error.message,
+        });
+      }
+    } else {
+      if (req.file) deleteImgCloudinary(catchImage);
+      return res.status(409).json('This user already exists.');
+    }
+  } catch (error) {
+    req.file && deleteImgCloudinary(catchImage);
+    return (
+      res.status(404).json({
+        error: 'Redirect catch error',
+        message: error.message,
+      }) && next(error)
+    );
+  }
+};
+
+//TODO---------------------------LOGIN----------------------------------
+const userLogin = async (req, res, next) => {
+  const { password, userEmail } = req.body;
+  const userFromDB = await User.findOne({ userEmail });
+
+  if (userFromDB) {
+    if (bcrypt.compareSync(password, userFromDB.password)) {
+      //token
+    } else {
+      //no concuerdan
+    }
+  } else {
+    return res.status(404).json('User not found.');
+  }
+};
 
 //?----------EXPORTS-----------------
-module.exports = { userRegistration, stateRegister };
+module.exports = { userRegistration, stateRegister, redirectRegister };

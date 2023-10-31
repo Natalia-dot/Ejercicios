@@ -1,7 +1,8 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const nodemailer = require('nodemailer');
-const { setSentEmail, getSentEmail } = require('../state/state.data');
+const { setSentEmail } = require('../state/state.data');
+//! ESTE EMAILSENDER ES PARA EL REGISTER CON ESTADOS
 
 const sendEmail = async (userEmail, name, confirmationEmailCode) => {
   setSentEmail(false);
