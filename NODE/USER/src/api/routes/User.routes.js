@@ -4,7 +4,12 @@ const {
   userRegistration,
   stateRegister,
   redirectRegister,
+  userLogin,
+  resendCode,
+  newUserCheck,
 } = require('../controllers/User.controller');
+
+//!--------ROUTES----------------------------------------------
 
 const UserRoutes = require('express').Router();
 
@@ -15,8 +20,11 @@ UserRoutes.post(
   upload.single('image'),
   redirectRegister
 );
+UserRoutes.post('/login', userLogin);
+UserRoutes.post('/resend', resendCode);
+UserRoutes.post('/check', newUserCheck);
 
-//!-------REDIRECTS----------
+//!-------REDIRECTS--------------------------------------------
 
 UserRoutes.post('/register/sendMail/:id', sendCode);
 

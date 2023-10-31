@@ -5,6 +5,8 @@ const User = require('../models/User.model');
 const sendEmail = require('../../utils/emailSender');
 const { getSentEmail, setSentEmail } = require('../../state/state.data');
 const bcrypt = require('bcrypt');
+const { generateToken } = require('../../utils/token');
+const setError = require('../../helpers/setError');
 
 //TODO---------REGISTRATION LARGO-----------------------------------
 
@@ -204,19 +206,116 @@ const redirectRegister = async (req, res, next) => {
 
 //TODO---------------------------LOGIN----------------------------------
 const userLogin = async (req, res, next) => {
-  const { password, userEmail } = req.body;
-  const userFromDB = await User.findOne({ userEmail });
+  try {
+    const { password, userEmail } = req.body;
+    const userFromDB = await User.findOne({ userEmail });
 
-  if (userFromDB) {
-    if (bcrypt.compareSync(password, userFromDB.password)) {
-      //token
+    if (userFromDB) {
+      if (bcrypt.compareSync(password, userFromDB.password)) {
+        const token = generateToken(userFromDB._id, userEmail); //token
+        return res.status(200).json({
+          user: userFromDB,
+          token: token,
+          state: 'You are logged in.',
+        });
+      } else {
+        return res.status(404).json('Password is incorrect.'); //no concuerdan
+      }
     } else {
-      //no concuerdan
+      return res.status(404).json('User not found.');
     }
-  } else {
-    return res.status(404).json('User not found.');
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//TODO---------------------------RESEND CODE----------------------------------
+const resendCode = async (req, res, next) => {
+  //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
+  try {
+    const email = process.env.EMAIL;
+    const password = process.env.PASSWORD;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: email,
+        pass: password,
+      },
+    });
+    const doesUserExist = await User.findOne({ userEmail: req.body.userEmail });
+    if (doesUserExist) {
+      const mailOptions = {
+        from: email,
+        to: req.body.userEmail,
+        subject: 'Confirmation code',
+        text: `Sorry about that! Your confirmation code is ${doesUserExist.confirmationEmailCode}`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(404).json({ resendDone: false });
+        } else {
+          console.log(`Email sent to ${req.body.userEmail}, ${info.response}`);
+          return res.status(200).json({ resendDone: true });
+        }
+      });
+    } else {
+      return res.status(404).json('User does not exist.');
+    }
+  } catch (error) {
+    return next(setError(500, error.message || 'Error in resend code catch.'));
+  }
+};
+
+//TODO--------------------USER CHECK--------------------------
+const newUserCheck = async (req, res, next) => {
+  try {
+    const { userEmail, confirmationEmailCode } = req.body;
+    const doesUserExist = await User.findOne({ userEmail });
+    console.log(confirmationEmailCode);
+    console.log(doesUserExist.confirmationEmailCode);
+    if (!doesUserExist) {
+      return res.status(404).json('User not found.');
+    } else {
+      if (doesUserExist.confirmationEmailCode == confirmationEmailCode) {
+        try {
+          console.log('Codigo ok');
+
+          await doesUserExist.updateOne({ isVerified: true });
+          const updatedUser = await User.findOne({ userEmail });
+          return res.status(200).json({
+            testCheckUser: updatedUser.isVerified == true ? true : false,
+          });
+        } catch (error) {
+          return res.status(404).json('Error in updating validation.');
+        }
+      } else {
+        console.log('Borrado');
+        await User.findByIdAndDelete(doesUserExist._id);
+        deleteImgCloudinary(doesUserExist.image);
+        return res.status(404).json({
+          doesUserExist,
+          check: false,
+          delete: (await User.findById(doesUserExist._id))
+            ? 'Error deleting user.'
+            : 'User deleted for security. Please submit again.',
+        });
+      }
+    }
+  } catch (error) {
+    return next(
+      setError(500, error.message || 'Error in user check try catch')
+    );
   }
 };
 
 //?----------EXPORTS-----------------
-module.exports = { userRegistration, stateRegister, redirectRegister };
+module.exports = {
+  userRegistration,
+  stateRegister,
+  redirectRegister,
+  userLogin,
+  resendCode,
+  newUserCheck,
+};

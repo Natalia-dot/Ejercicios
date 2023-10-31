@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    isLoggedIn: {
+    isVerified: {
       type: Boolean,
       default: false,
     },
