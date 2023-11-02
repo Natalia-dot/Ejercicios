@@ -1,3 +1,4 @@
+const { isAuthorized } = require('../../middleware/auth.middleware');
 const { upload } = require('../../middleware/files.middleware');
 const {
   userRegistration,
@@ -10,6 +11,7 @@ const {
   autoLogin,
   sendCode,
   sendPassword,
+  passwordChange,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -31,6 +33,7 @@ UserRoutes.patch(
   '/changeUserPassword/changeUserPassword',
   passChangeWhileLoggedOut
 );
+UserRoutes.patch('/changePassword', [isAuthorized], passwordChange);
 
 //!-------REDIRECTS--------------------------------------------
 

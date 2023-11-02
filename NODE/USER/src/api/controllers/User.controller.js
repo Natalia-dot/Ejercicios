@@ -472,13 +472,38 @@ const sendPassword = async (req, res, next) => {
 
 //todo------------- CONTROLLERS WHILE LOGGED IN-----------------(AUTH)-------
 
+//todo-----------------------PASSWORD CHANGE----------------------------------
+
 const passwordChange = async (req, res, next) => {
   try {
     const { password, newPassword } = req.body;
-    const isValidPassword = validator.isSrongPassword(newPassword);
+    const isValidPassword = validator.isStrongPassword(newPassword);
 
     if (isValidPassword) {
-      const {_id} = req.user; 
+      const { _id } = req.user;
+      if (bcrypt.compareSync(password, req.user.password)) {
+        const newHashedPassword = bcrypt.hashSync(newPassword, 10);
+        try {
+          await User.findByIdAndUpdate(_id, {
+            password: newHashedPassword,
+          });
+          const updatedUser = await User.findById(_id);
+          if (bcrypt.compareSync(newPassword, updatedUser.password)) {
+            return res.status(200).json('Password updated succesfully.');
+          } else {
+            return res.status(404).json('Password not updated.');
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: 'Error updating password.',
+            message: error.message,
+          });
+        }
+      } else {
+        return res
+          .status(404)
+          .json('Password is not correct. Please input your password.');
+      }
     } else {
       return res
         .status(404)
@@ -492,6 +517,9 @@ const passwordChange = async (req, res, next) => {
     );
   }
 };
+
+//todo-----------------------PASSWORD CHANGE----------------------------------
+
 
 //?----------EXPORTS-----------------
 module.exports = {
