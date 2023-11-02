@@ -9,6 +9,7 @@ const { generateToken } = require('../../utils/token');
 const setError = require('../../helpers/setError');
 const randomPassword = require('../../utils/randomPassword');
 const validator = require('validator');
+const enumOk = require('../../utils/enumOk');
 //TODO---------REGISTRATION LARGO-----------------------------------
 
 const userRegistration = async (req, res, next) => {
@@ -391,7 +392,7 @@ const passChangeWhileLoggedOut = async (req, res, next) => {
     const { userEmail } = req.body;
     const userFromDB = await User.findOne({ userEmail });
     if (userFromDB) {
-      console.log('UserFromDB antes del redirect:', userFromDB._id);
+      console.log('userFromDB antes del redirect:', userFromDB._id);
       return res.redirect(
         307,
         `http://localhost:8081/api/v1/users/sendPassword/${userFromDB._id}`
@@ -518,8 +519,88 @@ const passwordChange = async (req, res, next) => {
   }
 };
 
-//todo-----------------------PASSWORD CHANGE----------------------------------
+//todo--------------------------------UPDATE----------------------------------
 
+const updateUser = async (req, res, next) => {
+  let catchImage = req.file?.path;
+  try {
+    await User.syncIndexes();
+    const patchedUser = new User(req.body);
+    req.file && (patchedUser.image = catchImage);
+
+    patchedUser._id = req.user._id;
+    patchedUser.password = req.user.password;
+    patchedUser.role = req.user.role;
+    patchedUser.confirmationEmailCode = req.user.confirmationEmailCode;
+    patchedUser.userEmail = req.user.userEmail;
+    patchedUser.isVerified = req.user.isVerified;
+
+    if (req.body?.gender) {
+      const enumResult = enumOk(req.body?.gender);
+      patchedUser.gender = enumResult.check
+        ? req.body?.gender
+        : req.user.gender;
+    }
+
+    try {
+      await User.findByIdAndUpdate(req.user._id, patchedUser);
+      req.file && deleteImgCloudinary(req.user.userEmail);
+
+      //------testing---------
+      const updatedUser = await User.findById(req.user._id);
+      const updatedKeys = Object.keys(req.body);
+      const testingUpdate = [];
+
+      updatedKeys.forEach((item) => {
+        if (updatedUser[item] === req.body[item]) {
+          if (updatedUser[item] != req.user[item]) {
+            testingUpdate.push({ [item]: true });
+          } else {
+            testingUpdate.push({ [item]: 'Information is the same.' });
+          }
+        } else {
+          testingUpdate.push({ [item]: false });
+        }
+
+        if (req.file) {
+          updatedUser.image === catchImage
+            ? testingUpdate.push({ image: true })
+            : testingUpdate.push({ image: false });
+        }
+        return res.status(200).json({ updatedUser, testingUpdate });
+      });
+    } catch (error) {
+      return res
+        .status(404)
+        .json({ error: 'Error in updating the user', message: error.message });
+    }
+  } catch (error) {
+    req.file && deleteImgCloudinary(catchImage);
+    return next(
+      setError(500, error.message || 'Error in update general catch.')
+    );
+  }
+};
+
+//todo--------------------------------DELETE----------------------------------
+const deleteUser = async (req, res, next) => {
+  try {
+    await User.findByIdAndDelete(req.user?._id);
+    deleteImgCloudinary(req.user?.image);
+    const doesUserExist = User.findById(req.user._id);
+    return res
+      .status(doesUserExist ? 404 : 200)
+      .json(
+        doesUserExist
+          ? 'User deleted successfully.'
+          : 'User not deleted. Pleaser try again.'
+      );
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: 'Error in delete catch', message: error.message });
+  }
+};
 
 //?----------EXPORTS-----------------
 module.exports = {
@@ -534,4 +615,6 @@ module.exports = {
   sendCode,
   sendPassword,
   passwordChange,
+  updateUser,
+  deleteUser,
 };

@@ -12,6 +12,8 @@ const {
   sendCode,
   sendPassword,
   passwordChange,
+  updateUser,
+  deleteUser,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -34,6 +36,8 @@ UserRoutes.patch(
   passChangeWhileLoggedOut
 );
 UserRoutes.patch('/changePassword', [isAuthorized], passwordChange);
+UserRoutes.patch('/update/update', [isAuthorized], updateUser);
+UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
 
 //!-------REDIRECTS--------------------------------------------
 
