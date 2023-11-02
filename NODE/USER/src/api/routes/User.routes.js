@@ -1,5 +1,4 @@
 const { upload } = require('../../middleware/files.middleware');
-const sendCode = require('../controllers/sendCode');
 const {
   userRegistration,
   stateRegister,
@@ -7,6 +6,10 @@ const {
   userLogin,
   resendCode,
   newUserCheck,
+  passChangeWhileLoggedOut,
+  autoLogin,
+  sendCode,
+  sendPassword,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -21,11 +24,17 @@ UserRoutes.post(
   redirectRegister
 );
 UserRoutes.post('/login', userLogin);
+UserRoutes.post('/login/autologin', autoLogin);
 UserRoutes.post('/resend', resendCode);
 UserRoutes.post('/check', newUserCheck);
+UserRoutes.patch(
+  '/changeUserPassword/changeUserPassword',
+  passChangeWhileLoggedOut
+);
 
 //!-------REDIRECTS--------------------------------------------
 
 UserRoutes.post('/register/sendMail/:id', sendCode);
+UserRoutes.patch('/sendPassword/:id', sendPassword);
 
 module.exports = UserRoutes;

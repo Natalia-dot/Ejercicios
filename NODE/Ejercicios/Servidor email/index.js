@@ -22,8 +22,8 @@ router.get("/sendMail", (req, res, next) =>{
     const mailOptions = {
         from: email,
         to: "fakemail@gmail.com",
-        subject: "xxxxxxx",
-        text: "xxxxxxx",
+        subject: "Hola, soy xxxx",
+        text: "Emails masificados de prueba",
     }
 
     transporter.sendMail(mailOptions, (error, info) => {

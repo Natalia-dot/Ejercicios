@@ -7,7 +7,8 @@ const { getSentEmail, setSentEmail } = require('../../state/state.data');
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../../utils/token');
 const setError = require('../../helpers/setError');
-
+const randomPassword = require('../../utils/randomPassword');
+const validator = require('validator');
 //TODO---------REGISTRATION LARGO-----------------------------------
 
 const userRegistration = async (req, res, next) => {
@@ -203,33 +204,100 @@ const redirectRegister = async (req, res, next) => {
     );
   }
 };
-
-//TODO---------------------------LOGIN----------------------------------
-const userLogin = async (req, res, next) => {
+//!--------SENDCODE DEL REDIRECT DE SENDMAIL!!!
+const sendCode = async (req, res, next) => {
   try {
-    const { password, userEmail } = req.body;
-    const userFromDB = await User.findOne({ userEmail });
+    const { id } = req.params;
+    const userDB = await User.findById(id);
 
-    if (userFromDB) {
-      if (bcrypt.compareSync(password, userFromDB.password)) {
-        const token = generateToken(userFromDB._id, userEmail); //token
-        return res.status(200).json({
-          user: userFromDB,
-          token: token,
-          state: 'You are logged in.',
+    const emailEnv = process.env.EMAIL;
+    const password = process.env.PASSWORD;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: emailEnv,
+        pass: password,
+      },
+    });
+
+    const mailOptions = {
+      from: emailEnv,
+      to: userDB.userEmail,
+      subject: 'Confirmation code',
+      text: `tu codigo es ${userDB.confirmationEmailCode}, gracias por confiar en nosotros ${userDB.name}`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        return res.status(404).json({
+          user: userDB,
+          confirmationCode: 'error, resend code',
         });
       } else {
-        return res.status(404).json('Password is incorrect.'); //no concuerdan
+        console.log('Email sent: ' + info.response);
+        return res.status(200).json({
+          user: userDB,
+          confirmationEmailCode: userDB.confirmationEmailCode,
+        });
       }
-    } else {
+    });
+  } catch (error) {
+    return (
+      res.status(404).json({
+        error: 'error catch general',
+        message: error.message,
+      }) && next(error)
+    );
+  }
+};
+
+//TODO--------------------USER CHECK--------------------------
+const newUserCheck = async (req, res, next) => {
+  try {
+    const { userEmail, confirmationEmailCode } = req.body;
+    const doesUserExist = await User.findOne({ userEmail });
+    console.log(confirmationEmailCode);
+    console.log(doesUserExist.confirmationEmailCode);
+    if (!doesUserExist) {
       return res.status(404).json('User not found.');
+    } else {
+      if (doesUserExist.confirmationEmailCode == confirmationEmailCode) {
+        //? No me deja poner un estrictamente igual
+        try {
+          console.log('Codigo ok');
+
+          await doesUserExist.updateOne({ isVerified: true });
+          const updatedUser = await User.findOne({ userEmail });
+          return res.status(200).json({
+            testCheckUser: updatedUser.isVerified == true ? true : false,
+          });
+        } catch (error) {
+          return res.status(404).json('Error in updating validation.');
+        }
+      } else {
+        console.log('Borrado');
+        await User.findByIdAndDelete(doesUserExist._id);
+        deleteImgCloudinary(doesUserExist.image);
+        return res.status(404).json({
+          doesUserExist,
+          check: false,
+          delete: (await User.findById(doesUserExist._id))
+            ? 'Error deleting user.'
+            : 'User deleted for security. Please submit again.',
+        });
+      }
     }
   } catch (error) {
-    return next(error);
+    return next(
+      setError(500, error.message || 'Error in user check try catch')
+    );
   }
 };
 
 //TODO---------------------------RESEND CODE----------------------------------
+
 const resendCode = async (req, res, next) => {
   //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
   try {
@@ -268,44 +336,159 @@ const resendCode = async (req, res, next) => {
   }
 };
 
-//TODO--------------------USER CHECK--------------------------
-const newUserCheck = async (req, res, next) => {
+//TODO---------------------------LOGIN----------------------------------
+const userLogin = async (req, res, next) => {
   try {
-    const { userEmail, confirmationEmailCode } = req.body;
-    const doesUserExist = await User.findOne({ userEmail });
-    console.log(confirmationEmailCode);
-    console.log(doesUserExist.confirmationEmailCode);
-    if (!doesUserExist) {
-      return res.status(404).json('User not found.');
-    } else {
-      if (doesUserExist.confirmationEmailCode == confirmationEmailCode) {
-        try {
-          console.log('Codigo ok');
+    const { password, userEmail } = req.body;
+    const userFromDB = await User.findOne({ userEmail });
 
-          await doesUserExist.updateOne({ isVerified: true });
-          const updatedUser = await User.findOne({ userEmail });
-          return res.status(200).json({
-            testCheckUser: updatedUser.isVerified == true ? true : false,
-          });
-        } catch (error) {
-          return res.status(404).json('Error in updating validation.');
-        }
-      } else {
-        console.log('Borrado');
-        await User.findByIdAndDelete(doesUserExist._id);
-        deleteImgCloudinary(doesUserExist.image);
-        return res.status(404).json({
-          doesUserExist,
-          check: false,
-          delete: (await User.findById(doesUserExist._id))
-            ? 'Error deleting user.'
-            : 'User deleted for security. Please submit again.',
+    if (userFromDB) {
+      if (bcrypt.compareSync(password, userFromDB.password)) {
+        const token = generateToken(userFromDB._id, userEmail); //token
+        return res.status(200).json({
+          user: userFromDB,
+          token: token,
+          state: 'You are logged in.',
         });
+      } else {
+        return res.status(404).json('Password is incorrect.'); //no concuerdan
       }
+    } else {
+      return res.status(404).json('User not found.');
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//TODO--------------------AUTOLOGIN--------------------------
+
+const autoLogin = async (req, res, next) => {
+  try {
+    const { userEmail, password } = req.body;
+    const userFromDB = await User.findOne({ userEmail });
+    if (userFromDB) {
+      if (password === userFromDB.password) {
+        const token = generateToken(userFromDB._id, userEmail);
+        return res.status(200).json({ user: userFromDB, token: token });
+      } else {
+        return res
+          .status(404)
+          .json('Password does not match. Please try again.');
+      }
+    } else {
+      return res.status(404).json('User does not exist.');
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//todo-------------PASSWORD CHANGE NOT LOGGED IN------------------
+
+const passChangeWhileLoggedOut = async (req, res, next) => {
+  try {
+    const { userEmail } = req.body;
+    const userFromDB = await User.findOne({ userEmail });
+    if (userFromDB) {
+      console.log('UserFromDB antes del redirect:', userFromDB._id);
+      return res.redirect(
+        307,
+        `http://localhost:8081/api/v1/users/sendPassword/${userFromDB._id}`
+      );
+    } else {
+      return res.status(404).json('User does not exist.');
     }
   } catch (error) {
     return next(
-      setError(500, error.message || 'Error in user check try catch')
+      setError(500, {
+        message: error.message,
+        error: 'Error in password change catch while logged out.',
+      })
+    );
+  }
+};
+//!REDIRECT DE SEND PASSWORD DE LA ANTERIOR!!
+const sendPassword = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log({ id });
+    const userById = await User.findById(id);
+    const newPassword = randomPassword();
+    console.log(newPassword);
+
+    const envEmail = process.env.EMAIL;
+    const password = process.env.PASSWORD;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: envEmail,
+        pass: password,
+      },
+    });
+
+    const mailOptions = {
+      from: envEmail,
+      to: userById.userEmail,
+      subject: `Hi, ${userById.name}`,
+      text: `Hi, here is your temporary password. Please change it after entering. ${newPassword}`,
+    };
+
+    transporter.sendMail(mailOptions, async function (error, info) {
+      if (error) {
+        return res.status(404).json({
+          message: error,
+          error: 'Mail not sent and password not changed. Please try again.',
+        });
+      } else {
+        const newHashedPassword = bcrypt.hashSync(newPassword, 10);
+        try {
+          await User.findByIdAndUpdate(id, { password: newHashedPassword });
+          const updatedUser = await User.findById(id);
+          console.log(newHashedPassword);
+          console.log(updatedUser.password);
+
+          if (bcrypt.compareSync(newPassword, updatedUser.password)) {
+            return res.status(200).json({
+              message: 'Mail sent and user updated successfully.',
+              info,
+            });
+          } else {
+            return res.status(404).json({
+              message:
+                'Mail sent but password not changed. Please send the code again.',
+            });
+          }
+        } catch (error) {
+          return res.status(404).json('Error in password update');
+        }
+      }
+    });
+  } catch (error) {
+    return next(setError(500, error.message || 'Catch sendPasswordRedirect'));
+  }
+};
+
+//todo------------- CONTROLLERS WHILE LOGGED IN-----------------(AUTH)-------
+
+const passwordChange = async (req, res, next) => {
+  try {
+    const { password, newPassword } = req.body;
+    const isValidPassword = validator.isSrongPassword(newPassword);
+
+    if (isValidPassword) {
+      const {_id} = req.user; 
+    } else {
+      return res
+        .status(404)
+        .json(
+          'Password needs one special character, 8 minimum letters, one in uppercase and at least a number.'
+        );
+    }
+  } catch (error) {
+    return next(
+      setError(500, error.message || 'Error in change password catch.')
     );
   }
 };
@@ -318,4 +501,9 @@ module.exports = {
   userLogin,
   resendCode,
   newUserCheck,
+  autoLogin,
+  passChangeWhileLoggedOut,
+  sendCode,
+  sendPassword,
+  passwordChange,
 };
