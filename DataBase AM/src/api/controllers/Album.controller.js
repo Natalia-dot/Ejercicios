@@ -1,4 +1,4 @@
-const { createTestAccount } = require("nodemailer");
+
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const { enumGenres } = require("../../utils/enumDataCheck");
 const Album = require("../models/Album.model");
@@ -8,7 +8,9 @@ const Song = require("../models/Song.model");
 const createAlbum = async(req, res, next) =>{
     let catchImage = req.file?.path;                 
     try {
-        await Album.syncIndexes();                  
+        await Album.syncIndexes();  
+        const doesAlbumExist = Album.find( {albumName: req.body.albumName} )
+        if(doesAlbumExist) {
         const newAlbum = new Album(req.body);   
         if (req.file){                          
             newAlbum.image = catchImage;          
@@ -19,7 +21,7 @@ const createAlbum = async(req, res, next) =>{
         if (savedAlbum) {                          
             return res.status(200).json(savedAlbum);  
         }   else return res.status(404).json("Album was not saved. Please retry.")   
-
+      }
     } catch (error) {
         req.file?.path && deleteImgCloudinary(catchImage);
         next(error);
@@ -228,9 +230,9 @@ const update = async (req, res, next) => {
           }
   
           if (catchImg) {
-            albumByIdUpdate.image === catchImg
-              ? (test = { ...test, file: true })
-              : (test = { ...test, file: false });
+            const isCatchImage = albumByIdUpdate.image === catchImg
+            test = { ...test, file: isCatchImage }
+          
           }
           console.log(test, "2.Aqui despues de testear todo.")
           
@@ -261,70 +263,32 @@ const update = async (req, res, next) => {
   
 
 
-
-// const updateAlbum = async (req,res,next) =>{
-//     let catchImage = req.file?.path;  
-      
-//     try {
-//         await Album.syncIndexes();    
-//         const updatingAlbum = new Album(req.body);
-//         const { id } = req.params;     
-//         const { genres } = req.body?.genres;
-//         req.file && (updatingAlbum.image = catchImage)
-//         updatingAlbum._id = id;
-
-//         if (req.body?.genres) {                                        
-//             const requestGenres = genres.split(",");
-//             const requestGenresInArray = [];
-//             requestGenres.forEach(genre => {
-//                 genre = genre.toLowerCase().trim();
-//                 requestGenresInArray.push(genre)
-//             const enumResult = enumGenres(requestGenresInArray);
-//             updatingAlbum.genres = enumResult.check
-//             ? req.
-//             })}
-//         try {
-//             await Album.findByIdAndUpdate(id, bodyTemplate);   
-//             if (req.file?.path) {
-//               deleteImgCloudinary(oldImage);   
-//             }
+  const deleteAlbum = async (req, res, next) => { 
+    try {
+      const { id } = req.params;      
+      const album = await Album.findByIdAndDelete(id); 
+      deleteImgCloudinary(album.image)   
   
-//             const updatedAlbumById = await Album.findById(id);  
-//             const updateData = Object.keys(req.body);
-//             let test = {};
+      if (album) {
+        const findAlbumById = await Album.findById(id);
+        try {
+          const test = await Song.updateMany(
+            {album: id},
+            {$pull: {album: id}}
+          );
+          console.log(test)
   
-//             updateData.forEach((item) =>{
-//               if (req.body[item] === updatedalbumById[item]){ 
-//                 test[item] = true  
-//               } else {
-//                 test [item] = false
-//               }
-//             });
-//             if (catchImage) {
-//               updatedAlbumById.image === catchImage
-//               ? (test = {...test, file: true})
-//               : (test = {...test, file: false})
-//             }
-  
-//             let acc = 0; 
-//             for (key in test) {
-//               test[key] === false && acc++;
-//             }
-  
-//             if (acc > 0) { 
-//               return res.status(404).json({dataTest: test, updated: false})
-//             } else {
-//               return res.status(202).json({dataTest: test, updated: true})
-//             }
-  
-//         } catch (error) {
-//           return res.status(404).json("Se identifican los datos pero no se encuentra el Album")
-//           }
-//     } catch (error) {
-//       return res.status(404).json(error)
-//         }
-//     };
+        return res.status(findAlbumById ? 404 : 200).json({ 
+          deleteTest: findAlbumById ? false : true,
+        });
+      } catch (error) {}
+      } else {
+        return res.status(404).json("This album does not exist"); 
+      }
+    } catch (error) {
+      return res.status(404).json(error);
+    }
+  };
 
 
-
-module.exports = { createAlbum, albumById, albumByName, getAll, addAndRemoveManySongsById, update };
+module.exports = { createAlbum, albumById, albumByName, getAll, addAndRemoveManySongsById, update, deleteAlbum };

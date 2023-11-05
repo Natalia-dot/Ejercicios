@@ -162,6 +162,7 @@ const stateRegister = async (req, res, next) => {
 
 const redirectRegister = async (req, res, next) => {
   let catchImage = req.file?.path;
+  console.log(catchImage);
   try {
     await User.syncIndexes();
     let confirmationEmailCode = randomNumber();
@@ -170,6 +171,7 @@ const redirectRegister = async (req, res, next) => {
       { userEmail: req.body.userEmail }
     );
     if (!doesUserExist) {
+      console.log('hola, funciono');
       const newUser = new User({ ...req.body, confirmationEmailCode });
       if (req.file) {
         newUser.image = req.file.path;
@@ -583,7 +585,7 @@ const updateUser = async (req, res, next) => {
 };
 
 //todo--------------------------------DELETE----------------------------------
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user?._id);
     deleteImgCloudinary(req.user?.image);

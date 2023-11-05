@@ -1,5 +1,5 @@
 const { isAuthorized } = require('../../middleware/auth.middleware');
-const { uploadUserPic } = require('../../middleware/files.middleware');
+const { upload } = require('../../middleware/files.middleware');
 const {
   userRegistration,
   stateRegister,
@@ -20,11 +20,11 @@ const {
 
 const UserRoutes = require('express').Router();
 
-UserRoutes.post('/register', uploadUserPic.single('image'), userRegistration);
-UserRoutes.post('/registerState', uploadUserPic.single('image'), stateRegister);
+UserRoutes.post('/register', upload.single("image"), userRegistration);
+UserRoutes.post('/registerState', upload.single("image"), stateRegister);
 UserRoutes.post(
   '/register/registerRedirect',
-  uploadUserPic.single('image'),
+  upload.single("image"),
   redirectRegister
 );
 UserRoutes.post('/login', userLogin);
@@ -38,7 +38,12 @@ UserRoutes.patch(
 
 //!---------AUTH-----------------
 UserRoutes.patch('/changePassword', [isAuthorized], passwordChange);
-UserRoutes.patch('/update/update', [isAuthorized],uploadUserPic.single('image'), updateUser);
+UserRoutes.patch(
+  '/update/update',
+  [isAuthorized],
+  upload.single('image'),
+  updateUser
+);
 UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
 
 //!-------REDIRECTS--------------------------------------------

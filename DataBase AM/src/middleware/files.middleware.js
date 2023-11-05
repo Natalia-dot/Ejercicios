@@ -4,26 +4,18 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const dotenv = require('dotenv');
 dotenv.config();
 
-//New cloudinary folder
-const userStorage = new CloudinaryStorage({
+//Creamos el almacen
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'userStorage',
+    folder: 'NODE_project',
     allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'svg', 'webp'],
   },
 });
 
-const albumStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'albumStorage',
-    allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'svg', 'webp'],
-  },
-});
+//Creamos la función de subir imagenes
+const upload = multer({ storage });
 
-//Upload images function
-const uploadUserPic = multer({ userStorage });
-const uploadAlbumPic = multer({ albumStorage });
 
 //Delete images function
 const deleteImgCloudinary = (imgUrl) => {
@@ -45,4 +37,8 @@ const configCloudinary = () => {
   });
 };
 
-module.exports = { uploadAlbumPic, uploadUserPic, deleteImgCloudinary, configCloudinary };
+module.exports = {
+  upload,
+  deleteImgCloudinary,
+  configCloudinary,
+};
