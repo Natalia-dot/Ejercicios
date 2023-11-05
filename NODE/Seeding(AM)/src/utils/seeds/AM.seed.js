@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const PokemonDataSet = require("../../api/models/Pokemon");
-const Pokemonseed = require("../../api/models/Pokemon.model");
 const dotenv = require ( 'dotenv' );
+dotenv.config();
+const AMDataSet = require("../../api/models/AM");
+const Song = require("../../api/models/AM.model");
 
 const MONGO_URI = process.env.MONGO_URI;
 console.log(MONGO_URI)
@@ -11,15 +12,15 @@ const seed = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }).then (async ()=> {
-        const allPokemon = await Pokemonseed.find();
-        if (allPokemon.length > 0) {
-            await Pokemonseed.collection.drop();
+        const allSongs = await Song.find();
+        if (allSongs.length > 0) {
+            await Song.collection.drop();
             console.log('Database has been emptied')
         }
      }).catch((error) => console.log ('Seeding error.', error.message))
      .then(async ()=> {
-        const allPokemonModels = PokemonDataSet.map((pokemon) => new Pokemonseed(pokemon));
-        await Pokemonseed.insertMany(allPokemonModels);
+        const allAMSongsModel = AMDataSet.map((song) => new Song(song));
+        await Song.insertMany(allAMSongsModel);
         console.log('Seeding successful.');
      })
      .catch((error) => {

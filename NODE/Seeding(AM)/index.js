@@ -5,7 +5,7 @@ dotenv.config();
 const { configCloudinary } = require('./src/middleware/files.middleware');
 configCloudinary();
 
-const seed = require('./src/utils/seeds/pokemon.seed');
+const seed = require('./src/utils/seeds/AM.seed');
 seed();
 
 

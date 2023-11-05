@@ -15,7 +15,7 @@ configCloudinary();
 const PORT = process.env.PORT;                          //! NUM2.IMPORTAMOS PORT DE DOTENV
 
 const app = express();                                  //! NUM3.INICIALIZAMOS EL SERVIDOR Y SETTEAMOS COMO APP
-const cors = require("cors");                           //! NUM18.
+const cors = require("cors");                             //! NUM18.
 app.use(cors());
 
 app.use(express.json({limit:"5mb"}))                     //!NUM11. ESTABLECEMOS LOS PARAMETROS PARA LAS SUBIDAS DE NUESTRA APLICACION

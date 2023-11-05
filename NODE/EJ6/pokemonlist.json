@@ -1,0 +1,81 @@
+[
+    {
+    "name": "venusaur",
+    "type1": "grass",
+    "type2": "poison",
+    "moves": ["tackle", "growl", "leech seed", "vine whip", "poison powder", "sleep powder", "take down", "razor leaf", "sweet scent", "growth", "double edge", "worry seed", "synthesis", "seed bomb", "sludge bomb", "captivate", "grass whistle", "ingrain", "toxic", "venoshock", "sunny day", "natural gift", "leaf storm", "power whip", "grassy terrain"],
+    "abilities": ["overgrow", "chlorophyll"]
+},
+{
+    "name": "charmander",
+    "type1": "fire",
+    "type2": null,
+    "moves": ["scratch", "growl", "ember", "smokescreen", "dragon rage", "scary face", "fire spin", "flamethrower", "rage", "slash", "dragon claw", "fire fang", "flame burst", "inferno", "heat wave", "flare blitz"],
+    "abilities": ["blaze", "solar power"]
+},
+{
+    "name": "ivysaur",
+    "type1": "grass",
+    "type2": "poison",
+    "moves": ["tackle", "growl", "leech seed", "vine whip", "poison powder", "sleep powder", "take down", "razor leaf", "sweet scent", "growth", "double edge", "worry seed", "synthesis", "seed bomb", "sludge bomb", "captivate", "grass whistle", "ingrain", "toxic", "venoshock", "sunny day", "natural gift", "leaf storm", "power whip", "grassy terrain"],
+    "abilities": ["overgrow", "chlorophyll"]
+},
+{
+    "name": "bulbasaur",
+    "type1": "grass",
+    "type2": "poison",
+    "moves": ["tackle", "growl", "leech seed", "vine whip", "poison powder", "sleep powder", "take down", "razor leaf", "sweet scent", "growth", "double edge", "worry seed", "synthesis", "seed bomb", "sludge bomb", "captivate", "grass whistle", "ingrain", "toxic", "venoshock", "sunny day", "natural gift", "leaf storm", "power whip", "grassy terrain"],
+    "abilities": ["overgrow", "chlorophyll"]
+},
+{
+    "name": "charmeleon",
+    "type1": "fire",
+    "type2": null,
+    "moves": ["scratch", "growl", "ember", "smokescreen", "dragon rage", "scary face", "fire spin", "flamethrower", "rage", "slash", "dragon claw", "fire fang", "flame burst", "inferno", "heat wave", "flare blitz"],
+    "abilities": ["blaze", "solar power"]
+},
+{
+    "name": "charizard",
+    "type1": "fire",
+    "type2": "flying",
+    "moves": ["scratch", "growl", "ember", "smokescreen", "dragon rage", "scary face", "fire spin", "flamethrower", "rage", "slash", "dragon claw", "fire fang", "flame burst", "inferno", "heat wave", "flare blitz"],
+    "abilities": ["blaze", "solar power"]
+},
+{
+    "name": "squirtle",
+    "type1": "water",
+    "type2": null,
+    "moves": ["tackle", "tail whip", "bubble", "withdraw", "water gun", "bite", "rapid spin", "protect", "water pulse", "aqua tail", "skull bash", "iron defense", "rain dance", "hydro pump"],
+    "abilities": ["torrent", "rain dish"]
+},
+{
+    "name": "wartortle",
+    "type1": "water",
+    "type2": null,
+    "moves": ["tackle", "tail whip", "bubble", "withdraw", "water gun", "bite", "rapid spin", "protect", "water pulse", "aqua tail", "skull bash", "iron defense", "rain dance", "hydro pump"],
+    "abilities": ["torrent", "rain dish"]
+},
+{
+    "name": "blastoise",
+    "type1": "water",
+    "type2": null,
+    "moves": ["tackle", "tail whip", "bubble", "withdraw", "water gun", "bite", "rapid spin", "protect", "water pulse", "aqua tail", "skull bash", "iron defense", "rain dance", "hydro pump"],
+    "abilities": ["torrent", "rain dish"]
+},
+{
+    "name": "caterpie",
+    "type1": "bug",
+    "type2": null,
+    "moves": ["tackle", "string shot"],
+    "abilities": ["shield dust", "run away"]
+},
+{
+    "name": "metapod",
+    "type1": "bug",
+    "type2": null,
+    "moves": ["harden"],
+    "abilities": ["shed skin"]
+}
+
+
+]
