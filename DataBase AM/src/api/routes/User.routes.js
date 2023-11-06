@@ -14,17 +14,18 @@ const {
   passwordChange,
   updateUser,
   deleteUser,
+  toggleFollow,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
 
 const UserRoutes = require('express').Router();
 
-UserRoutes.post('/register', upload.single("image"), userRegistration);
-UserRoutes.post('/registerState', upload.single("image"), stateRegister);
+UserRoutes.post('/register', upload.single('image'), userRegistration);
+UserRoutes.post('/registerState', upload.single('image'), stateRegister);
 UserRoutes.post(
   '/register/registerRedirect',
-  upload.single("image"),
+  upload.single('image'),
   redirectRegister
 );
 UserRoutes.post('/login', userLogin);
@@ -45,6 +46,7 @@ UserRoutes.patch(
   updateUser
 );
 UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
+UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 
 //!-------REDIRECTS--------------------------------------------
 

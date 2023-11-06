@@ -11,7 +11,7 @@ const isAuthorized = async (req, res, next) => {
   try {
     const decodedToken = verifyToken(token, process.env.JWT_SECRET);
     //decodificar el token con la funcion que hemos hecho que saca el id y email
-    console.log(decodedToken);
+    //console.log(decodedToken);
     req.user = await User.findById(decodedToken.id);
     //se encuentra el usuario con el id del token y lo asignamos a req.user
     next();

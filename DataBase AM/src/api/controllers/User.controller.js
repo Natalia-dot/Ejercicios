@@ -599,39 +599,94 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
-  const { _id } = req.user;   // I could also grab the pass and email through the req.user but I thought it safer this way.
+    const { _id } = req.user; // I could also grab the pass and email through the req.user but I thought it safer this way.
     const dataBaseUser = await User.findById(_id);
-  if (req.body.password === dataBaseUser.password && req.body.userEmail === dataBaseUser.userEmail){
-    try {
-      await User.findByIdAndDelete(req.user?._id);
-      deleteImgCloudinary(req.user?.image);
-      const doesUserExist = User.findById(req.user._id);
+    if (
+      req.body.password === dataBaseUser.password &&
+      req.body.userEmail === dataBaseUser.userEmail
+    ) {
+      try {
+        await User.findByIdAndDelete(req.user?._id);
+        deleteImgCloudinary(req.user?.image);
+        const doesUserExist = User.findById(req.user._id);
+        return res
+          .status(doesUserExist ? 404 : 200)
+          .json(
+            doesUserExist
+              ? 'User deleted successfully.'
+              : 'User not deleted. Pleaser try again.'
+          );
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ error: 'Error in delete catch', message: error.message });
+      }
+    } else {
       return res
-        .status(doesUserExist ? 404 : 200)
-        .json(
-          doesUserExist
-            ? 'User deleted successfully.'
-            : 'User not deleted. Pleaser try again.'
-        );
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: 'Error in delete catch', message: error.message });
+        .status(404)
+        .json('Error in input fields, please check spelling and try again.');
     }
-    
-  } else {
-    return res.status(404).json("Error in input fields, please check spelling and try again.")
-  }
   } catch (error) {
-    return res.status(404).json("Error in general catch.")
+    return res.status(404).json('Error in general catch.');
   }
 };
 
-
 //<--SEC                                          TOGGLE FOLLOW                                                 ->
-const toggleFollow = () => {
-  const { id } = req.params;
-  const {  }
+const toggleFollow = async (req, res, next) => {
+  console.log('hola me ejecutro n toggle');
+  try {
+    console.log('entro en el primer try');
+    const { id } = req.params;
+    const { _id, following } = req.user;
+    console.log('entro en el segundo try');
+    if (following.includes(id)) {
+      try {
+        console.log('following includes persona de nteres');
+        await User.findByIdAndUpdate(_id, {
+          $pull: { following: id },
+        });
+        try {
+          await User.findByIdAndUpdate(id, {
+            $pull: { followers: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            nowUnfollowing: await User.findById(id),
+          });
+        } catch (error) {
+          return res
+            .status(404)
+            .json('Error in pulling follower from other user.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pulling user from following.');
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $push: { following: id },
+        });
+        try {
+          await User.findByIdAndUpdate(id, {
+            $push: { followers: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            nowFollowing: await User.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: error.message,
+            message: 'Error in pushing new follower to other user.',
+          });
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pushing user to follow.');
+      }
+    }
+  } catch (error) {
+    return next(setError(404, 'Error in general catch' | error.message));
+  }
 };
 
 //<--IMP                                     EXPORTATIONS FOR ROUTING                                           ->
