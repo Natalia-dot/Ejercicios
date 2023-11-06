@@ -55,11 +55,11 @@ The custom configuration I added is as such:</p>
 
 ---
 
-<p>==IMP|IMPORT== = These two, though I mostly use imp (WHICH DOES NOT MEAN IMPORTANT, JUST IMPORTS) for ease and length.<br>
+<p>IMP|IMPORT = These two, though I mostly use imp (WHICH DOES NOT MEAN IMPORTANT, JUST IMPORTS) for ease and length.<br>
 <br>
-==SECTION|SEC== = Just separators, mostly dividers and they tend to have descriptive titles.<br>
+SECTION|SEC = Just separators, mostly dividers and they tend to have descriptive titles.<br>
 <br>
-==EXPLAIN|EX== = Lengthier explanations for concrete parts of the code.<br>
+EXPLAIN|EX = Lengthier explanations for concrete parts of the code.<br>
 <br>
 <br>
 The formatting is still in development, and commenting will be resumed once I can get some

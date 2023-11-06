@@ -599,24 +599,42 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.user?._id);
-    deleteImgCloudinary(req.user?.image);
-    const doesUserExist = User.findById(req.user._id);
-    return res
-      .status(doesUserExist ? 404 : 200)
-      .json(
-        doesUserExist
-          ? 'User deleted successfully.'
-          : 'User not deleted. Pleaser try again.'
-      );
+  const { _id } = req.user;   // I could also grab the pass and email through the req.user but I thought it safer this way.
+    const dataBaseUser = await User.findById(_id);
+  if (req.body.password === dataBaseUser.password && req.body.userEmail === dataBaseUser.userEmail){
+    try {
+      await User.findByIdAndDelete(req.user?._id);
+      deleteImgCloudinary(req.user?.image);
+      const doesUserExist = User.findById(req.user._id);
+      return res
+        .status(doesUserExist ? 404 : 200)
+        .json(
+          doesUserExist
+            ? 'User deleted successfully.'
+            : 'User not deleted. Pleaser try again.'
+        );
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: 'Error in delete catch', message: error.message });
+    }
+    
+  } else {
+    return res.status(404).json("Error in input fields, please check spelling and try again.")
+  }
   } catch (error) {
-    return res
-      .status(500)
-      .json({ error: 'Error in delete catch', message: error.message });
+    return res.status(404).json("Error in general catch.")
   }
 };
 
-//?----------EXPORTS-----------------
+
+//<--SEC                                          TOGGLE FOLLOW                                                 ->
+const toggleFollow = () => {
+  const { id } = req.params;
+  const {  }
+};
+
+//<--IMP                                     EXPORTATIONS FOR ROUTING                                           ->
 module.exports = {
   userRegistration,
   stateRegister,
@@ -631,4 +649,5 @@ module.exports = {
   passwordChange,
   updateUser,
   deleteUser,
+  toggleFollow,
 };
