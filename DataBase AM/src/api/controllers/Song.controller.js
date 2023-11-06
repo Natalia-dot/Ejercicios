@@ -79,7 +79,68 @@ const getBySongName = async (req, res, next) => {
   }
 };
 
-
+const addAndRemoveAlbumById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const albumId = req.body.id;
+    console.log(albumId);
+    const songToUpdate = await Song.findById(id);
+    if (songToUpdate) {
+      console.log('Hay cancion');
+      try {
+        if (songToUpdate.album.includes(albumId)) {
+          try {
+            await Song.findByIdAndUpdate(id, {
+              $pull: { album: albumId },
+            });
+            try {
+              await Album.findByIdAndUpdate(albumId, {
+                $pull: { song: id },
+              });
+              return res.status(200).json({
+                dataUpdate: await Song.findById(id).populate('album'),
+              });
+            } catch (error) {
+              return res.status(404).json('Error pulling song.');
+            }
+          } catch (error) {
+            return res.status(404).json('Error pulling album.');
+          }
+        } else {
+          try {
+            await Song.findByIdAndUpdate(id, {
+              $push: { album: albumId },
+            });
+            try {
+              await Album.findByIdAndUpdate(albumId, {
+                $push: { song: id },
+              });
+              return res.status(200).json({
+                dataUpdate: await Song.findById(id).populate('album'),
+              });
+            } catch (error) {
+              return res.status(404).json('Error pushing songs.');
+            }
+          } catch (error) {
+            return res.status(404).json('Error pushing items.');
+          }
+        }
+      } catch (error) {
+        return res.status(404).json('Update not finalized.');
+      }
+    } else {
+      console.log('No hay cancion.');
+      return res.status(404).json('Song not found.');
+    }
+  } catch (error) {
+    return (
+      res.status(404).json({
+        error: error.message,
+        message: 'Error in the Controller Catch',
+      }) && next(error)
+    );
+  }
+};
 
 const update = async (req, res, next) => {
   await Song.syncIndexes();
@@ -221,6 +282,7 @@ module.exports = {
   getById,
   getAll,
   getBySongName,
+  addAndRemoveAlbumById,
   update,
   deleteSong,
 };
