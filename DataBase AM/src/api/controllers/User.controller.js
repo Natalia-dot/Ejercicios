@@ -17,6 +17,8 @@ const bcrypt = require('bcrypt');
 
 //<--IMP                                             MODELS                                                     ->
 const User = require('../models/User.model');
+const Album = require('../models/Album.model');
+const Song = require('../models/Song.model');
 
 //<--SEC                                   LONG  REGISTRATION                                                   ->
 
@@ -689,6 +691,113 @@ const toggleFollow = async (req, res, next) => {
   }
 };
 
+//<--SEC                                          TOGGLE FAV ALBUMS                                                 ->
+//FIX SHOULDNT THESE CONTROLLERS GO IN THEIR RESPECTIVE PLACES? (SONGCONTROLLER & ALBUMCONTROLLER)
+const toggleFavAlbum = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { _id, favAlbums } = req.user;
+    if (favAlbums.includes(id)) {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $pull: { favAlbums: id },
+        });
+        try {
+          await Album.findByIdAndUpdate(id, {
+            $pull: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            albumUnfavorited: await Album.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json('Error in pulling user from likedBy.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pulling album from favAlbum.');
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $push: { favAlbums: id },
+        });
+        try {
+          await Album.findByIdAndUpdate(id, {
+            $push: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            addedFavAlbum: await Album.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: error.message,
+            message: 'Error in pushing our id to likedBy.',
+          });
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pushing Albums to favAlbum.');
+      }
+    }
+  } catch (error) {
+    return next(setError(404, 'Error in general catch' | error.message));
+  }
+};
+
+//<--SEC                                          TOGGLE FAV SONGS                                                 ->
+//FIX SHOULDNT THESE CONTROLLERS GO IN THEIR RESPECTIVE PLACES? (SONGCONTROLLER & ALBUMCONTROLLER)
+
+const toggleFavSong = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { _id, favSongs } = req.user;
+    if (favSongs.includes(id)) {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $pull: { favSongs: id },
+        });
+        try {
+          await Song.findByIdAndUpdate(id, {
+            $pull: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            songUnfavorited: await Song.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json('Error in pulling user from likedBy.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pulling song from favSongs.');
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $push: { favSongs: id },
+        });
+        try {
+          await Song.findByIdAndUpdate(id, {
+            $push: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            addedFavSongs: await Song.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: error.message,
+            message: 'Error in pushing our id to likedBy.',
+          });
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pushing songs to favSongs.');
+      }
+    }
+  } catch (error) {
+    return next(setError(404, 'Error in general catch' | error.message));
+  }
+};
+
 //<--IMP                                     EXPORTATIONS FOR ROUTING                                           ->
 module.exports = {
   userRegistration,
@@ -705,4 +814,6 @@ module.exports = {
   updateUser,
   deleteUser,
   toggleFollow,
+  toggleFavAlbum,
+  toggleFavSong,
 };
