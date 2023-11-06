@@ -95,7 +95,7 @@ const addAndRemoveAlbumById = async (req, res, next) => {
             });
             try {
               await Album.findByIdAndUpdate(albumId, {
-                $pull: { song: id },
+                $pull: { songs: id },
               });
               return res.status(200).json({
                 dataUpdate: await Song.findById(id).populate('album'),
@@ -113,7 +113,7 @@ const addAndRemoveAlbumById = async (req, res, next) => {
             });
             try {
               await Album.findByIdAndUpdate(albumId, {
-                $push: { song: id },
+                $push: { songs: id },
               });
               return res.status(200).json({
                 dataUpdate: await Song.findById(id).populate('album'),
