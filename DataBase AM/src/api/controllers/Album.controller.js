@@ -303,23 +303,15 @@ const deleteAlbum = async (req, res, next) => {
     const album = await Album.findByIdAndDelete(id);
     deleteImgCloudinary(album.image);
 
-    if (album) {
-      const findAlbumById = await Album.findById(id);
-      try {
-        const test = await Song.updateMany(
-          { album: id },
-          { $pull: { album: id } }
-        );
-        console.log(test);
+    try {
+      await Song.updateMany({ album: id }, { $pull: { album: id } });
 
-        return res.status(findAlbumById ? 404 : 200).json({
-          deleteTest: findAlbumById ? false : true,
-        });
-      } catch (error) {
-        return res.status(404).json('Error in catch deleting.');
-      }
-    } else {
-      return res.status(404).json('This album does not exist');
+      const findAlbumById = await Album.findById(id);
+      return res.status(findAlbumById ? 404 : 200).json({
+        deleteTest: findAlbumById ? false : true,
+      });
+    } catch (error) {
+      return res.status(404).json('Error in catch deleting.');
     }
   } catch (error) {
     return res.status(404).json(error);
