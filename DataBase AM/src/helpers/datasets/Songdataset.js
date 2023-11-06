@@ -4,6 +4,7 @@ const SongDataSet = [
     songLength: 207,
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -11,6 +12,7 @@ const SongDataSet = [
     songLength: 169,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -18,6 +20,7 @@ const SongDataSet = [
     songLength: 178,
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -25,6 +28,7 @@ const SongDataSet = [
     songLength: 162,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -33,6 +37,7 @@ const SongDataSet = [
     songLength: 134,
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -40,6 +45,7 @@ const SongDataSet = [
     songLength: 172,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -47,6 +53,7 @@ const SongDataSet = [
     songLength: 134,
     genres: ["indie rock", "post-punk revival"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -54,6 +61,7 @@ const SongDataSet = [
     songLength: 139,
     genres: ["indie rock", "garage rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -61,6 +69,7 @@ const SongDataSet = [
     songLength: 162,
     genres: ["indie rock", "post-punk revival"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -68,6 +77,7 @@ const SongDataSet = [
     songLength: 288,
     genres: ["indie rock", "garage rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -75,6 +85,7 @@ const SongDataSet = [
     songLength: 198,
     genres: ["indie rock", "post-punk revival"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -82,6 +93,7 @@ const SongDataSet = [
     songLength: 192,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -89,6 +101,7 @@ const SongDataSet = [
     songLength: 326,
     genres: ["indie rock", "post-punk revival"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["jim abbiss"],
   },
   {
@@ -96,6 +109,7 @@ const SongDataSet = [
     songLength: 164, 
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -103,6 +117,7 @@ const SongDataSet = [
     songLength: 177, 
     genres: ["indie rock", "garage rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -110,6 +125,7 @@ const SongDataSet = [
     songLength: 134, 
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -117,6 +133,7 @@ const SongDataSet = [
     songLength: 161, 
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -124,6 +141,7 @@ const SongDataSet = [
     songLength: 183, 
     genres: ["indie rock", "post-punk revival"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -131,6 +149,7 @@ const SongDataSet = [
     songLength: 175, 
     genres: ["indie rock", "alternative rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -138,6 +157,7 @@ const SongDataSet = [
     songLength: 238, 
     genres: ["indie rock", "post-punk revival"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -145,6 +165,7 @@ const SongDataSet = [
     songLength: 181, 
     genres: ["indie rock", "post-punk revival"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -152,6 +173,7 @@ const SongDataSet = [
     songLength: 274, 
     genres: ["indie rock", "post-punk revival"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -159,6 +181,7 @@ const SongDataSet = [
     songLength: 153, 
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -166,6 +189,7 @@ const SongDataSet = [
     songLength: 162, 
     genres: ["indie rock", "garage rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -173,6 +197,7 @@ const SongDataSet = [
     songLength: 289, 
     genres: ["indie rock", "alternative rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["james ford", "mike crossey"],
   },
   {
@@ -180,6 +205,7 @@ const SongDataSet = [
     songLength: 182, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -187,6 +213,7 @@ const SongDataSet = [
     songLength: 202, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -194,6 +221,7 @@ const SongDataSet = [
     songLength: 213, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -201,6 +229,7 @@ const SongDataSet = [
     songLength: 182, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -208,6 +237,7 @@ const SongDataSet = [
     songLength: 237, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -215,6 +245,7 @@ const SongDataSet = [
     songLength: 209, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -222,6 +253,7 @@ const SongDataSet = [
     songLength: 231, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -229,6 +261,7 @@ const SongDataSet = [
     songLength: 277, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -236,6 +269,7 @@ const SongDataSet = [
     songLength: 226, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -243,6 +277,7 @@ const SongDataSet = [
     songLength: 319, 
     genres: ["indie rock", "psychedelic rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["josh homme"],
   },
   {
@@ -250,6 +285,7 @@ const SongDataSet = [
     songLength: 231,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -257,6 +293,7 @@ const SongDataSet = [
     songLength: 182,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -264,6 +301,7 @@ const SongDataSet = [
     songLength: 179,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -271,6 +309,7 @@ const SongDataSet = [
     songLength: 214,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -278,6 +317,7 @@ const SongDataSet = [
     songLength: 184,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -285,6 +325,7 @@ const SongDataSet = [
     songLength: 161,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -292,6 +333,7 @@ const SongDataSet = [
     songLength: 194,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -299,6 +341,7 @@ const SongDataSet = [
     songLength: 201,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -306,6 +349,7 @@ const SongDataSet = [
     songLength: 190,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -313,6 +357,7 @@ const SongDataSet = [
     songLength: 202,
     genres: ["indie rock", "pop rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -320,6 +365,7 @@ const SongDataSet = [
     songLength: 242,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -327,6 +373,7 @@ const SongDataSet = [
     songLength: 258,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -334,6 +381,7 @@ const SongDataSet = [
     songLength: 272,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -341,6 +389,7 @@ const SongDataSet = [
     songLength: 206,
     genres: ["indie rock", "garage rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -348,6 +397,7 @@ const SongDataSet = [
     songLength: 227,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -355,6 +405,7 @@ const SongDataSet = [
     songLength: 236,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -362,6 +413,7 @@ const SongDataSet = [
     songLength: 197,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -369,6 +421,7 @@ const SongDataSet = [
     songLength: 259,
     genres: ["indie rock", "alternative rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -376,6 +429,7 @@ const SongDataSet = [
     songLength: 203,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -383,6 +437,7 @@ const SongDataSet = [
     songLength: 197,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -390,6 +445,7 @@ const SongDataSet = [
     songLength: 162,
     genres: ["indie rock", "alternative rock"],
     pace: "quick",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -397,6 +453,7 @@ const SongDataSet = [
     songLength: 207,
     genres: ["indie rock", "pop rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -404,6 +461,7 @@ const SongDataSet = [
     songLength: 279,
     genres: ["indie rock", "alternative rock"],
     pace: "medium",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
   {
@@ -411,6 +469,7 @@ const SongDataSet = [
     songLength: 210,
     genres: ["indie rock", "alternative rock"],
     pace: "slow",
+    artist: "arctic monkeys",
     producers: ["james ford"]
   },
     {
@@ -418,6 +477,7 @@ const SongDataSet = [
       songLength: 287,
       genres: ["indie rock", "experimental"],
       pace: "slow",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -425,6 +485,7 @@ const SongDataSet = [
       songLength: 220,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -432,6 +493,7 @@ const SongDataSet = [
       songLength: 297,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -439,6 +501,7 @@ const SongDataSet = [
       songLength: 214,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -446,6 +509,7 @@ const SongDataSet = [
       songLength: 162,
       genres: ["indie rock", "experimental"],
       pace: "slow",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -453,6 +517,7 @@ const SongDataSet = [
       songLength: 271,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -460,6 +525,7 @@ const SongDataSet = [
       songLength: 235,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -467,6 +533,7 @@ const SongDataSet = [
       songLength: 163,
       genres: ["indie rock", "experimental"],
       pace: "quick",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -474,6 +541,7 @@ const SongDataSet = [
       songLength: 195,
       genres: ["indie rock", "experimental"],
       pace: "quick",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -481,6 +549,7 @@ const SongDataSet = [
       songLength: 249,
       genres: ["indie rock", "experimental"],
       pace: "medium",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     },
     {
@@ -488,6 +557,7 @@ const SongDataSet = [
       songLength: 273,
       genres: ["indie rock", "experimental"],
       pace: "slow",
+      artist: "arctic monkeys",
       producers: ["james ford", "alex turner"]
     }
 ];

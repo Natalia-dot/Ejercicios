@@ -1,3 +1,6 @@
+const setError = require('../../helpers/setError');
+const { enumGenres, enumPace } = require('../../utils/enumDataCheck');
+const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
 
 const createSong = async (req, res, next) => {
@@ -76,4 +79,148 @@ const getBySongName = async (req, res, next) => {
   }
 };
 
-module.exports = { createSong, getById, getAll, getBySongName };
+
+
+const update = async (req, res, next) => {
+  await Song.syncIndexes();
+  try {
+    const { id } = req.params;
+    const songById = await Song.findById(id);
+
+    if (songById) {
+      const customBody = {
+        songName: req.body?.songName ? req.body.songName : songById.songName,
+        songLength: req.body?.songLength
+          ? req.body.songLength
+          : songById.songLength,
+        artist: req.body?.artist ? req.body.artist : songById.artist,
+      };
+
+      if (req.body?.genres) {
+        const { genres } = req.body;
+        console.log(genres);
+        const requestGenres = genres.split(',');
+        const requestGenresInArray = [];
+        requestGenres.forEach((genre) => {
+          genre = genre.toLowerCase().trim();
+          requestGenresInArray.push(genre);
+        });
+        console.log(requestGenresInArray, 'Final del forEach');
+        const enumResult = enumGenres(requestGenresInArray);
+        console.log(enumResult, 'Enum result');
+        customBody.genres = enumResult.check
+          ? requestGenresInArray
+          : songById.genres;
+      }
+
+      if (req.body?.producers) {
+        const { producers } = req.body;
+        const producersArray = producers
+          .toLowerCase()
+          .split(',')
+          .map((producer) => producer.trim());
+        customBody.producers = producersArray;
+      }
+
+      if (req.body?.pace) {
+        const enumResult = enumPace(req.body.pace);
+        customBody.pace = enumResult.check ? req.body.pace : songById.pace;
+      }
+
+      try {
+        await Song.findByIdAndUpdate(id, customBody);
+
+        const updatedSong = await Song.findById(id);
+        const elementUpdate = Object.keys(req.body);
+        let test = {};
+        elementUpdate.forEach((item) => {
+          if (req.body[item] === updatedSong[item]) {
+            test[item] = true;
+          } else {
+            test[item] = false;
+          }
+        });
+        // Testeamos genres por separado porque es un array de un enum,
+        // entonces lo que hacemos es hacer un forEach sopesando si cada uno
+        // de los elementos forma parte del enum, sumando al accumulator si es cierto.
+        // Luego miramos si el accumulator ha subido, y en el caso de que sea mayor que 0,
+        // es decir, que en alguno de los forEach haya dado false, setteamos a false el resultado
+        // del testing de genres.
+        if (req.body.genres) {
+          const { genres } = req.body;
+          const requestGenres = genres.split(',');
+          const requestGenresInArray = [];
+          let acc = 0;
+          requestGenres.forEach((genre) => {
+            genre = genre.toLowerCase().trim();
+            requestGenresInArray.push(genre);
+          }); //aqui console.log de requestGenresInArray va bien
+          requestGenresInArray.forEach((genre) => {
+            console.log(genre);
+            !updatedSong.genres.includes(genre) && acc++;
+            console.log(acc);
+          });
+          acc > 0
+            ? (test = { ...test, genres: false })
+            : (test = { ...test, genres: true });
+        }
+        let isUpdatedIncorrectly = 0;
+        for (let key in test) {
+          test[key] === false && isUpdatedIncorrectly++;
+        }
+
+        if (isUpdatedIncorrectly > 0) {
+          return res.status(404).json({
+            dataTest: test,
+            update: false,
+          });
+        } else {
+          return res.status(200).json({
+            dataTest: test,
+            test: true,
+          });
+        }
+      } catch (error) {
+        return setError(404, 'Error updating the song.');
+      }
+    } else return res.status(404).json('Song not found.');
+  } catch (error) {
+    setError(404, error.message || 'Error in general catch update song.');
+  }
+};
+
+const deleteSong = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const song = await Song.findByIdAndDelete(id);
+
+    if (song) {
+      const findSongById = await Song.findById(id);
+      try {
+        const test = await Album.updateMany(
+          { song: id },
+          { $pull: { song: id } }
+        );
+
+        return res.status(findSongById ? 404 : 200).json({
+          deleteTest: findSongById ? false : true,
+        });
+      } catch (error) {
+        return res.status(404).json('Error in catch deleting.');
+      }
+    } else {
+      return res.status(404).json('This song does not exist');
+    }
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+};
+
+module.exports = {
+  createSong,
+  getById,
+  getAll,
+  getBySongName,
+  update,
+  deleteSong,
+};
