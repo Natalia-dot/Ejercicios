@@ -15,6 +15,8 @@ const {
   updateUser,
   deleteUser,
   toggleFollow,
+  toggleFavSong,
+  toggleFavAlbum,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -47,6 +49,9 @@ UserRoutes.patch(
 );
 UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
 UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
+UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
+UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);
+
 
 //!-------REDIRECTS--------------------------------------------
 
