@@ -26,7 +26,9 @@ const createSong = async (req, res, next) => {
   }
 };
 
-const getById = async (req, res, next) => {
+//<!--SEC                                          GET SONG BY ID                                             -->
+
+const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const songById = await Song.findById(id);
@@ -40,7 +42,9 @@ const getById = async (req, res, next) => {
   }
 };
 
-const getAll = async (req, res, next) => {
+//<!--SEC                                          GET ALL SONGS                                              -->
+
+const getAll = async (req, res) => {
   try {
     const allSongs = await Song.find();
     if (allSongs.length > 0) {
@@ -50,13 +54,15 @@ const getAll = async (req, res, next) => {
     }
   } catch (error) {
     return res.status(404).json({
-      error: 'Error while searching for all songs.',
+      error: 'Error while searching for all songs',
       message: error.message,
     });
   }
 };
 
-const getBySongName = async (req, res, next) => {
+//<!--SEC                                      GET BY SONG NAME                                        -->
+
+const getBySongName = async (req, res) => {
   try {
     let { name } = req.body;
     name = name.toLowerCase();
@@ -78,6 +84,8 @@ const getBySongName = async (req, res, next) => {
     });
   }
 };
+
+//<!--SEC                                  TOGGLE ALBUM IN SONG                                    -->
 
 const addAndRemoveAlbumById = async (req, res, next) => {
   try {
@@ -142,7 +150,9 @@ const addAndRemoveAlbumById = async (req, res, next) => {
   }
 };
 
-const update = async (req, res, next) => {
+//<!--SEC                                      UPDATE SONG                                          -->
+
+const update = async (req, res) => {
   await Song.syncIndexes();
   try {
     const { id } = req.params;
@@ -250,7 +260,9 @@ const update = async (req, res, next) => {
   }
 };
 
-const deleteSong = async (req, res, next) => {
+//<!--SEC                                         DELETE SONG                                                 -->
+
+const deleteSong = async (req, res) => {
   try {
     const { id } = req.params;
     await Song.findByIdAndDelete(id);

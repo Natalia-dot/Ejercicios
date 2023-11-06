@@ -1,16 +1,24 @@
+//<--IMP                                          MIDDLEWARE                                                    ->
 const { deleteImgCloudinary } = require('../../middleware/files.middleware');
+
+//<--IMP                                        UTILS / HELPERS                                                 ->
 const randomNumber = require('../../utils/randomNumber');
-const nodemailer = require('nodemailer');
-const User = require('../models/User.model');
-const sendEmail = require('../../utils/emailSender');
-const { getSentEmail, setSentEmail } = require('../../state/state.data');
-const bcrypt = require('bcrypt');
-const { generateToken } = require('../../utils/token');
-const setError = require('../../helpers/setError');
 const randomPassword = require('../../utils/randomPassword');
-const validator = require('validator');
 const enumOk = require('../../utils/enumOk');
-//TODO---------REGISTRATION LARGO-----------------------------------
+const sendEmail = require('../../utils/emailSender');
+const { generateToken } = require('../../utils/token');
+const { getSentEmail, setSentEmail } = require('../../state/state.data');
+const setError = require('../../helpers/setError');
+
+//<--IMP                                           LIBRARIES                                                    ->
+const validator = require('validator');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
+
+//<--IMP                                             MODELS                                                     ->
+const User = require('../models/User.model');
+
+//<--SEC                                   LONG  REGISTRATION                                                   ->
 
 const userRegistration = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -89,7 +97,7 @@ const userRegistration = async (req, res, next) => {
   }
 };
 
-//todo------------- REGISTRATION CON ESTADO-------------
+//<--SEC                                   STATE  REGISTRATION                                                  ->
 
 const stateRegister = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -158,7 +166,7 @@ const stateRegister = async (req, res, next) => {
   }
 };
 
-//todo----------------REGISTRATION WITH REDIRECTION---------------------
+//<--SEC                                   REDIRECT  REGISTRATION                                                   ->
 
 const redirectRegister = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -256,7 +264,8 @@ const sendCode = async (req, res, next) => {
   }
 };
 
-//TODO--------------------USER CHECK--------------------------
+//<--SEC                                         CHECK EMAIL                                                   ->
+
 const newUserCheck = async (req, res, next) => {
   try {
     const { userEmail, confirmationEmailCode } = req.body;
@@ -299,7 +308,7 @@ const newUserCheck = async (req, res, next) => {
   }
 };
 
-//TODO---------------------------RESEND CODE----------------------------------
+//<--SEC                                         RESEND EMAIL                                                   ->
 
 const resendCode = async (req, res, next) => {
   //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
@@ -339,7 +348,7 @@ const resendCode = async (req, res, next) => {
   }
 };
 
-//TODO---------------------------LOGIN----------------------------------
+//<--SEC                                             LOGIN                                                     ->
 const userLogin = async (req, res, next) => {
   try {
     const { password, userEmail } = req.body;
@@ -364,7 +373,7 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-//TODO--------------------AUTOLOGIN--------------------------
+//<--SEC                                           AUTO  LOGIN                                                  ->
 
 const autoLogin = async (req, res, next) => {
   try {
@@ -387,7 +396,7 @@ const autoLogin = async (req, res, next) => {
   }
 };
 
-//todo-------------PASSWORD CHANGE NOT LOGGED IN------------------
+//<--SEC                                  PASSWORD CHANGE WHILE LOGGED OUT                                   ->
 
 const passChangeWhileLoggedOut = async (req, res, next) => {
   try {
@@ -473,9 +482,11 @@ const sendPassword = async (req, res, next) => {
   }
 };
 
-//todo------------- CONTROLLERS WHILE LOGGED IN-----------------(AUTH)-------
+//<--SEC                                             WITH AUTH                                                     ->
+//<--SEC                                             WITH AUTH                                                     ->
+//<--SEC                                             WITH AUTH                                                     ->
 
-//todo-----------------------PASSWORD CHANGE----------------------------------
+//<--SEC                                           PASSWORD CHANGE                                              ->
 
 const passwordChange = async (req, res, next) => {
   try {
@@ -521,7 +532,7 @@ const passwordChange = async (req, res, next) => {
   }
 };
 
-//todo--------------------------------UPDATE----------------------------------
+//<--SEC                                          UPDATE USER                                                   ->
 
 const updateUser = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -584,7 +595,8 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-//todo--------------------------------DELETE----------------------------------
+//<--SEC                                        DELETE USER                                                     ->
+
 const deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user?._id);
