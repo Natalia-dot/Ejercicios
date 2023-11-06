@@ -253,24 +253,17 @@ const update = async (req, res, next) => {
 const deleteSong = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const song = await Song.findByIdAndDelete(id);
+    await Song.findByIdAndDelete(id);
 
-    if (song) {
+    try {
+      await Album.updateMany({ songs: id }, { $pull: { songs: id } });
+
       const findSongById = await Song.findById(id);
-      try {
-        const test = await Album.updateMany(
-          { song: id },
-          { $pull: { song: id } }
-        );
-
-        return res.status(findSongById ? 404 : 200).json({
-          deleteTest: findSongById ? false : true,
-        });
-      } catch (error) {
-        return res.status(404).json('Error in catch deleting.');
-      }
-    } else {
-      return res.status(404).json('This song does not exist');
+      return res.status(findSongById ? 404 : 200).json({
+        deleteTest: findSongById ? false : true,
+      });
+    } catch (error) {
+      return res.status(404).json('Error in catch deleting.');
     }
   } catch (error) {
     return res.status(404).json(error);
