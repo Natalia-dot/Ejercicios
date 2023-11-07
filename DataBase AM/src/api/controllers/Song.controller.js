@@ -7,6 +7,26 @@ const createSong = async (req, res, next) => {
   try {
     await Song.syncIndexes();
     const newSong = new Song(req.body);
+    if (req.body?.producers) {
+      const { producers } = req.body;
+      const producersArray = producers
+        .split(',')
+        .map((producer) => producer.toLowerCase().trim());
+      newSong.producers = producersArray;
+    }
+    if (req.body?.genres) {
+      const { genres } = req.body;
+      const requestGenres = genres.split(',');
+      const requestGenresInArray = [];
+      requestGenres.forEach((genre) => {
+        genre = genre.toLowerCase().trim();
+        requestGenresInArray.push(genre);
+      });
+      const enumResult = enumGenres(requestGenresInArray);
+      console.log(enumResult, 'Enum result');
+      newSong.genres = enumResult.check ? requestGenresInArray : [];
+    }
+
     const savedSong = await newSong.save();
 
     if (savedSong) {
