@@ -17,6 +17,7 @@ const {
   toggleFollow,
   toggleFavSong,
   toggleFavAlbum,
+  getBySwitch,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -51,7 +52,7 @@ UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
 UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
 UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);
-
+UserRoutes.get('/', getBySwitch);
 
 //!-------REDIRECTS--------------------------------------------
 

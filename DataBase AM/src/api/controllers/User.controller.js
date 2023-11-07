@@ -1,7 +1,7 @@
-//<--IMP                                          MIDDLEWARE                                                    ->
+//<!--IMP                                          MIDDLEWARE                                                    ->
 const { deleteImgCloudinary } = require('../../middleware/files.middleware');
 
-//<--IMP                                        UTILS / HELPERS                                                 ->
+//<!--IMP                                        UTILS / HELPERS                                                 ->
 const randomNumber = require('../../utils/randomNumber');
 const randomPassword = require('../../utils/randomPassword');
 const enumOk = require('../../utils/enumOk');
@@ -10,17 +10,18 @@ const { generateToken } = require('../../utils/token');
 const { getSentEmail, setSentEmail } = require('../../state/state.data');
 const setError = require('../../helpers/setError');
 
-//<--IMP                                           LIBRARIES                                                    ->
+//<!--IMP                                           LIBRARIES                                                    ->
 const validator = require('validator');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 
-//<--IMP                                             MODELS                                                     ->
+//<!--IMP                                             MODELS                                                     ->
 const User = require('../models/User.model');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
+const { filterUsers } = require('../../utils/userFilter');
 
-//<--SEC                                   LONG  REGISTRATION                                                   ->
+//<!--SEC                                   LONG  REGISTRATION                                                   ->
 
 const userRegistration = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -99,7 +100,7 @@ const userRegistration = async (req, res, next) => {
   }
 };
 
-//<--SEC                                   STATE  REGISTRATION                                                  ->
+//<!--SEC                                   STATE  REGISTRATION                                                  ->
 
 const stateRegister = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -168,7 +169,7 @@ const stateRegister = async (req, res, next) => {
   }
 };
 
-//<--SEC                                   REDIRECT  REGISTRATION                                                   ->
+//<!--SEC                                   REDIRECT  REGISTRATION                                                   ->
 
 const redirectRegister = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -266,7 +267,7 @@ const sendCode = async (req, res, next) => {
   }
 };
 
-//<--SEC                                         CHECK EMAIL                                                   ->
+//<!--SEC                                         CHECK EMAIL                                                   ->
 
 const newUserCheck = async (req, res, next) => {
   try {
@@ -310,7 +311,7 @@ const newUserCheck = async (req, res, next) => {
   }
 };
 
-//<--SEC                                         RESEND EMAIL                                                   ->
+//<!--SEC                                         RESEND EMAIL                                                   ->
 
 const resendCode = async (req, res, next) => {
   //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
@@ -350,7 +351,7 @@ const resendCode = async (req, res, next) => {
   }
 };
 
-//<--SEC                                             LOGIN                                                     ->
+//<!--SEC                                             LOGIN                                                     ->
 const userLogin = async (req, res, next) => {
   try {
     const { password, userEmail } = req.body;
@@ -375,7 +376,7 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-//<--SEC                                           AUTO  LOGIN                                                  ->
+//<!--SEC                                           AUTO  LOGIN                                                  ->
 
 const autoLogin = async (req, res, next) => {
   try {
@@ -398,7 +399,7 @@ const autoLogin = async (req, res, next) => {
   }
 };
 
-//<--SEC                                  PASSWORD CHANGE WHILE LOGGED OUT                                   ->
+//<!--SEC                                  PASSWORD CHANGE WHILE LOGGED OUT                                   ->
 
 const passChangeWhileLoggedOut = async (req, res, next) => {
   try {
@@ -484,11 +485,11 @@ const sendPassword = async (req, res, next) => {
   }
 };
 
-//<--SEC                                             WITH AUTH                                                     ->
-//<--SEC                                             WITH AUTH                                                     ->
-//<--SEC                                             WITH AUTH                                                     ->
+//<!--SEC                                             WITH AUTH                                                     ->
+//<!--SEC                                             WITH AUTH                                                     ->
+//<!--SEC                                             WITH AUTH                                                     ->
 
-//<--SEC                                           PASSWORD CHANGE                                              ->
+//<!--SEC                                           PASSWORD CHANGE                                              ->
 
 const passwordChange = async (req, res, next) => {
   try {
@@ -534,7 +535,7 @@ const passwordChange = async (req, res, next) => {
   }
 };
 
-//<--SEC                                          UPDATE USER                                                   ->
+//<!--SEC                                          UPDATE USER                                                   ->
 
 const updateUser = async (req, res, next) => {
   let catchImage = req.file?.path;
@@ -597,7 +598,7 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-//<--SEC                                        DELETE USER                                                     ->
+//<!--SEC                                        DELETE USER                                                     ->
 
 const deleteUser = async (req, res) => {
   try {
@@ -633,7 +634,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-//<--SEC                                          TOGGLE FOLLOW                                                 ->
+//<!--SEC                                          TOGGLE FOLLOW                                                 ->
 const toggleFollow = async (req, res, next) => {
   console.log('hola me ejecutro n toggle');
   try {
@@ -691,7 +692,7 @@ const toggleFollow = async (req, res, next) => {
   }
 };
 
-//<--SEC                                          TOGGLE FAV ALBUMS                                                 ->
+//<!--SEC                                          TOGGLE FAV ALBUMS                                                 ->
 //FIX SHOULDNT THESE CONTROLLERS GO IN THEIR RESPECTIVE PLACES? (SONGCONTROLLER & ALBUMCONTROLLER)
 const toggleFavAlbum = async (req, res, next) => {
   try {
@@ -744,7 +745,7 @@ const toggleFavAlbum = async (req, res, next) => {
   }
 };
 
-//<--SEC                                          TOGGLE FAV SONGS                                                 ->
+//<!--SEC                                          TOGGLE FAV SONGS                                                 ->
 //FIX SHOULDNT THESE CONTROLLERS GO IN THEIR RESPECTIVE PLACES? (SONGCONTROLLER & ALBUMCONTROLLER)
 
 const toggleFavSong = async (req, res, next) => {
@@ -798,6 +799,74 @@ const toggleFavSong = async (req, res, next) => {
   }
 };
 
+//<!--SEC                                          GET USER BY ID                                        -->
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userById = await User.findById(id);
+    if (userById) {
+      return res.status(200).json(userById);
+    } else {
+      return res.status(404).json("That user doesn't exist.");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+//<!--SEC                                          GET USER BY NAME                                        -->
+
+const getBySwitch = async (req, res) => {
+  const request = req.body;
+  let switchClauseToFilter = filterUsers(request);
+  switch (switchClauseToFilter) {
+    case 'name': {
+      try {
+        let { name } = req.body;
+        name = name.toLowerCase();
+        console.log(name);
+        const userByName = await User.find({ name });
+        console.log(userByName);
+        if (userByName.length > 0) {
+          return res.status(200).json(userByName);
+        } else {
+          return res
+            .status(404)
+            .json("That username doesn't show up in our database.");
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: 'Error in the search getByname catch.',
+          message: error.message,
+        });
+      }
+    }
+    case 'userEmail':
+      try {
+        let { userEmail } = req.body;
+        console.log(userEmail);
+        const userByEmail = await User.find({ userEmail });
+        console.log(userByEmail);
+        if (userByEmail.length > 0) {
+          return res.status(200).json(userByEmail);
+        } else {
+          return res
+            .status(404)
+            .json("That user email doesn't show up in our database.");
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: 'Error in the search getByEmail catch.',
+          message: error.message,
+        });
+      }
+    case 'favAlbums':
+      return res.status(404).json('favAlbums switch');
+    default:
+      return res.status(404).json('Default switch');
+  }
+};
+
 //<--IMP                                     EXPORTATIONS FOR ROUTING                                           ->
 module.exports = {
   userRegistration,
@@ -816,4 +885,6 @@ module.exports = {
   toggleFollow,
   toggleFavAlbum,
   toggleFavSong,
+  getUserById,
+  getBySwitch,
 };

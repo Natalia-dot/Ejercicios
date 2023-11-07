@@ -64,11 +64,13 @@ const getAll = async (req, res) => {
 
 const getBySongName = async (req, res) => {
   try {
-    let { name } = req.body;
-    name = name.toLowerCase();
+    console.log(req.body);
+    console.log(req.body.songName);
+    let { songName } = req.body;
+    songName = songName.toLowerCase();
 
-    console.log(name);
-    const songByName = await Song.find({ songName: name });
+    console.log(songName);
+    const songByName = await Song.find({ songName: songName });
     console.log(songByName);
     if (songByName.length > 0) {
       return res.status(200).json(songByName);
@@ -279,6 +281,27 @@ const deleteSong = async (req, res) => {
     }
   } catch (error) {
     return res.status(404).json(error);
+  }
+};
+
+//<!--SEC                             FILTER SONGS                                                              -->
+const getFilteredSongs = async (req, res, next) => {
+  let request = req.body;
+  try {
+    switch (request) {
+      case request.name:
+        break;
+      case request.pace:
+        break;
+      case request.producers:
+        break;
+      case request.genres:
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    return res.status(404).json('Error switch.');
   }
 };
 
