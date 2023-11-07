@@ -6,6 +6,7 @@ const {
   update,
   deleteSong,
   addAndRemoveAlbumById,
+  filterByGenres,
 } = require('../controllers/Song.controller');
 
 const SongRoutes = require('express').Router();
@@ -17,5 +18,6 @@ SongRoutes.get('/getByName/name', getBySongName);
 SongRoutes.patch('/:id', update);
 SongRoutes.delete('/:id', deleteSong);
 SongRoutes.patch('/toggleAlbum/:id', addAndRemoveAlbumById);
+SongRoutes.get('/test/test/test', filterByGenres);
 
 module.exports = SongRoutes;

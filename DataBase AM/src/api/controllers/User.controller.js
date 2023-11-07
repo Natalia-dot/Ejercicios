@@ -819,6 +819,7 @@ const getUserById = async (req, res) => {
 const getBySwitch = async (req, res) => {
   const request = req.body;
   let switchClauseToFilter = filterUsers(request);
+  console.log(switchClauseToFilter);
   switch (switchClauseToFilter) {
     case 'name': {
       try {
@@ -861,7 +862,30 @@ const getBySwitch = async (req, res) => {
         });
       }
     case 'favAlbums':
-      return res.status(404).json('favAlbums switch');
+      try {
+        let albumName = req.body?.favAlbums;
+        console.log(albumName);
+        if (albumName.length > 0) {
+          albumName = albumName.toLowerCase().trim();
+          try {
+            console.log('Entro en el try', albumName);
+            const requestedAlbum = await Album.findOne({ albumName });
+            let albumId = requestedAlbum.id;
+            console.log(albumId)
+            const usersByFavAlbum = await User.find({
+              favAlbums: { $in: albumId },
+            });
+            console.log(albumId);
+            console.log(requestedAlbum);
+            console.log(usersByFavAlbum)
+            return res.status(200).json(usersByFavAlbum);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('No entra en el if');
+      } catch (error) {
+        return res.status(404).json('Error in favAlbums Switch clause.');
+      }
     default:
       return res.status(404).json('Default switch');
   }

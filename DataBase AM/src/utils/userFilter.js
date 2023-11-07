@@ -3,7 +3,7 @@ const filterUsers = (request) => {
     return 'name';
   } else if (request.userEmail) {
     return 'userEmail';
-  } else if (request.favAlbum) {
+  } else if (request.favAlbums) {
     return 'favAlbums';
   }
 };

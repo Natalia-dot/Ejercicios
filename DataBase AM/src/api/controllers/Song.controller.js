@@ -26,6 +26,10 @@ const createSong = async (req, res, next) => {
       console.log(enumResult, 'Enum result');
       newSong.genres = enumResult.check ? requestGenresInArray : [];
     }
+    if (req.body?.pace) {
+      const enumResult = enumPace(req.body.pace);
+      newSong.pace = enumResult.check && req.body.pace;
+    }
 
     const savedSong = await newSong.save();
 
@@ -325,6 +329,33 @@ const getFilteredSongs = async (req, res, next) => {
   }
 };
 
+//<!--SEC                                        FILTER BY GENRES                                              -->
+
+const filterByGenres = async (req, res, next) => {
+  const { genres } = req.body;
+  console.log(genres);
+  const requestGenres = genres.split(',');
+  const requestGenresInArray = [];
+  requestGenres.forEach((genre) => {
+    genre = genre.toLowerCase().trim();
+    requestGenresInArray.push(genre);
+  });
+  console.log(requestGenresInArray);
+
+  try {
+    const songResults = await Song.find({
+      genres: { $in: requestGenresInArray },
+    });
+    if (songResults.length > 0) {
+      return res.status(200).json(songResults);
+    } else {
+      return res.status(404).json("Couldn't find any song with those genres.");
+    }
+  } catch (error) {
+    return res.status(404).json('Error finding songs catch.');
+  }
+};
+
 module.exports = {
   createSong,
   getById,
@@ -333,4 +364,5 @@ module.exports = {
   addAndRemoveAlbumById,
   update,
   deleteSong,
+  filterByGenres,
 };
