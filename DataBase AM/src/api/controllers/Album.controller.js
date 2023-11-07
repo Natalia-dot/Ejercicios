@@ -4,18 +4,40 @@ const { enumGenres } = require('../../utils/enumDataCheck');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
 
+//<!--SEC                                      CREATE ALBUM                                        -->
+
 const createAlbum = async (req, res, next) => {
   let catchImage = req.file?.path;
   try {
     await Album.syncIndexes();
     const doesAlbumExist = Album.find({ albumName: req.body.albumName });
-    if (doesAlbumExist) {
+    if (!doesAlbumExist) {
       const newAlbum = new Album(req.body);
       if (req.file) {
         newAlbum.image = catchImage;
-      } else
+      } else {
         newAlbum.image =
           'https://www.thecurrent.org/images/default-album-art.png';
+      }
+      if (req.body?.producers) {
+        const { producers } = req.body;
+        const producersArray = producers
+          .split(',')
+          .map((producer) => producer.toLowerCase().trim());
+        newAlbum.producers = producersArray;
+      }
+      if (req.body?.genres) {
+        const { genres } = req.body;
+        const requestGenres = genres.split(',');
+        const requestGenresInArray = [];
+        requestGenres.forEach((genre) => {
+          genre = genre.toLowerCase().trim();
+          requestGenresInArray.push(genre);
+        });
+        const enumResult = enumGenres(requestGenresInArray);
+        console.log(enumResult, 'Enum result');
+        newAlbum.genres = enumResult.check ? requestGenresInArray : [];
+      }
 
       const savedAlbum = await newAlbum.save();
 
@@ -35,6 +57,8 @@ const createAlbum = async (req, res, next) => {
   }
 };
 
+//<!--SEC                                      ALBUM BY ID                                        -->
+
 const albumById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -48,6 +72,8 @@ const albumById = async (req, res, next) => {
     return res.status(404).json(error.message);
   }
 };
+
+//<!--SEC                                      GET ALL ALBUMS                                        -->
 
 const getAll = async (req, res, next) => {
   try {
@@ -64,6 +90,8 @@ const getAll = async (req, res, next) => {
     });
   }
 };
+
+//<!--SEC                                      GET ALBUM BY NAME                                        -->
 
 const albumByName = async (req, res, next) => {
   try {
@@ -85,6 +113,8 @@ const albumByName = async (req, res, next) => {
     });
   }
 };
+
+//<!--SEC                                      ADD AND REMOVE SONGS                                        -->
 
 const addAndRemoveManySongsById = async (req, res, next) => {
   try {
@@ -171,6 +201,8 @@ const addAndRemoveManySongsById = async (req, res, next) => {
     );
   }
 };
+
+//<!--SEC                                      UPDATE ALBUM                                        -->
 
 const update = async (req, res, next) => {
   await Album.syncIndexes();
@@ -296,6 +328,8 @@ const update = async (req, res, next) => {
     return res.status(404).json(error);
   }
 };
+
+//<!--SEC                                      DELETE ALBUM                                        -->
 
 const deleteAlbum = async (req, res, next) => {
   try {
