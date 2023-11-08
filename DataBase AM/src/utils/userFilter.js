@@ -17,6 +17,8 @@ const filterSongs = (request) => {
     return 'album';
   } else if (request.genres) {
     return 'genres';
+  } else if (request.singleGenre) {
+    return 'singleGenre';
   } else if (request.pace) {
     return 'pace';
   } else if (request.producers) {

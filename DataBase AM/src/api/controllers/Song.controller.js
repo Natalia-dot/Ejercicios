@@ -310,24 +310,25 @@ const deleteSong = async (req, res) => {
 };
 
 //<!--SEC                             FILTER SONGS                                                              -->
-const getFilteredSongs = async (req, res, next) => {
+const getFilteredSongs = async (req, res) => {
   const request = req.body;
   let switchClauseToFilter = filterSongs(request);
   console.log(switchClauseToFilter);
   switch (switchClauseToFilter) {
-    case 'name': {
+    case 'songName': {
+      //WORKS correctly
       try {
-        let { name } = req.body;
-        name = name.toLowerCase();
-        console.log(name);
-        const userByName = await User.find({ name });
-        console.log(userByName);
-        if (userByName.length > 0) {
-          return res.status(200).json(userByName);
+        let { songName } = req.body;
+        songName = songName.toLowerCase();
+        console.log(songName);
+        const songByName = await Song.find({ songName });
+        console.log(songByName);
+        if (songByName.length > 0) {
+          return res.status(200).json(songByName);
         } else {
           return res
             .status(404)
-            .json("That username doesn't show up in our database.");
+            .json("That song doesn't show up in our database.");
         }
       } catch (error) {
         return res.status(404).json({
@@ -336,28 +337,61 @@ const getFilteredSongs = async (req, res, next) => {
         });
       }
     }
-    case 'userEmail':
+    case 'genres':
+      //WORKS correctly
       try {
-        let { userEmail } = req.body;
-        console.log(userEmail);
-        const userByEmail = await User.find({ userEmail });
-        console.log(userByEmail);
-        if (userByEmail.length > 0) {
-          return res.status(200).json(userByEmail);
-        } else {
-          return res
-            .status(404)
-            .json("That user email doesn't show up in our database.");
+        const { genres } = req.body;
+        console.log(genres);
+        const requestGenres = genres.split(',');
+        const requestGenresInArray = [];
+        requestGenres.forEach((genre) => {
+          genre = genre.toLowerCase().trim();
+          requestGenresInArray.push(genre);
+        });
+        console.log(requestGenresInArray);
+
+        try {
+          const songResults = await Song.find({
+            genres: { $in: requestGenresInArray },
+          });
+          if (songResults.length > 0) {
+            return res.status(200).json(songResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any song with those genres.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding songs catch.');
         }
       } catch (error) {
-        return res.status(404).json({
-          error: 'Error in the search getByEmail catch.',
-          message: error.message,
-        });
+        return res.status(404).json('Error in albums Switch clause.');
       }
-    case 'album':
+    case 'singleGenre': //WORKS correctly
       try {
-        let album = req.body;
+        let genres = req.body?.singleGenre;
+        if (!genres.includes(',')) {
+          genres = genres.trim().toLowerCase();
+          try {
+            const songsBySingleGenre = await Song.find({
+              $and: [{ genres: { $in: genres } }, { genres: { $size: 1 } }], //todo I could set the 1 to a variable and if there are mre than one genres, set it to be specific to that
+              /*  --EX el AND admite un array de condiciones por las que tiene que buscar en la base de datos. 
+                  --EX en cada objeto le pongo la condicion deseada. En este caso, $IN lo que hace es buscar que objetos
+                  --EX cumplen con que genres incluya el objeto del array que tenemos, y si tuvieramos varios, devuelve todos los
+                  --EX que cumplen cualquiera de las dos condiciones. $SIZE determina la longitud del array de genres, por lo que te devuelve
+                  --EX todas las canciones que tengan solo un genero-->*/
+            });
+            return res.status(200).json(songsBySingleGenre);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('Please input only one genre.');
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'album': //WORKS FUNCIONA
+      try {
+        let { album } = req.body;
         console.log(album);
         if (album.length > 0) {
           album = album.toLowerCase().trim();
@@ -382,32 +416,32 @@ const getFilteredSongs = async (req, res, next) => {
   }
 };
 
-//<!--SEC                                        FILTER BY GENRES                                              -->
+//<!--SEC                                        FILTER BY GENRES  (DEPRECATED)                                            -->
 
-const filterByGenres = async (req, res, next) => {
-  const { genres } = req.body;
-  console.log(genres);
-  const requestGenres = genres.split(',');
-  const requestGenresInArray = [];
-  requestGenres.forEach((genre) => {
-    genre = genre.toLowerCase().trim();
-    requestGenresInArray.push(genre);
-  });
-  console.log(requestGenresInArray);
+// const filterByGenres = async (req, res, next) => {
+//   const { genres } = req.body;
+//   console.log(genres);
+//   const requestGenres = genres.split(',');
+//   const requestGenresInArray = [];
+//   requestGenres.forEach((genre) => {
+//     genre = genre.toLowerCase().trim();
+//     requestGenresInArray.push(genre);
+//   });
+//   console.log(requestGenresInArray);
 
-  try {
-    const songResults = await Song.find({
-      genres: { $in: requestGenresInArray },
-    });
-    if (songResults.length > 0) {
-      return res.status(200).json(songResults);
-    } else {
-      return res.status(404).json("Couldn't find any song with those genres.");
-    }
-  } catch (error) {
-    return res.status(404).json('Error finding songs catch.');
-  }
-};
+//   try {
+//     const songResults = await Song.find({
+//       genres: { $in: requestGenresInArray },
+//     });
+//     if (songResults.length > 0) {
+//       return res.status(200).json(songResults);
+//     } else {
+//       return res.status(404).json("Couldn't find any song with those genres.");
+//     }
+//   } catch (error) {
+//     return res.status(404).json('Error finding songs catch.');
+//   }
+// };
 
 module.exports = {
   createSong,
@@ -417,5 +451,5 @@ module.exports = {
   addAndRemoveAlbumById,
   update,
   deleteSong,
-  filterByGenres,
+  getFilteredSongs,
 };
