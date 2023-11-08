@@ -814,7 +814,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-//<!--SEC                                          GET USER BY NAME                                        -->
+//<!--SEC                                                       GET BY SWITCH                                                                   -->
 
 const getBySwitch = async (req, res) => {
   const request = req.body;
@@ -846,7 +846,9 @@ const getBySwitch = async (req, res) => {
       try {
         let { userEmail } = req.body;
         console.log(userEmail);
-        const userByEmail = await User.find({ userEmail });
+        const userByEmail = await User.find({ userEmail })
+          .populate('favAlbums', 'albumName')
+          .populate('favSongs', 'songName');
         console.log(userByEmail);
         if (userByEmail.length > 0) {
           return res.status(200).json(userByEmail);
@@ -869,15 +871,14 @@ const getBySwitch = async (req, res) => {
           albumName = albumName.toLowerCase().trim();
           try {
             console.log('Entro en el try', albumName);
-            const requestedAlbum = await Album.findOne({ albumName });
+            const requestedAlbum = await Album.findOne({ albumName }); //me daba error por usar el FIND porque me devuelve un array!!!W2wqwedqw
             let albumId = requestedAlbum.id;
-            console.log(albumId)
+            console.log(albumId);
             const usersByFavAlbum = await User.find({
               favAlbums: { $in: albumId },
-            });
-            console.log(albumId);
-            console.log(requestedAlbum);
-            console.log(usersByFavAlbum)
+            })
+              .populate('favAlbums', 'albumName year')
+              .populate('favSongs', 'songName');
             return res.status(200).json(usersByFavAlbum);
           } catch (error) {
             return res.status(404).json(error.message);
@@ -885,6 +886,28 @@ const getBySwitch = async (req, res) => {
         } else return res.status(404).json('No entra en el if');
       } catch (error) {
         return res.status(404).json('Error in favAlbums Switch clause.');
+      }
+    case 'favSongs':
+      try {
+        let songName = req.body?.favSongs;
+        console.log(songName);
+        if (songName.length > 0) {
+          songName = songName.toLowerCase().trim();
+          try {
+            console.log('Entro en el try', songName);
+            const requestedSong = await Song.findOne({ songName }); //me daba error por usar el FIND porque me devuelve un array!!!W2wqwedqw
+            let songId = requestedSong.id;
+            console.log(songId);
+            const UsersByFavSong = await User.find({
+              favSongs: { $in: songId },
+            }).populate('favSongs', 'songName pace album');
+            return res.status(200).json(UsersByFavSong);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('No entra en el if');
+      } catch (error) {
+        return res.status(404).json('Error in favSongs Switch clause.');
       }
     default:
       return res.status(404).json('Default switch');

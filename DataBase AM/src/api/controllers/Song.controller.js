@@ -1,5 +1,6 @@
 const setError = require('../../helpers/setError');
 const { enumGenres, enumPace } = require('../../utils/enumDataCheck');
+const { filterSongs } = require('../../utils/userFilter');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
 
@@ -310,22 +311,74 @@ const deleteSong = async (req, res) => {
 
 //<!--SEC                             FILTER SONGS                                                              -->
 const getFilteredSongs = async (req, res, next) => {
-  let request = req.body;
-  try {
-    switch (request) {
-      case request.name:
-        break;
-      case request.pace:
-        break;
-      case request.producers:
-        break;
-      case request.genres:
-        break;
-      default:
-        break;
+  const request = req.body;
+  let switchClauseToFilter = filterSongs(request);
+  console.log(switchClauseToFilter);
+  switch (switchClauseToFilter) {
+    case 'name': {
+      try {
+        let { name } = req.body;
+        name = name.toLowerCase();
+        console.log(name);
+        const userByName = await User.find({ name });
+        console.log(userByName);
+        if (userByName.length > 0) {
+          return res.status(200).json(userByName);
+        } else {
+          return res
+            .status(404)
+            .json("That username doesn't show up in our database.");
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: 'Error in the search getByname catch.',
+          message: error.message,
+        });
+      }
     }
-  } catch (error) {
-    return res.status(404).json('Error switch.');
+    case 'userEmail':
+      try {
+        let { userEmail } = req.body;
+        console.log(userEmail);
+        const userByEmail = await User.find({ userEmail });
+        console.log(userByEmail);
+        if (userByEmail.length > 0) {
+          return res.status(200).json(userByEmail);
+        } else {
+          return res
+            .status(404)
+            .json("That user email doesn't show up in our database.");
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: 'Error in the search getByEmail catch.',
+          message: error.message,
+        });
+      }
+    case 'album':
+      try {
+        let album = req.body;
+        console.log(album);
+        if (album.length > 0) {
+          album = album.toLowerCase().trim();
+          try {
+            console.log('Entro en el try', album);
+            const requestedAlbum = await Album.findOne({ albumName: album }); //me daba error por usar el FIND porque me devuelve un array!!!W2wqwedqw
+            let albumId = requestedAlbum.id;
+            console.log(albumId);
+            const songsByAlbum = await Song.find({
+              album: { $in: albumId },
+            });
+            return res.status(200).json(songsByAlbum);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('No entra en el if');
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    default:
+      return res.status(404).json('Default switch');
   }
 };
 
