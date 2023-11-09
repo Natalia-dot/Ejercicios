@@ -1,4 +1,5 @@
 const setError = require('../../helpers/setError');
+const convertToSeconds = require('../../utils/convertToSeconds');
 const { enumGenres, enumPace } = require('../../utils/enumDataCheck');
 const { filterSongs } = require('../../utils/userFilter');
 const Album = require('../models/Album.model');
@@ -389,7 +390,36 @@ const getFilteredSongs = async (req, res) => {
       } catch (error) {
         return res.status(404).json('Error in albums Switch clause.');
       }
-    case 'album': //WORKS FUNCIONA
+    case 'producers':
+      try {
+        const { producers } = req.body;
+        console.log(producers);
+        const requestProducers = producers.split(',');
+        const requestProducersInArray = [];
+        requestProducers.forEach((producer) => {
+          producer = producer.toLowerCase().trim();
+          requestProducersInArray.push(producer);
+        });
+        console.log(requestProducersInArray);
+
+        try {
+          const songResults = await Song.find({
+            producers: { $in: requestProducersInArray },
+          });
+          if (songResults.length > 0) {
+            return res.status(200).json(songResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any song produced by them.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding albums catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'album': //WORKS correctly
       try {
         let { album } = req.body;
         console.log(album);
@@ -411,8 +441,94 @@ const getFilteredSongs = async (req, res) => {
       } catch (error) {
         return res.status(404).json('Error in albums Switch clause.');
       }
+    case 'year':
+      //WORKS correctly
+      try {
+        let { year } = req.body;
+        year = year.trim();
+        console.log(year);
+        try {
+          const songResults = await Song.find({ year });
+          if (songResults.length > 0) {
+            return res.status(200).json(songResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any song from that year.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding songs catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in year Switch clause.');
+      }
+    case 'length':
+      try {
+        let { length } = req.body;
+        let range;
+        let filter = 1;
+        if (req.body?.range) {
+          range = req.body.range;
+          range = parseInt(range);
+          console.log(range);
+        } else {
+          range = 10;
+        }
+        if (req.body?.filter) {
+          filter = req.body.filter === 'des' ? -1 : 1; //I could set a switch but in pos of a selector that only lets you have two values, i wont
+        }
+        let baseLength = convertToSeconds(length);
+        let maxLength = baseLength + range;
+        let minLength = baseLength - range;
+        console.log(minLength, baseLength, maxLength);
+        try {
+          const songResults = await Song.find({
+            $and: [
+              { songLength: { $gte: minLength } },
+              { songLength: { $lte: maxLength } },
+            ],
+          }).sort({ songLength: filter });
+          if (songResults.length > 0) {
+            return res.status(200).json(songResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any song with that length.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding songs catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in length Switch clause.');
+      }
+    case 'pace':
+      //WORKS correctly
+      try {
+        let { pace } = req.body;
+        pace = pace.toLowerCase().trim();
+        console.log(pace);
+        if (enumPace(pace).check === true) {
+          try {
+            const songResults = await Song.find({
+              pace: pace,
+            });
+            if (songResults.length > 0) {
+              return res.status(200).json(songResults);
+            } else {
+              return res
+                .status(404)
+                .json("Couldn't find any song with that pace.");
+            }
+          } catch (error) {
+            return res.status(404).json('Error finding songs catch.');
+          }
+        }
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+      break;
     default:
-      return res.status(404).json('Default switch');
+      return res.status(404).json('Please input a valid filter.');
   }
 };
 

@@ -21,11 +21,34 @@ const filterSongs = (request) => {
     return 'singleGenre';
   } else if (request.pace) {
     return 'pace';
+  } else if (request.year) {
+    return 'year';
   } else if (request.producers) {
     return 'producers';
-  } else if (request.likedBy) {
-    return 'likedBy';
+  } else if (request.length) {
+    return 'length';
+  }
+  // } else if (request.producers) {
+  //   return 'producers';
+  // } else if (request.likedBy) {
+  //   return 'likedBy';
+  // }
+};
+
+const filterAlbums = (request) => {
+  if (request.albumName) {
+    return 'albumName';
+  } else if (request.genres) {
+    return 'genres';
+  } else if (request.songs) {
+    return 'songs';
+  } else if (request.singleGenre) {
+    return 'singleGenre';
+  } else if (request.year) {
+    return 'year';
+  } else if (request.producers) {
+    return 'producers';
   }
 };
 
-module.exports = { filterUsers, filterSongs };
+module.exports = { filterUsers, filterSongs, filterAlbums };

@@ -35,6 +35,7 @@ const SongSchema = new mongoose.Schema(
       lowercase: true,
       enum: ['quick', 'medium', 'slow'],
     },
+    year: { type: Number, required: true },
     producers: [{ type: String, lowercase: true }],
     likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     artist: { type: String, required: true },

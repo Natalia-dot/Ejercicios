@@ -1,30 +1,30 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const Album = require('../api/models/Album.model');
-const AlbumDataSet = require('./datasets/Albumdataset');
+const User = require('../api/models/User.model');
+const userDataSet = require('./datasets/Userdataset');
 
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI;
 console.log(MONGO_URI);
 
-const seedAlbum = () => {
+const seed3 = () => {
   mongoose
     .connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
     .then(async () => {
-      const allAlbums = await Album.find();
-      if (allAlbums.length > 0) {
-        await Album.collection.drop();
+      const allUsers = await User.find();
+      if (allUsers.length > 0) {
+        await User.collection.drop();
         console.log('Database has been emptied');
       }
     })
     .catch((error) => console.log('Seeding error.', error.message))
     .then(async () => {
-      const allAlbumsData = AlbumDataSet.map((album) => new Album(album));
-      await Album.insertMany(allAlbumsData);
+      const allUsersModel = userDataSet.map((user) => new User(user));
+      await User.insertMany(allUsersModel);
       console.log('Seeding successful.');
     })
     .catch((error) => {
@@ -35,4 +35,4 @@ const seedAlbum = () => {
     });
 };
 
-module.exports = seedAlbum;
+module.exports = seed3;

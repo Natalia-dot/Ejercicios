@@ -1,6 +1,7 @@
 const setError = require('../../helpers/setError');
 const { deleteImgCloudinary } = require('../../middleware/files.middleware');
 const { enumGenres } = require('../../utils/enumDataCheck');
+const { filterAlbums } = require('../../utils/userFilter');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
 
@@ -10,7 +11,9 @@ const createAlbum = async (req, res, next) => {
   let catchImage = req.file?.path;
   try {
     await Album.syncIndexes();
-    const doesAlbumExist = Album.find({ albumName: req.body.albumName });
+    console.log('Entro al principio');
+    const { albumName } = req.body;
+    const doesAlbumExist = await Album.findOne({ albumName });
     if (!doesAlbumExist) {
       const newAlbum = new Album(req.body);
       if (req.file) {
@@ -19,6 +22,8 @@ const createAlbum = async (req, res, next) => {
         newAlbum.image =
           'https://www.thecurrent.org/images/default-album-art.png';
       }
+      console.log('Entro hasta el save');
+
       if (req.body?.producers) {
         const { producers } = req.body;
         const producersArray = producers
@@ -43,8 +48,13 @@ const createAlbum = async (req, res, next) => {
 
       if (savedAlbum) {
         return res.status(200).json(savedAlbum);
-      } else return res.status(404).json('Album was not saved. Please retry.');
-    }
+      } else {
+        return res.status(404).json('Album was not saved. Please retry.');
+      }
+    } else
+      return res
+        .status(404)
+        .json('Album is already in database. Please retry.');
   } catch (error) {
     req.file?.path && deleteImgCloudinary(catchImage);
     next(error);
@@ -352,6 +362,163 @@ const deleteAlbum = async (req, res, next) => {
   }
 };
 
+const getFilteredAlbums = async (req, res) => {
+  const request = req.body;
+  let switchClauseToFilter = filterAlbums(request);
+  console.log(switchClauseToFilter);
+  switch (switchClauseToFilter) {
+    case 'albumName': {
+      //WORKS correctly
+      try {
+        let { songName } = req.body;
+        songName = songName.toLowerCase();
+        console.log(songName);
+        const songByName = await Song.find({ songName });
+        console.log(songByName);
+        if (songByName.length > 0) {
+          return res.status(200).json(songByName);
+        } else {
+          return res
+            .status(404)
+            .json("That song doesn't show up in our database.");
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: 'Error in the search getByname catch.',
+          message: error.message,
+        });
+      }
+    }
+    case 'genres':
+      //WORKS correctly
+      try {
+        const { genres } = req.body;
+        console.log(genres);
+        const requestGenres = genres.split(',');
+        const requestGenresInArray = [];
+        requestGenres.forEach((genre) => {
+          genre = genre.toLowerCase().trim();
+          requestGenresInArray.push(genre);
+        });
+        console.log(requestGenresInArray);
+
+        try {
+          const albumResults = await Album.find({
+            genres: { $in: requestGenresInArray },
+          });
+          if (albumResults.length > 0) {
+            return res.status(200).json(albumResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any album with those genres.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding albums catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'producers':
+      try {
+        const { producers } = req.body;
+        console.log(producers);
+        const requestProducers = producers.split(',');
+        const requestProducersInArray = [];
+        requestProducers.forEach((producer) => {
+          producer = producer.toLowerCase().trim();
+          requestProducersInArray.push(producer);
+        });
+        console.log(requestProducersInArray);
+
+        try {
+          const albumResults = await Album.find({
+            producers: { $in: requestProducersInArray },
+          });
+          if (albumResults.length > 0) {
+            return res.status(200).json(albumResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any album produced by them.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding albums catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'singleGenre': //WORKS correctly
+      try {
+        let genres = req.body?.singleGenre;
+        if (!genres.includes(',')) {
+          genres = genres.trim().toLowerCase();
+          try {
+            const ALbumsBySingleGenre = await Album.find({
+              $and: [{ genres: { $in: genres } }, { genres: { $size: 1 } }], //todo I could set the 1 to a variable and if there are mre than one genres, set it to be specific to that
+              /*  --EX el AND admite un array de condiciones por las que tiene que buscar en la base de datos. 
+                  --EX en cada objeto le pongo la condicion deseada. En este caso, $IN lo que hace es buscar que objetos
+                  --EX cumplen con que genres incluya el objeto del array que tenemos, y si tuvieramos varios, devuelve todos los
+                  --EX que cumplen cualquiera de las dos condiciones. $SIZE determina la longitud del array de genres, por lo que te devuelve
+                  --EX todas las canciones que tengan solo un genero-->*/
+            });
+            return res.status(200).json(ALbumsBySingleGenre);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('Please input only one genre.');
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'songs': //FIX correctly
+      try {
+        let songName = req.body.songs;
+        console.log(songName);
+        if (songName.length > 0) {
+          songName = songName.toLowerCase().trim();
+          try {
+            console.log('Entro en el try', songName);
+            const requestedSong = await Song.findOne({ songName }); //me daba error por usar el FIND porque me devuelve un array!!!W2wqwedqw
+            console.log(requestedSong);
+            let songId = requestedSong.id;
+            console.log(songId);
+            const albumBySong = await Album.find({
+              songs: { $in: songId },
+            });
+            return res.status(200).json(albumBySong);
+          } catch (error) {
+            return res.status(404).json(error.message);
+          }
+        } else return res.status(404).json('No entra en el if');
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    case 'year':
+      //WORKS correctly
+      try {
+        let { year } = req.body;
+        year = year.trim();
+        console.log(year);
+        try {
+          const albumResults = await Album.find({ year });
+          if (albumResults.length > 0) {
+            return res.status(200).json(albumResults);
+          } else {
+            return res
+              .status(404)
+              .json("Couldn't find any album from that year.");
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding albums catch.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in albums Switch clause.');
+      }
+    default:
+      return res.status(404).json('Please input a valid filter.');
+  }
+};
+
 module.exports = {
   createAlbum,
   albumById,
@@ -360,4 +527,5 @@ module.exports = {
   addAndRemoveManySongsById,
   update,
   deleteAlbum,
+  getFilteredAlbums,
 };

@@ -5,8 +5,10 @@ dotenv.config();
 
 // const seed = require('./src/helpers/Songseed'); //para sembrar unas cuantas canciones y Albumes
 // seed();
-// const seed2 = require('./src/helpers/Albumseed');
-// seed2();
+// const seed3 = require('./src/helpers/Userseed');
+// seed3();
+// const seedAlbum = require('./src/helpers/Albumseed');
+// seedAlbum();
 
 const { connect } = require('./src/utils/db');
 connect();
@@ -27,10 +29,10 @@ const UserRoutes = require('./src/api/routes/User.routes');
 app.use('/api/v1/users/', UserRoutes);
 
 const SongRoutes = require('./src/api/routes/Song.routes');
-app.use('/api/v1/songs/', SongRoutes)
+app.use('/api/v1/songs/', SongRoutes);
 
 const AlbumRoutes = require('./src/api/routes/Album.routes');
-app.use('/api/v1/albums/', AlbumRoutes)
+app.use('/api/v1/albums/', AlbumRoutes);
 
 app.use('*', (req, res, next) => {
   const error = new Error('Route not found');
