@@ -51,4 +51,41 @@ const filterAlbums = (request) => {
   }
 };
 
-module.exports = { filterUsers, filterSongs, filterAlbums };
+const sortUsers = (request) => {
+  if (request.followers) {
+    return 'followers';
+  } else if (request.favSongs) {
+    return 'favSongs';
+  } else if (request.favAlbums) {
+    return 'favAlbums';
+  }
+};
+
+// const sortSongs = (request) => { DEPRECATEDD
+//   if (request.sort) {
+//     return 'likes';
+//   } else if (request.likesInAlbum) {
+//     return 'likesInAlbum';
+//   } else if (request.length) {
+//     return 'length';
+//   }
+// };
+
+// const sortAlbums = (request) => {
+//   if (request.likes) {
+//     return 'likes';
+//   } else if (request.length) {
+//     return 'length';
+//   } else if (request.year) {
+//     return 'year';
+//   }
+// };
+
+module.exports = {
+  filterUsers,
+  filterSongs,
+  filterAlbums,
+  sortUsers,
+  // sortAlbums,
+  // sortSongs,
+};

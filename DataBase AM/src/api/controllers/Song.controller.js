@@ -4,6 +4,7 @@ const { enumGenres, enumPace } = require('../../utils/enumDataCheck');
 const { filterSongs } = require('../../utils/userFilter');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
+const User = require('../models/User.model');
 
 const createSong = async (req, res, next) => {
   try {
@@ -193,6 +194,7 @@ const update = async (req, res) => {
           ? req.body.songLength
           : songById.songLength,
         artist: req.body?.artist ? req.body.artist : songById.artist,
+        year: req.body?.year ? req.body.year : songById.year,
       };
 
       if (req.body?.genres) {
@@ -297,6 +299,7 @@ const deleteSong = async (req, res) => {
 
     try {
       await Album.updateMany({ songs: id }, { $pull: { songs: id } });
+      await User.updateMany({ favSongs: id }, { $pull: { favSongs: id } });
 
       const findSongById = await Song.findById(id);
       return res.status(findSongById ? 404 : 200).json({
@@ -532,7 +535,7 @@ const getFilteredSongs = async (req, res) => {
   }
 };
 
-//<!--SEC                                        FILTER BY GENRES  (DEPRECATED)                                            -->
+//<!--                                        FILTER BY GENRES  (DEPRECATED)                                            -->
 
 // const filterByGenres = async (req, res, next) => {
 //   const { genres } = req.body;
@@ -559,6 +562,75 @@ const getFilteredSongs = async (req, res) => {
 //   }
 // };
 
+//<!--SEC                                              SORT                                                     -->
+const sortSwitch = async (req, res) => {
+  //lo meto todo en un try catch?
+  const requestSort = req.body?.sort;
+  //let switchResponse = sortSongs(requestSort);
+  switch (requestSort) {
+    case 'likes': //WORKS correctly
+      try {
+        console.log('hola');
+        const allSongs = await Song.find();
+        if (allSongs.length > 0) {
+          let order = req.body?.order == 'asc' ? 1 : -1;
+          console.log(order);
+          order === 1
+            ? allSongs.sort((a, b) => a.likedBy.length - b.likedBy.length)
+            : allSongs.sort((a, b) => b.likedBy.length - a.likedBy.length);
+          return res.status(200).json(allSongs);
+        } else return res.status(404).json('No songs found.');
+      } catch (error) {
+        return res.status(404).json('Error in likes switch');
+      }
+    case 'likesInAlbum': //WORKS correctly
+      try {
+        let { order, albumName } = req.body;
+        order = req.body?.order == 'asc' ? 1 : -1;
+        albumName = albumName.toLowerCase().trim();
+        try {
+          const albumByName = await Album.findOne({ albumName });
+          let albumId = albumByName._id;
+          console.log(albumName, 'Albumname');
+          console.log(albumId, 'AlbumId');
+          try {
+            const allSongs = await Song.find({ album: { $in: albumId } });
+            console.log(allSongs);
+            if (allSongs.length > 0) {
+              order === 1
+                ? allSongs.sort((a, b) => a.likedBy.length - b.likedBy.length)
+                : allSongs.sort((a, b) => b.likedBy.length - a.likedBy.length);
+              return res.status(200).json(allSongs);
+            } else return res.status(404).json('No songs to show.');
+          } catch (error) {
+            return res.status(404).json('Error finding the songs.');
+          }
+        } catch (error) {
+          return res.status(404).json('Error finding the album.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in likesInAlbum switch');
+      }
+    case 'length': //WORKS correctly
+      try {
+        let { order } = req.body;
+        const allSongs = await Song.find();
+        console.log(allSongs);
+        if (allSongs.length > 0) {
+          order === 1
+            ? allSongs.sort((a, b) => a.songLength - b.songLength)
+            : allSongs.sort((a, b) => b.songLength - a.songLength);
+          return res.status(200).json(allSongs);
+        } else return res.status(404).json('No songs to show.');
+      } catch (error) {
+        return res.status(404).json('Error in length switch');
+      }
+
+    default:
+      return res.status(404).json('Default switch.');
+  }
+};
+
 module.exports = {
   createSong,
   getById,
@@ -568,4 +640,5 @@ module.exports = {
   update,
   deleteSong,
   getFilteredSongs,
+  sortSwitch,
 };

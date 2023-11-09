@@ -4,6 +4,7 @@ const { enumGenres } = require('../../utils/enumDataCheck');
 const { filterAlbums } = require('../../utils/userFilter');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
+const User = require('../models/User.model');
 
 //<!--SEC                                      CREATE ALBUM                                        -->
 
@@ -349,6 +350,7 @@ const deleteAlbum = async (req, res, next) => {
 
     try {
       await Song.updateMany({ album: id }, { $pull: { album: id } });
+      await User.updateMany({ favAlbums: id }, { $pull: { favAlbums: id } });
 
       const findAlbumById = await Album.findById(id);
       return res.status(findAlbumById ? 404 : 200).json({
@@ -370,17 +372,17 @@ const getFilteredAlbums = async (req, res) => {
     case 'albumName': {
       //WORKS correctly
       try {
-        let { songName } = req.body;
-        songName = songName.toLowerCase();
-        console.log(songName);
-        const songByName = await Song.find({ songName });
-        console.log(songByName);
-        if (songByName.length > 0) {
-          return res.status(200).json(songByName);
+        let { albumName } = req.body;
+        albumName = albumName.toLowerCase();
+        console.log(albumName);
+        const albumByName = await Album.find({ albumName });
+        console.log(albumByName);
+        if (albumByName.length > 0) {
+          return res.status(200).json(albumByName);
         } else {
           return res
             .status(404)
-            .json("That song doesn't show up in our database.");
+            .json("That album doesn't show up in our database.");
         }
       } catch (error) {
         return res.status(404).json({
