@@ -53,8 +53,8 @@ UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
 UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
 UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);
-UserRoutes.get('/', getBySwitch);
-UserRoutes.get('/sort', sortSwitch);
+UserRoutes.get('/', [isAuthorized], getBySwitch);
+UserRoutes.get('/sort', [isAuthorized], sortSwitch);
 
 //!-------REDIRECTS--------------------------------------------
 
