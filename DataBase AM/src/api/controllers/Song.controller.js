@@ -301,9 +301,16 @@ const deleteSong = async (req, res) => {
     await Song.findByIdAndDelete(id);
 
     try {
-      await Album.updateMany({ songs: id }, { $pull: { songs: id } });
-      await User.updateMany({ favSongs: id }, { $pull: { favSongs: id } });
-
+      try {
+        await Album.updateMany({ songs: id }, { $pull: { songs: id } });
+        try {
+          await User.updateMany({ favSongs: id }, { $pull: { favSongs: id } });
+        } catch (error) {
+          return res.status(404).json('Error pulling albums.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error pulling songs');
+      }
       const findSongById = await Song.findById(id);
       return res.status(findSongById ? 404 : 200).json({
         deleteTest: findSongById ? false : true,

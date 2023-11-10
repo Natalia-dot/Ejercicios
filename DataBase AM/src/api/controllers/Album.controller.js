@@ -351,9 +351,19 @@ const deleteAlbum = async (req, res) => {
     deleteImgCloudinary(album.image);
 
     try {
-      await Song.updateMany({ album: id }, { $pull: { album: id } });
-      await User.updateMany({ favAlbums: id }, { $pull: { favAlbums: id } });
-
+      try {
+        await Song.updateMany({ album: id }, { $pull: { album: id } });
+        try {
+          await User.updateMany(
+            { favAlbums: id },
+            { $pull: { favAlbums: id } }
+          );
+        } catch (error) {
+          return res.status(404).json('Error pulling albums.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error pulling songs');
+      }
       const findAlbumById = await Album.findById(id);
       return res.status(findAlbumById ? 404 : 200).json({
         deleteTest: findAlbumById ? false : true,
