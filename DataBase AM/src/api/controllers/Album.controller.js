@@ -235,6 +235,8 @@ const update = async (req, res) => {
           : albumById.albumLength,
         artist: req.body?.artist ? req.body?.artist : albumById.artist,
         year: req.body?.year ? req.body?.year : albumById.year,
+        songs: albumById.songs,
+        likedBy: albumById.likedBy,
       };
 
       if (req.body?.producers) {

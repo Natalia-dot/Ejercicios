@@ -551,6 +551,10 @@ const updateUser = async (req, res, next) => {
     patchedUser.confirmationEmailCode = req.user.confirmationEmailCode;
     patchedUser.userEmail = req.user.userEmail;
     patchedUser.isVerified = req.user.isVerified;
+    patchedUser.favAlbums = req.user.favAlbums;
+    patchedUser.favSongs = req.user.favSongs;
+    patchedUser.followers = req.user.followers;
+    patchedUser.following = req.user.following;
 
     if (req.body?.gender) {
       const enumResult = enumOk(req.body?.gender);

@@ -189,12 +189,15 @@ const update = async (req, res) => {
 
     if (songById) {
       const customBody = {
+        _id: songById._id,
+        album: songById.album,
         songName: req.body?.songName ? req.body.songName : songById.songName,
         songLength: req.body?.songLength
           ? req.body.songLength
           : songById.songLength,
         artist: req.body?.artist ? req.body.artist : songById.artist,
         year: req.body?.year ? req.body.year : songById.year,
+        likedBy: songById.album,
       };
 
       if (req.body?.genres) {
