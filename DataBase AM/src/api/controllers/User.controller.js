@@ -20,6 +20,7 @@ const User = require('../models/User.model');
 const Album = require('../models/Album.model');
 const Song = require('../models/Song.model');
 const { filterUsers } = require('../../utils/userFilter');
+const sortingFunction = require('../../utils/switchSort');
 
 //<!--SEC                                   LONG  REGISTRATION                                                   ->
 
@@ -914,6 +915,100 @@ const getBySwitch = async (req, res) => {
   }
 };
 
+//<!--SEC                                              SORT                                                     -->
+// const sortSwitch = async (req, res) => {
+//   //lo meto todo en un try catch?
+//   const requestSort = req.body?.sort;
+//   //let switchResponse = sortSongs(requestSort);
+//   switch (requestSort) {
+//     case 'followers': //WORKS correctly
+//       try {
+//         const allUsers = await User.find();
+//         if (allUsers.length > 0) {
+//           let order = req.body?.order == 'asc' ? 1 : -1;
+//           console.log(order);
+//           order === 1
+//             ? allUsers.sort((a, b) => a.followers.length - b.followers.length)
+//             : allUsers.sort((a, b) => b.followers.length - a.followers.length);
+//           return res.status(200).json(allUsers);
+//         } else return res.status(404).json('No users found.');
+//       } catch (error) {
+//         return res.status(404).json(error.message);
+//       }
+//     case 'favSongs': //WORKS correctly
+//       try {
+//         const allUsers = await User.find();
+//         if (allUsers.length > 0) {
+//           let order = req.body?.order == 'asc' ? 1 : -1;
+//           console.log(order);
+//           order === 1
+//             ? allUsers.sort(
+//                 (a, b) => a[requestSort].length - b[requestSort].length
+//               )
+//             : allUsers.sort(
+//                 (a, b) => b[requestSort].length - a[requestSort].length
+//               );
+//           return res.status(200).json(allUsers);
+//         } else return res.status(404).json('No users found.');
+//       } catch (error) {
+//         return res.status(404).json(error.message);
+//       }
+//     case 'favAlbums': //WORKS correctly
+//       try {
+//         const allUsers = await User.find();
+//         if (allUsers.length > 0) {
+//           let order = req.body?.order == 'asc' ? 1 : -1;
+//           console.log(order);
+//           order === 1
+//             ? allUsers.sort(
+//                 (a, b) => a.requestSort.length - b.requestSort.length
+//               )
+//             : allUsers.sort(
+//                 (a, b) => b.requestSort.length - a.requestSort.length
+//               );
+//           return res.status(200).json(allUsers);
+//         } else return res.status(404).json('No users found.');
+//       } catch (error) {
+//         return res.status(404).json('Error in favAlbums switch');
+//       }
+
+//     default:
+//       return res.status(404).json('Default switch.');
+//   }
+// };
+
+const sortSwitch = async (req, res) => {
+  //lo meto todo en un try catch?
+  const requestSort = req.body?.sort;
+  //let switchResponse = sortSongs(requestSort);
+  switch (requestSort) {
+    case 'followers': //WORKS correctly
+      try {
+        sortingFunction(req, res, requestSort);
+      } catch (error) {
+        return res.status(404).json(error.message);
+      }
+      break;
+    case 'favSongs': //WORKS correctly
+      try {
+        sortingFunction(req, res, requestSort);
+      } catch (error) {
+        return res.status(404).json(error.message);
+      }
+      break;
+    case 'favAlbums': //WORKS correctly
+      try {
+        sortingFunction(req, res, requestSort);
+      } catch (error) {
+        return res.status(404).json('Error in favAlbums switch');
+      }
+      break;
+
+    default:
+      return res.status(404).json('Default switch.');
+  }
+};
+
 //<--IMP                                     EXPORTATIONS FOR ROUTING                                           ->
 module.exports = {
   userRegistration,
@@ -934,4 +1029,5 @@ module.exports = {
   toggleFavSong,
   getUserById,
   getBySwitch,
+  sortSwitch,
 };

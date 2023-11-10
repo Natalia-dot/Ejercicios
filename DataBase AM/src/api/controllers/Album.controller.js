@@ -521,6 +521,58 @@ const getFilteredAlbums = async (req, res) => {
   }
 };
 
+//<!--SEC                                              SORT                                                     -->
+const sortSwitch = async (req, res) => {
+  //lo meto todo en un try catch?
+  const requestSort = req.body?.sort;
+  //let switchResponse = sortSongs(requestSort);
+  switch (requestSort) {
+    case 'likes': //WORKS correctly
+      try {
+        const allAlbums = await Album.find();
+        if (allAlbums.length > 0) {
+          let order = req.body?.order == 'asc' ? 1 : -1;
+          console.log(order);
+          order === 1
+            ? allAlbums.sort((a, b) => a.likedBy.length - b.likedBy.length)
+            : allAlbums.sort((a, b) => b.likedBy.length - a.likedBy.length);
+          return res.status(200).json(allAlbums);
+        } else return res.status(404).json('No albums found.');
+      } catch (error) {
+        return res.status(404).json('Error in likes switch');
+      }
+    case 'year': //WORKS correctly
+      try {
+        let { order } = req.body;
+        const allAlbums = await Album.find();
+        if (allAlbums.length > 0) {
+          order === 'asc'
+            ? allAlbums.sort((a, b) => a.year - b.year)
+            : allAlbums.sort((a, b) => b.year - a.year);
+          return res.status(200).json(allAlbums);
+        } else return res.status(404).json('No songs to show.');
+      } catch (error) {
+        return res.status(404).json('Error in year switch');
+      }
+    case 'length': //WORKS correctly
+      try {
+        let { order } = req.body;
+        const allAlbums = await Album.find();
+        if (allAlbums.length > 0) {
+          order === 'asc'
+            ? allAlbums.sort((a, b) => a.albumLength - b.albumLength)
+            : allAlbums.sort((a, b) => b.albumLength - a.albumLength);
+          return res.status(200).json(allAlbums);
+        } else return res.status(404).json('No songs to show.');
+      } catch (error) {
+        return res.status(404).json('Error in length switch');
+      }
+
+    default:
+      return res.status(404).json('Default switch.');
+  }
+};
+
 module.exports = {
   createAlbum,
   albumById,
@@ -530,4 +582,5 @@ module.exports = {
   update,
   deleteAlbum,
   getFilteredAlbums,
+  sortSwitch,
 };

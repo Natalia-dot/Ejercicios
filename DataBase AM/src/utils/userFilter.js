@@ -51,15 +51,15 @@ const filterAlbums = (request) => {
   }
 };
 
-const sortUsers = (request) => {
-  if (request.followers) {
-    return 'followers';
-  } else if (request.favSongs) {
-    return 'favSongs';
-  } else if (request.favAlbums) {
-    return 'favAlbums';
-  }
-};
+// const sortUsers = (request) => {
+//   if (request.followers) {
+//     return 'followers';
+//   } else if (request.favSongs) {
+//     return 'favSongs';
+//   } else if (request.favAlbums) {
+//     return 'favAlbums';
+//   }
+// };
 
 // const sortSongs = (request) => { DEPRECATEDD
 //   if (request.sort) {
@@ -85,7 +85,7 @@ module.exports = {
   filterUsers,
   filterSongs,
   filterAlbums,
-  sortUsers,
+  // sortUsers,
   // sortAlbums,
   // sortSongs,
 };

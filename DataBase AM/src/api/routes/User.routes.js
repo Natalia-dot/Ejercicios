@@ -18,6 +18,7 @@ const {
   toggleFavSong,
   toggleFavAlbum,
   getBySwitch,
+  sortSwitch,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -53,6 +54,7 @@ UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
 UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);
 UserRoutes.get('/', getBySwitch);
+UserRoutes.get('/sort', sortSwitch);
 
 //!-------REDIRECTS--------------------------------------------
 

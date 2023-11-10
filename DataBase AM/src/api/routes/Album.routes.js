@@ -8,6 +8,7 @@ const {
   update,
   deleteAlbum,
   getFilteredAlbums,
+  sortSwitch,
 } = require('../controllers/Album.controller');
 
 const AlbumRoutes = require('express').Router();
@@ -20,5 +21,6 @@ AlbumRoutes.patch('/toggleManySongs/:id', addAndRemoveManySongsById);
 AlbumRoutes.patch('/:id', upload.single('image'), update);
 AlbumRoutes.delete('/:id', deleteAlbum);
 AlbumRoutes.get('/filter/filter/filter', getFilteredAlbums);
+AlbumRoutes.get('/sort/sort/sort/sort', sortSwitch);
 
 module.exports = AlbumRoutes;

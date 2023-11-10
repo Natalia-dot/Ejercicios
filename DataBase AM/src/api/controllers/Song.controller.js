@@ -617,7 +617,7 @@ const sortSwitch = async (req, res) => {
         const allSongs = await Song.find();
         console.log(allSongs);
         if (allSongs.length > 0) {
-          order === 1
+          order === 'asc'
             ? allSongs.sort((a, b) => a.songLength - b.songLength)
             : allSongs.sort((a, b) => b.songLength - a.songLength);
           return res.status(200).json(allSongs);
@@ -625,7 +625,7 @@ const sortSwitch = async (req, res) => {
       } catch (error) {
         return res.status(404).json('Error in length switch');
       }
-
+    //todo sort de mas likeadas por genero
     default:
       return res.status(404).json('Default switch.');
   }
