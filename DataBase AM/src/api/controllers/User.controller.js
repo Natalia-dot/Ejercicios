@@ -610,22 +610,41 @@ const deleteUser = async (req, res) => {
     const { _id } = req.user; // I could also grab the pass and email through the req.user but I thought it safer this way.
     const dataBaseUser = await User.findById(_id);
     if (
-      req.body.password === dataBaseUser.password &&
-      req.body.userEmail === dataBaseUser.userEmail
+      req.body.userEmail === dataBaseUser.userEmail &&
+      bcrypt.compareSync(req.body.password, req.user.password)
     ) {
       try {
         await User.findByIdAndDelete(req.user?._id);
-        deleteImgCloudinary(req.user?.image);
-        await Song.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
-        await Album.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
-        await User.updateMany(
-          { following: _id },
-          { $pull: { following: _id } }
-        );
-        await User.updateMany(
-          { followers: _id },
-          { $pull: { followers: _id } }
-        );
+        deleteImgCloudinary(dataBaseUser.image);
+        try {
+          await Song.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
+          try {
+            await Album.updateMany(
+              { likedBy: _id },
+              { $pull: { likedBy: _id } }
+            );
+            try {
+              await User.updateMany(
+                { following: _id },
+                { $pull: { following: _id } }
+              );
+              try {
+                await User.updateMany(
+                  { followers: _id },
+                  { $pull: { followers: _id } }
+                );
+              } catch (error) {
+                return res.status(404).json('Error pulling followers.');
+              }
+            } catch (error) {
+              return res.status(404).json('Error pulling following.');
+            }
+          } catch (error) {
+            return res.status(404).json('Error pulling albums.');
+          }
+        } catch (error) {
+          return res.status(404).json('Error pulling songs');
+        }
         const doesUserExist = User.findById(req.user._id);
         return res
           .status(doesUserExist ? 404 : 200)
@@ -645,7 +664,7 @@ const deleteUser = async (req, res) => {
         .json('Error in input fields, please check spelling and try again.');
     }
   } catch (error) {
-    return res.status(404).json('Error in general catch.');
+    return res.status(404).json(error.message);
   }
 };
 
