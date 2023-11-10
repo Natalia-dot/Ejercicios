@@ -70,7 +70,7 @@ const createAlbum = async (req, res, next) => {
 
 //<!--SEC                                      ALBUM BY ID                                        -->
 
-const albumById = async (req, res, next) => {
+const albumById = async (req, res) => {
   try {
     const { id } = req.params;
     const albumById = await Album.findById(id);
@@ -86,7 +86,7 @@ const albumById = async (req, res, next) => {
 
 //<!--SEC                                      GET ALL ALBUMS                                        -->
 
-const getAll = async (req, res, next) => {
+const getAll = async (req, res) => {
   try {
     const allAlbums = await Album.find();
     if (allAlbums.length > 0) {
@@ -104,7 +104,7 @@ const getAll = async (req, res, next) => {
 
 //<!--SEC                                      GET ALBUM BY NAME                                        -->
 
-const albumByName = async (req, res, next) => {
+const albumByName = async (req, res) => {
   try {
     let { name } = req.body;
     name = name.toLowerCase();
@@ -215,7 +215,7 @@ const addAndRemoveManySongsById = async (req, res, next) => {
 
 //<!--SEC                                      UPDATE ALBUM                                        -->
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
   await Album.syncIndexes();
   let catchImg = req.file?.path;
   try {
@@ -342,7 +342,7 @@ const update = async (req, res, next) => {
 
 //<!--SEC                                      DELETE ALBUM                                        -->
 
-const deleteAlbum = async (req, res, next) => {
+const deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params;
     const album = await Album.findByIdAndDelete(id);

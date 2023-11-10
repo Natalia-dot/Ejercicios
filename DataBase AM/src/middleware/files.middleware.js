@@ -16,7 +16,6 @@ const storage = new CloudinaryStorage({
 //Creamos la función de subir imagenes
 const upload = multer({ storage });
 
-
 //Delete images function
 const deleteImgCloudinary = (imgUrl) => {
   const imgSplited = imgUrl.split('/');

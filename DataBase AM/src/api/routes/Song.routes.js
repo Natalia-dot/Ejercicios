@@ -1,3 +1,4 @@
+const { isAuthorized } = require('../../middleware/auth.middleware');
 const {
   createSong,
   getById,
@@ -12,7 +13,7 @@ const {
 
 const SongRoutes = require('express').Router();
 
-SongRoutes.post('/', createSong);
+SongRoutes.post('/', [isAuthorized], createSong);
 SongRoutes.get('/:id', getById);
 SongRoutes.get('/', getAll);
 SongRoutes.get('/getByName/name', getBySongName);
