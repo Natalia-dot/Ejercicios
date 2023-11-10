@@ -616,6 +616,16 @@ const deleteUser = async (req, res) => {
       try {
         await User.findByIdAndDelete(req.user?._id);
         deleteImgCloudinary(req.user?.image);
+        await Song.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
+        await Album.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
+        await User.updateMany(
+          { following: _id },
+          { $pull: { following: _id } }
+        );
+        await User.updateMany(
+          { followers: _id },
+          { $pull: { followers: _id } }
+        );
         const doesUserExist = User.findById(req.user._id);
         return res
           .status(doesUserExist ? 404 : 200)
