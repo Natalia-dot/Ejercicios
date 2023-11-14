@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const genres = require('../../helpers/genresArray');
 
 const SongSchema = new mongoose.Schema(
   {
@@ -19,15 +20,7 @@ const SongSchema = new mongoose.Schema(
       {
         type: String,
         lowercase: true,
-        enum: [
-          'indie rock',
-          'post-punk revival',
-          'garage rock',
-          'alternative rock',
-          'psychedelic rock',
-          'pop rock',
-          'experimental',
-        ],
+        enum: genres,
       },
     ],
     pace: {
