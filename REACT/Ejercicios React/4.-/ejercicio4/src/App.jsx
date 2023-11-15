@@ -6,8 +6,10 @@ export const App = () => {
   return (
     <>
     <Header/>
+    <main>
     <Image/>
     <Paragraph/>
+    </main>
     <Footer/>
     </>
   );
