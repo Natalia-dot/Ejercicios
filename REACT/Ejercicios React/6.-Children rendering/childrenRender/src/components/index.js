@@ -1,0 +1,7 @@
+export * from "./Footer/FooterComponent"
+export * from "./Header/HeaderComponent"
+export * from "./Image/ImageComponent"
+export * from "./Main/MainComponent"
+export * from "./Paragraph/ParagraphComponent"
+export * from "./Title/TitleComponent"
+export * from "./Subtitle/SubtitleComponent"

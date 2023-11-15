@@ -1,0 +1,10 @@
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:15vh;
+    width: 100vw;
+    background-color: rgb(220, 140, 140);
+
+}
