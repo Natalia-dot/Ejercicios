@@ -1,0 +1,28 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div {
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+div h1 {
+  margin: 1rem;
+}
+
+div p {
+  margin: 1rem;
+}
+
+div img {
+  width: 20vw;
+  object-fit: cover;
+}
