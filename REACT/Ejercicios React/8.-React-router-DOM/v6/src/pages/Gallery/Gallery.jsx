@@ -18,13 +18,11 @@ export const Gallery = () => {
                 //ex true
       ) 
   :  (
-    <Main>
       <section>
     {data?.data.map((item) => (
           <Card image={item.image} name={item.name} key={item.id} id={item.id} category={item.category}/>
         ))}
         </section>
-    </Main>
   )
 }
 

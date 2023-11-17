@@ -1,12 +1,12 @@
 import { ExtendedCardItem, Loader } from "../../components";
 import { useFetch } from "../../services/dataService";
 import { useParams } from 'react-router-dom';
+import "./SingleElement.css"
 
 export const SingleElement = () => {
   let { id } = useParams();
   console.log(id)
   const {data, isLoading, hasError} = useFetch(`https://botw-compendium.herokuapp.com/api/v3/compendium/entry/${id}`)
-  console.log(data)
   if(hasError) {
     return (
       Error(hasError)
@@ -17,7 +17,7 @@ export const SingleElement = () => {
     ) 
     : 
     (
-    <ExtendedCardItem data={data?.data} />
+    <ExtendedCardItem name={data?.data.name} image={data?.data.image} description={data?.data.description} />
     )
   }
 };

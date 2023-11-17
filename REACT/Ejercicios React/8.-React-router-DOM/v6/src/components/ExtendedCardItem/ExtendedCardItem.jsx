@@ -1,13 +1,9 @@
-import { useFetch } from "../../services/dataService";
 import "./ExtendedCardItem.css"
 
-export const ExtendedCardItem = (data) => {
-    
-    const {name, image, description} = data.data;
-    console.log(name, image, description, "gofgkdg")
+export const ExtendedCardItem = ({name, image, description}) => {
     // useFetch(`https://botw-compendium.herokuapp.com/api/v3/compendium/entry/${id}`)
   return (
-    <div>
+    <div className="individualItem">
         <h1>{name}</h1>
         <img src={image} alt={name}/>
         <p> {description} </p>

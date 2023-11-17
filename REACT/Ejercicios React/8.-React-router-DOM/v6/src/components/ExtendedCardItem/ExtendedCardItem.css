@@ -1,0 +1,22 @@
+.individualItem {
+  max-height: 70vh;
+  max-width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color:rgb(74,186,145);
+  margin: 2rem 2rem 2rem 2rem;
+  border: rgb(52, 126, 99) outset 10px;
+  padding: 4rem;
+}
+
+.individualItem img {
+  margin: 1rem 2rem 1rem 2rem;
+  border-radius: 50px;
+  border: solid rgb(77, 162, 77);
+}
+
+.individualItem p {
+  text-align: center;
+}
