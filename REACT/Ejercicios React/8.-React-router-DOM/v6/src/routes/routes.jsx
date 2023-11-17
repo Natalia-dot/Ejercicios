@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
                 element: <AboutMe />
             },
             {
-                path: "/gallery/monster/:id",
+                path: "/gallery/:category/:id",
                 element: <SingleElement />
             },
             {

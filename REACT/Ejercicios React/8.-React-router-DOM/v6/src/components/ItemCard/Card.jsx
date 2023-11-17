@@ -1,8 +1,8 @@
 import "./Card.css"
 import { Link } from "react-router-dom";
 
-export const Card = ({image, name, id}) => {
-  let path = `/gallery/monster/${id}`
+export const Card = ({image, name, id, category}) => {
+  let path = `/gallery/${category}/${id}`
   return (
     <figure>
     <Link to={path}>
