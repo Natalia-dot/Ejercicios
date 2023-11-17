@@ -1,0 +1,13 @@
+.home {
+ justify-content: center;
+ align-items: center;
+ display: flex;
+ flex-direction: column;
+ max-width: 80vw;
+}
+
+.home img{
+    max-width: 50vw;
+    border-radius: 50px;
+    margin:1rem;
+}

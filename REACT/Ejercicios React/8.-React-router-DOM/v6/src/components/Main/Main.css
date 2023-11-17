@@ -7,3 +7,14 @@ section{
     min-height: 100vh;
     flex-wrap: wrap;
 }
+
+main {
+    width: 100vw;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: rgb(13,146,99);
+  }
+  
