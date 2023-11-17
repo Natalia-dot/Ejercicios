@@ -1,0 +1,7 @@
+.loader {
+  background-color: rgb(101, 150, 202);
+  border: 8px rgb(106, 119, 165) outset;
+  color: rgb(14, 1, 1);
+  padding: 3rem;
+  border-radius: 50px;
+}
