@@ -2,6 +2,7 @@ import { useFetch } from "../../services/useFetch";
 
 export const PokemonCard = () => {
   const { data, isLoading, hasError } = useFetch();
+  console.log(data?.name, data?.sprites.front_default)
   if (hasError) {
     return <div>Sorry there was an error.</div>;
   } else {
@@ -9,6 +10,7 @@ export const PokemonCard = () => {
       <div>Loading...</div>
     ) : (
       <div>
+        
         <h1>{data?.name}</h1>
         <img src={data?.sprites.front_default} />
       </div>
