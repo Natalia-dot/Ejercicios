@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;1,200&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/*
+rgb(85,25,77) intense humbug purple
+*/
+
+body {
+  font-family: "Roboto Condensed";
+  background: #000000;
+  color: #fff;
+  line-height: 1.8;
+}
+
+a {
+  text-decoration: none;
+}
+
+#container {
+  margin: 30px auto;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.formWrap {
+  background: rgb(250, 242, 227);
+  padding: 15px 25px 30px;
+  color: rgb(6, 5, 8, 0.90);
+  border-radius: 5px;
+}
+
+.formWrap h1,
+.formWrap p {
+  text-align: center;
+}
+
+.formWrap .formGroup {
+  margin-top: 15px;
+}
+
+.formWrap .formGroup label {
+  color: rgb(85,25,77);
+}
+
+.formWrap .formGroup input {
+  width: 100%;
+  padding: 10px;
+  border: rgb(85,25,77) 1px solid;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.formWrap .formGroup input:focus {
+  outline-color: rgb(85,25,77);
+}
+
+.formWrap .btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 25px;
+  background-color: rgb(85,25,77);
+  color: rgb(239, 215, 236);
+  cursor: pointer;
+  border: rgb(67, 19, 61) 1px solid;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.formWrap .btn:hover {
+  background: rgb(85,25,77);
+  color: rgb(239, 215, 236);
+}
+/* style={{ background: send ? "rgb(239, 215, 236)" : "rgb(85,25,77)" }} poner esto en el boton */
+
+.formWrap .btn:focus {
+  outline-color: rgb(85,25,77);
+}
+
+.formWrap .bottomText {
+  line-height: 1.4;
+  margin-top: 15px;
+}
+
+.formWrap .bottomText a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  text-align: center;
+  margin-top: 15px;
+}
+
+footer a {
+  color: #b6a7f0;
+}
+
+footer a:hover {
+  color: #b6a7f0;
+}
+
+.btn:disabled {
+  background-color: navajowhite;
+}
