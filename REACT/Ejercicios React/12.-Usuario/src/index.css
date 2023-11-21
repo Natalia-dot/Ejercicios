@@ -1,6 +1,7 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
- 
+  width: 100vw;
+  min-height: 100vh;
 }
 
 *{
@@ -8,6 +9,7 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 
 html{
   width: 100vw;

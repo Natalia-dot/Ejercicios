@@ -37,13 +37,11 @@ app.use('/api/v1/albums/', AlbumRoutes);
 app.use('*', (req, res, next) => {
   const error = new Error('Route not found');
   error.status = 404;
-  return next(error);
+  return next({ error });
 });
 
 app.use((error, req, res) => {
-  return res
-    .status(error.status || 500)
-    .json(error.message || 'unexpected error');
+  return res.status(error.status || 500).json({ error });
 });
 
 app.disable('x-powered-by');

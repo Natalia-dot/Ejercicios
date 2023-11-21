@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { userRegister } from "../../services";
 import { useEffect } from "react";
 import { useSetError } from "../../hooks";
-import "./Register.css"
+import "./Register.css";
+import { Uploadfile } from "../../components";
 
 export const Register = () => {
   //Ex creamos los estados que nos van a proporcionar informacion o cambiar cosas segun su estado.
@@ -22,12 +23,29 @@ export const Register = () => {
   //Ex que nos trae la informacion formateada y verificada. Le tenemos que pasar de momento tambien hardcoddeado
   //Ex el gender, porque aun no tenemos un radio para el genero. Luego le pasamos el valor actualizado del formulario
   //Ex a userRegister, que linkea directamente con nuestro backend
+
   const performSubmit = async (formData) => {
-    const updatedFormData = { ...formData, gender: "female", role:"admin", isVerified:true };
-    setIsSent(true);
-    setRes(await userRegister(updatedFormData));
-    setIsSent(false);
+    const inputFile = document.getElementById("file-upload").files;
+
+    if (inputFile.length != 0) {
+      // si es diferente a cero quiere decir que tenemos una imagen
+      const updatedFormData = {
+        ...formData,
+        image: inputFile[0],
+      };
+
+      setIsSent(true);
+      setRes(await userRegister(updatedFormData));
+      setIsSent(false);
+    } else {
+      const updatedFormData = { ...formData };
+      setIsSent(true);
+      setRes(await userRegister(updatedFormData));
+      setIsSent(false);
+    }
   };
+
+  
   useEffect(() => {
     console.log(res);
     useSetError(res, setRes, setSuccessfulRegister);
@@ -40,38 +58,38 @@ export const Register = () => {
 
   return (
     <>
-    <div className="formWrap">
-      <h1>You could... Sign Up!</h1>
-      <p>It would really help us grow.</p>
-      <form onSubmit={handleSubmit(performSubmit)}>
-        <div className="userContainer formGroup">
-          <input
-            className="inputUser"
-            type="text"
-            id="name"
-            name="name"
-            autoComplete="false"
-            {...register("name", { required: true })}
-          />
-          <label htmlFor="customInput" className="customPlaceholder">
-            Username
-          </label>
-        </div>
-        <div className="passwordContainer formGroup">
-          <input
-            className="inputUser"
-            type="password"
-            id="password"
-            name="password"
-            autoComplete="false"
-            {...register("password", { required: true })}
-          />
-          <label htmlFor="customInput" className="customPlaceholder">
-            Password
-          </label>
-        </div>
-        <div className="emailContainer formGroup">
-        <input
+      <div className="formWrap">
+        <h1>You could... Sign Up!</h1>
+        <p>It would really help us grow.</p>
+        <form onSubmit={handleSubmit(performSubmit)}>
+          <div className="userContainer formGroup">
+            <input
+              className="inputUser"
+              type="text"
+              id="name"
+              name="name"
+              autoComplete="false"
+              {...register("name", { required: true })}
+            />
+            <label htmlFor="customInput" className="customPlaceholder">
+              Username
+            </label>
+          </div>
+          <div className="passwordContainer formGroup">
+            <input
+              className="inputUser"
+              type="password"
+              id="password"
+              name="password"
+              autoComplete="false"
+              {...register("password", { required: true })}
+            />
+            <label htmlFor="customInput" className="customPlaceholder">
+              Password
+            </label>
+          </div>
+          <div className="emailContainer formGroup">
+            <input
               className="inputUser"
               type="email"
               id="email"
@@ -82,28 +100,61 @@ export const Register = () => {
             <label htmlFor="customInput" className="customPlaceholder">
               Email
             </label>
-        </div>
-        <div className="btnContainer">
-          <button className="btn"
-          type="submit"
-          disabled={isSent}
-          style={{ background: isSent ? "rgb(239, 215, 236)" : "rgb(85,25,77)" }}
-          >
-            {isSent ? "Loading..." : "Sign Up"}
-          </button>
-        </div>
-        <p className="bottomText">
-          <small>
-          By clicking the Sign Up button, you agree to our{" "}
+          </div>
+          <div className="genderRadio">
+            <input
+              type="radio"
+              name="male"
+              id="male"
+              value="male"
+              {...register("gender")}
+            />
+            <label htmlFor="male" className="radio">
+              Male
+            </label>
+            <input
+              type="radio"
+              name="female"
+              id="female"
+              value="female"
+              {...register("gender")}
+            />
+            <label htmlFor="female" className="radio">
+              Female
+            </label>
+            <input
+              type="radio"
+              name="other"
+              id="other"
+              value="other"
+              {...register("gender")}
+            />
+            <label htmlFor="other" className="radio">
+              Other
+            </label>
+          </div>
+          <Uploadfile />
+          <div className="btnContainer">
+            <button
+              className="btn"
+              type="submit"
+              disabled={isSent}
+              style={{
+                background: isSent ? "rgb(239, 215, 236)" : "rgb(85,25,77)",
+              }}
+            >
+              {isSent ? "Loading..." : "Sign Up"}
+            </button>
+          </div>
+          <p className="bottomText">
+            <small>
+              By clicking the Sign Up button, you agree to our{" "}
               <a href="#">Terms & Conditions</a> and{" "}
               <a href="#">Privacy Policy</a>.
-          </small>
-        </p>
-      </form>
-    </div>
-    <footer>
-      <p>Registered already? <a href="#">Login!</a></p>
-    </footer>
+            </small>
+          </p>
+        </form>
+      </div>
     </>
   );
 };

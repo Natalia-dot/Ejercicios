@@ -1,10 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;1,200&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0 auto;
-  padding: 0;
-}
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;1,200&display=swap");
 
 /*
 rgb(85,25,77) intense humbug purple
@@ -12,8 +6,7 @@ rgb(85,25,77) intense humbug purple
 
 body {
   font-family: "Roboto Condensed";
-  background: #000000;
-  color: #fff;
+  color: black;
   line-height: 1.8;
 }
 
@@ -22,16 +15,20 @@ a {
 }
 
 #container {
-  margin: 30px auto;
   max-width: 400px;
   padding: 20px;
 }
 
 .formWrap {
   background: rgb(250, 242, 227);
-  padding: 15px 25px 30px;
-  color: rgb(6, 5, 8, 0.90);
+  color: rgb(6, 5, 8, 0.9);
   border-radius: 5px;
+  min-height: 85vh;
+  padding: 1rem 3rem 1rem 3rem;
+  margin: 1rem 3rem 3rem 5rem;
+  -webkit-box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
+  -moz-box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
+  box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
 }
 
 .formWrap h1,
@@ -44,27 +41,27 @@ a {
 }
 
 .formWrap .formGroup label {
-  color: rgb(85,25,77);
+  color: rgb(85, 25, 77);
 }
 
 .formWrap .formGroup input {
   width: 100%;
   padding: 10px;
-  border: rgb(85,25,77) 1px solid;
+  border: rgb(85, 25, 77) 1px solid;
   border-radius: 5px;
   font-family: inherit;
   font-size: inherit;
 }
 
 .formWrap .formGroup input:focus {
-  outline-color: rgb(85,25,77);
+  outline-color: rgb(85, 25, 77);
 }
 
 .formWrap .btn {
   width: 100%;
   padding: 10px;
   margin-top: 25px;
-  background-color: rgb(85,25,77);
+  background-color: rgb(85, 25, 77);
   color: rgb(239, 215, 236);
   cursor: pointer;
   border: rgb(67, 19, 61) 1px solid;
@@ -74,13 +71,13 @@ a {
 }
 
 .formWrap .btn:hover {
-  background: rgb(85,25,77);
+  background: rgb(85, 25, 77);
   color: rgb(239, 215, 236);
 }
 /* style={{ background: send ? "rgb(239, 215, 236)" : "rgb(85,25,77)" }} poner esto en el boton */
 
 .formWrap .btn:focus {
-  outline-color: rgb(85,25,77);
+  outline-color: rgb(85, 25, 77);
 }
 
 .formWrap .bottomText {
@@ -94,11 +91,6 @@ a {
 
 footer {
   text-align: center;
-  margin-top: 15px;
-}
-
-footer a {
-  color: #b6a7f0;
 }
 
 footer a:hover {
@@ -107,4 +99,36 @@ footer a:hover {
 
 .btn:disabled {
   background-color: navajowhite;
+}
+
+.genderRadio {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 1rem;
+}
+
+.radio {
+  padding: 1rem 10% 1rem 10%;
+  background-color: rgb(85, 25, 77);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  color: rgb(239, 215, 236);
+}
+
+input[type="radio"]:checked + .radio {
+  background: rgb(241, 174, 232);
+  color: rgb(85, 25, 77) !important;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.customInput {
+  width: 100%;
 }

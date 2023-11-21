@@ -63,7 +63,7 @@ UserSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 10);
     next();
   } catch (error) {
-    next('Error hashing the password. Please retry.', error);
+    next({ error });
   }
 });
 
