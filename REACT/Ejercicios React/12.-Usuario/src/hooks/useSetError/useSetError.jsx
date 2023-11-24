@@ -9,7 +9,11 @@ export const useSetError = (res, setRes, setSuccessfulRegister) => {
   console.log("mensaje de error!!!!!", res?.response?.data?.message);
 
   if (res.status == 200) {
+    const stringData = JSON.stringify(res)
+    console.log(res)
+    localStorage.setItem("data", stringData)
     setSuccessfulRegister(() => true);
+
     Swal.fire({
       icon: "success",
       title: "Welcome to my Page 💌",

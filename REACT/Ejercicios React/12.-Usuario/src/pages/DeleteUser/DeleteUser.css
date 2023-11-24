@@ -1,0 +1,62 @@
+
+.formWrapDeleteUser {
+    background: rgb(250, 242, 227);
+    color: rgb(6, 5, 8, 0.9);
+    border-radius: 5px;
+    min-height: 30vh;
+    width: 40vw;
+    -webkit-box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
+    -moz-box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
+    box-shadow: 0px 21px 14px 7px rgba(85, 25, 77, 0.44);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .formWrapDeleteUser h1,
+  .formWrapDeleteUser p {
+    text-align: center;
+  }
+  
+
+  
+  .formWrapDeleteUser .formGroup label {
+    color: rgb(85, 25, 77);
+  }
+  
+  .formWrapDeleteUser .formGroup input {
+    width: 100%;
+    padding: 10px;
+    border: rgb(85, 25, 77) 1px solid;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  
+  .formWrapDeleteUser .formGroup input:focus {
+    outline-color: rgb(85, 25, 77);
+  }
+  
+  .formWrapDeleteUser button {
+    width: 90%;
+    padding: 10px;
+    margin-top: 25px;
+    background-color: rgb(85, 25, 77);
+    color: rgb(239, 215, 236);
+    cursor: pointer;
+    border: rgb(67, 19, 61) 1px solid;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  
+  .formWrapDeleteUser button:hover {
+    background: rgb(85, 25, 77);
+    color: rgb(239, 215, 236);
+  }
+  /* style={{ background: send ? "rgb(239, 215, 236)" : "rgb(85,25,77)" }} poner esto en el boton */
+  
+  .formWrapDeleteUser button:focus {
+    outline-color: rgb(85, 25, 77);
+  }

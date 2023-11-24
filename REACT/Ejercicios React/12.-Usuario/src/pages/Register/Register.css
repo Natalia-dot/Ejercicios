@@ -1,13 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;1,200&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;1,200&display=swap');
 /*
 rgb(85,25,77) intense humbug purple
 */
 
 body {
-  font-family: "Roboto Condensed";
+  font-family: "Work Sans";
+  font-weight: 200;
   color: black;
-  line-height: 1.8;
 }
 
 a {

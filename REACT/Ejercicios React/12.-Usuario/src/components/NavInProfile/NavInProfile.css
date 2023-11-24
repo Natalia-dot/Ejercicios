@@ -1,0 +1,40 @@
+
+  
+
+  .profileButtons {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    width: 50vw;
+    margin-top: 1.5rem;
+  }
+  
+
+  .profileButtons button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+ 
+  .profileButtons button:hover {
+    background-color: #ddd;
+  }
+    .profileContent {
+    min-height: 50vh;
+    border: rgb(197, 144, 144) 2px solid;
+    margin: 3%;
+    width: 85vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  button.active{
+    border: rgb(197, 144, 144) 2px solid;
+  } 

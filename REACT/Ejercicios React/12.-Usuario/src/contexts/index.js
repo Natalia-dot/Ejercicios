@@ -1,1 +1,1 @@
-export * from "./Auth.context"
+export * from "./authContext"
