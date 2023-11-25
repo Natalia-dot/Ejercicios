@@ -1,10 +1,10 @@
 import { getUpdatedToken } from "../../utils";
-import { APIUser } from "../service.config";
+import { APIRoute } from "../service.config";
 
 //Ex en el userRegister es donde nos vamos a conectar a la db, mas concretamente
 //Ex en service.config, en el que vamos a utilizar axios para realizar peticiones http
 export const userRegister = async (formData) => {
-  return APIUser.post("/users/register/registerRedirect", formData, {
+  return APIRoute.post("/users/register/registerRedirect", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   })
     .then((res) => res)
@@ -19,31 +19,31 @@ export const userRegister = async (formData) => {
 //ex error, lo capturamos y devolvemos
 
 export const loginService = async (formData) => {
-  return APIUser.post("/users/login", formData)
+  return APIRoute.post("/users/login", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const codeConfirmationService = async (formData) => {
-  return APIUser.post("/users/check", formData)
+  return APIRoute.post("/users/check", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const resendEmailService = async (formData) => {
-  return APIUser.post("/users/resend", formData)
+  return APIRoute.post("/users/resend", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const autoLoginService = async (formData) => {
-  return APIUser.post("/users/login/autologin", formData)
+  return APIRoute.post("/users/login/autologin", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const deleteUserService = async (formData) => {
-  return APIUser.delete("/users/delete", formData, {
+  return APIRoute.delete("/users/delete", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
     },
@@ -53,7 +53,7 @@ export const deleteUserService = async (formData) => {
 };
 
 export const updateUserService = async (formData) => {
-  return APIUser.patch("/users/update/update", formData, {
+  return APIRoute.patch("/users/update/update", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
       "Content-Type": "multipart/form-data",
@@ -64,13 +64,13 @@ export const updateUserService = async (formData) => {
 };
 
 export const forgotPasswordService = async (formData) => {
-  return APIUser.patch("/users/changeUserPassword/changeUserPassword", formData)
+  return APIRoute.patch("/users/changeUserPassword/changeUserPassword", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const changePasswordService = async (formData) => {
-  return APIUser.patch("/users/changePassword", formData, {
+  return APIRoute.patch("/users/changePassword", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
     },
@@ -78,3 +78,4 @@ export const changePasswordService = async (formData) => {
     .then((res) => res)
     .catch((error) => error);
 };
+
