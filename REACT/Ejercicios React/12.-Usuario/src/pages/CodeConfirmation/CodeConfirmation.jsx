@@ -130,9 +130,9 @@ export const CodeConfirmation = () => {
             id="confirmationEmailCode"
             name="confirmationEmailCode"
             autoComplete="false"
-            {...register("confirmationEmailCode", { required: false })}
+            {...register("confirmationEmailCode", { required: true })}
           />
-          <label htmlFor="name">Registration code</label>
+          <label htmlFor="confirmationEmailCode">Registration code</label>
         </div>
 
         <div className="btnContainer">

@@ -18,7 +18,7 @@ export const Register = () => {
   //Ex llamamos al hook de useForm que nos va a proporcionar unas funciones para gestionar los datos del
   //Ex formulario y al de useAuth para acceder a lo que hemos setteado del contexto
   const { handleSubmit, register } = useForm();
-  const { dataBridge, setDeletedUser } = useAuth();
+  const { dataBridge, setDeletedUser, completeUserInfo } = useAuth();
   //Ex handleSubmit tiene luego una callback que vamos a crear ahora que gestiona lo que se hace cuando se
   //Ex submittea el formulario .Register es un objeto que almacena los datos del formulario y tambien gestiona
   //Ex los requerimientos
@@ -70,7 +70,8 @@ useEffect(() => {
 //ex aqui solo quitamos el set deleted user porque no lo necesitamos para nada mas, solo para
 //ex que cuando entremos a register mediante el redirect de useDeleteUser, volvamos a resetear el 
 //ex estado
-
+useEffect(() => {
+},[completeUserInfo])
 
   if(successfulRegister){
     return <Navigate to="/codeConfirmation" />

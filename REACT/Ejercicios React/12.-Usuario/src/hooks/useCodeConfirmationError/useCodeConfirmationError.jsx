@@ -14,6 +14,7 @@ export const useCodeConfirmationError = (
       //tip vamos a settear el isVerified al estado de user si viene ddesde
       //tip el login, es decir, que tiene "user" en el localStorage
       const localStorageUser = localStorage.getItem("user");
+      console.log(localStorageUser)
       const parsedUserToEditLocalStorageUser = JSON.parse(localStorageUser);
       const userToSetInLogin = {
         ...parsedUserToEditLocalStorageUser,
@@ -49,6 +50,7 @@ export const useCodeConfirmationError = (
   //SEC NOT FOUND
   if (res?.response?.data?.message?.includes("User not found.")) {
     setRes(() => ({}));
+    setUserNotFound(()=> true)
     Swal.fire({
       icon: "error",
       title: "User is not in the database.",

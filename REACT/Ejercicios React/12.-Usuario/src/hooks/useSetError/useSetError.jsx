@@ -12,7 +12,6 @@ export const useSetError = (res, setRes, setSuccessfulRegister) => {
     const stringData = JSON.stringify(res)
     console.log(res)
     localStorage.setItem("data", stringData)
-    setSuccessfulRegister(() => true);
 
     Swal.fire({
       icon: "success",
@@ -21,7 +20,9 @@ export const useSetError = (res, setRes, setSuccessfulRegister) => {
       timer: 1500,
     });
     setRes({});
+    setSuccessfulRegister(() => true);
   }
+  
   if (res?.response?.status == 409) {
     Swal.fire({
       icon: "error",

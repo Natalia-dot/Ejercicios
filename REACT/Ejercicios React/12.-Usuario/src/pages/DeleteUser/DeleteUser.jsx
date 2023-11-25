@@ -2,11 +2,16 @@ import { useForm } from "react-hook-form";
 import "./DeleteUser.css";
 import { deleteUserService } from "../../services";
 import { useAuth } from "../../contexts/authContext";
+import Swal from "sweetalert2/dist/sweetalert2.all";
+import { useEffect, useState } from "react";
+import { useDeleteUserError } from "../../hooks";
 
 export const DeleteUser = () => {
   const { register, handleSubmit } = useForm();
   const { setUser, setDeletedUser } = useAuth();
-  const formSubmit = (formData) => {
+  const [ res, setRes ] = useState({})
+  const [isSent, setIsSent] = useState(false);
+  const formSubmit = async(formData) => {
     Swal.fire({
       title: "Are you sure you want to delete your profile?",
       icon: "warning",
@@ -16,23 +21,20 @@ export const DeleteUser = () => {
       confirmButtonText: "YES",
     }).then(async (result) => {
       if(result.isConfirmed){
-        const res = await deleteUserService();
+        setRes(await deleteUserService(formData))
       }
     })
   }
 
+  useEffect(() => {;
+    useDeleteUserError(res, setRes, setDeletedUser, setUser)
+  }, [res]);
+
+
 //Error updating references to other models.
   return (
     <div className="profileContent">
-      <form className="formWrapDeleteUser">
-      <input
-          id="userEmail"
-          name="userEmail"
-          type="email"
-          autoComplete="false"
-          {...register("userEmail", {required: true})}
-        />
-        <label htmlFor="userEmail">Email</label>
+      <form className="formWrapDeleteUser" onSubmit={handleSubmit(formSubmit)}>
         <input
           id="password"
           name="password"
@@ -42,7 +44,7 @@ export const DeleteUser = () => {
 
         />
         <label htmlFor="password">Password</label>
-        <button> DELETE PROFILE </button>
+        <button type="submit"> DELETE PROFILE </button>
       </form>
     </div>
   );

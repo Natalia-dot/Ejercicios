@@ -42,7 +42,7 @@ console.log(res, "Respuesta en useLoginError")
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Password dont match ❎",
+          text: "Password is incorrect.",
           showConfirmButton: false,
           timer: 1500,
         });

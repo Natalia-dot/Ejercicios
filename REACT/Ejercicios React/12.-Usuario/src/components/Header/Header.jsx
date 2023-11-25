@@ -15,7 +15,7 @@ export const Header = () => {
         </div>
         </div>
         <nav>          
-          <NavLink to={user==null ? "/login" : "/dashboard"}>
+          <NavLink to={user==null || user.isVerified == false? "/login" : "/dashboard"}>
             <div className="dashboardIcon">
           <img  src="https://res.cloudinary.com/drbssyzr7/image/upload/v1700684460/NODE_project/arctic_trtpg3.png" alt="Dashboard icon" />
           </div>
@@ -30,7 +30,7 @@ export const Header = () => {
             <div className="profileIcon">
               <img
                 src={user.image}
-                alt=""
+                alt={user.name}
               />
             </div>
             </NavLink>
@@ -44,6 +44,7 @@ export const Header = () => {
               onClick={() => logout()}
             />
             </div>)}
+
         </nav>
         </div>
       

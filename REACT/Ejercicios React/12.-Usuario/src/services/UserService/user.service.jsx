@@ -19,31 +19,31 @@ export const userRegister = async (formData) => {
 //ex error, lo capturamos y devolvemos
 
 export const loginService = async (formData) => {
-  return APIUser.post("/login", formData)
+  return APIUser.post("/users/login", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const codeConfirmationService = async (formData) => {
-  return APIUser.post("/check", formData)
+  return APIUser.post("/users/check", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const resendEmailService = async (formData) => {
-  return APIUser.post("resend", formData)
+  return APIUser.post("/users/resend", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const autoLoginService = async (formData) => {
-  return APIUser.post("/autologin", formData)
+  return APIUser.post("/users/login/autologin", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
-export const deleteUserService = async () => {
-  return APIUser.delete("/deleteUser", {
+export const deleteUserService = async (formData) => {
+  return APIUser.delete("/users/delete", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
     },
@@ -53,7 +53,7 @@ export const deleteUserService = async () => {
 };
 
 export const updateUserService = async (formData) => {
-  return APIUser.patch("/update/update", formData, {
+  return APIUser.patch("/users/update/update", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
       "Content-Type": "multipart/form-data",
@@ -64,13 +64,13 @@ export const updateUserService = async (formData) => {
 };
 
 export const forgotPasswordService = async (formData) => {
-  return APIUser.patch("/changeUserPassword/changeUserPassword", formData)
+  return APIUser.patch("/users/changeUserPassword/changeUserPassword", formData)
     .then((res) => res)
     .catch((error) => error);
 };
 
 export const changePasswordService = async (formData) => {
-  return APIUser.patch("/changePassword", formData, {
+  return APIUser.patch("/users/changePassword", formData, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
     },
