@@ -10,6 +10,7 @@ import {
   ChangePassword,
   DeleteUser,
   ProfileUpdate,
+  SingleAlbumPage,
 } from "../pages";
 import { App } from "../App";
 import { ProtectedCodeConfirmation, ProtectedRoute } from "../components";
@@ -43,8 +44,15 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: (
           <ProtectedRoute>
-            {" "}
-            <Dashboard />{" "}
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard/:id",
+        element: (
+          <ProtectedRoute>
+            <SingleAlbumPage />
           </ProtectedRoute>
         ),
       },
@@ -57,8 +65,8 @@ export const router = createBrowserRouter([
         ),
         children: [
           { path: "/profile/changePassword", element: <ChangePassword /> },
-          {path: "/profile/deleteUser", element: <DeleteUser /> },
-          {path: "/profile/", element: <ProfileUpdate /> }
+          { path: "/profile/deleteUser", element: <DeleteUser /> },
+          { path: "/profile/", element: <ProfileUpdate /> },
         ],
       },
       {

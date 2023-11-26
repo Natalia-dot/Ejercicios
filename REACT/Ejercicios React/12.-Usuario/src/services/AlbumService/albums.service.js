@@ -11,3 +11,13 @@ export const getAllAlbumsServices = async () => {
       .catch((error) => error);
   };
   
+  export const getAlbumByIdService = async (id) => {
+    return APIRoute.get(`albums/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getUpdatedToken()}`,
+      },
+    })
+      .then((res) => res)
+      .catch((error) => error);
+  };
+  

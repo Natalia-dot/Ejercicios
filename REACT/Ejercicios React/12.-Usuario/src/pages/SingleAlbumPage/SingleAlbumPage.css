@@ -1,0 +1,12 @@
+.singleAlbum {
+    max-width: 70vw;
+    margin: 3rem ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.singleAlbum img {
+    max-width: 40vw;
+}

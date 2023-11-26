@@ -2,29 +2,26 @@ import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { getAllAlbumsServices } from "../../services/AlbumService/albums.service";
 import { Card } from "../../components";
+import { useGetAlbums } from "../../hooks/useGetAlbums/useGetAlbums";
 
 export const Dashboard = () => {
-  const [allAlbums, setAllAlbums] = useState([]);
-  const [isReady, setIsReady] = useState(false);
+  const {data, isLoading, hasError } = useGetAlbums();
 
-  const useGetAlbums = async () => {
-    const res = await getAllAlbumsServices();
-    setAllAlbums(res.data);
-    setIsReady(true);
-  };
+useEffect(() => {
 
-  console.log(allAlbums);
+}, [data])
 
-  useEffect(() => {
-    useGetAlbums();
-  }, []);
-
-  return (
-    <div className="albumsContainer">
-      {allAlbums.map((item) => {
-        return <Card
-          key={item._id}
-          id={item._id}
+  if(hasError) {
+    return (
+      <div><h1>Sorry, we couldn't get the albums for ya!</h1></div>
+    )
+  } else {
+    return isLoading ? (
+      <div><h1>Loading...</h1></div>
+    ) : (
+      data?.map((item) => {
+        return (<Card
+          key={item.id}
           name={item.name}
           src={
             item.image
@@ -34,8 +31,11 @@ export const Dashboard = () => {
           likes={item.likedBy.length}
           className="albums"
           year={item.year}
-        />;
-      })}
-      </div>
-  );
-};
+        />)
+        }
+      )
+      
+    )
+
+      }
+}
