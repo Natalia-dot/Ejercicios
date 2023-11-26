@@ -11,8 +11,8 @@ export const SingleAlbumPage = () => {
 
   const useGetSingleAlbum = async (id) => {
     const res = await getAlbumByIdService(id);
+    setSingleAlbum(res.data)
     console.log(res);
-    setSingleAlbum(res.data);
     setIsReady(true);
   };
 

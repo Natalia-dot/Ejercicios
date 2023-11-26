@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import "./DeleteUser.css";
-import { deleteUserService } from "../../services";
 import { useAuth } from "../../contexts/authContext";
 import Swal from "sweetalert2/dist/sweetalert2.all";
 import { useEffect, useState } from "react";
 import { useDeleteUserError } from "../../hooks";
+import { deleteUserService } from "../../services";
 
 export const DeleteUser = () => {
   const { register, handleSubmit } = useForm();
@@ -21,6 +21,7 @@ export const DeleteUser = () => {
       confirmButtonText: "YES",
     }).then(async (result) => {
       if(result.isConfirmed){
+        console.log(formData, "Soy form data")
         setRes(await deleteUserService(formData))
       }
     })

@@ -43,7 +43,8 @@ export const autoLoginService = async (formData) => {
 };
 
 export const deleteUserService = async (formData) => {
-  return APIRoute.delete("/users/delete", formData, {
+  console.log("holaa")
+  return APIRoute.delete("/users/delete", {data: formData}, {
     headers: {
       Authorization: `Bearer ${getUpdatedToken()}`,
     },
@@ -79,3 +80,23 @@ export const changePasswordService = async (formData) => {
     .catch((error) => error);
 };
 
+export const getLikesById = async () => {
+  return APIRoute.get("/users/userByIdLikes", {
+    headers: {
+      Authorization: `Bearer ${getUpdatedToken()}`,
+    },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+  
+export const toggleLikedAlbum = async (id) => {
+  return APIRoute.patch('/users/setFavAlbum', id, {
+    headers: {
+      Authorization: `Bearer ${getUpdatedToken()}`,
+    },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
