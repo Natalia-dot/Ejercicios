@@ -6,7 +6,7 @@ export const ProtectedRoute = ({children}) => {
     if (deletedUser) {
         return <Navigate to="/register" />;
     }
-    if (user==null || user?.check == false) {
+    if (user==null || user?.isVerified == false) { //fix lo acabo de cambiar de user.check
         return <Navigate to="/login" />
     }
 

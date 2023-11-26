@@ -100,3 +100,16 @@ export const toggleLikedAlbum = async (id) => {
     .then((res) => res)
     .catch((error) => error);
 };
+
+
+export const updateUser = async (formData) => {
+  return APIuser.patch("/users/update/update", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+ 

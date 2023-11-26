@@ -2,9 +2,13 @@ import { useParams } from "react-router-dom";
 import { getAlbumByIdService } from "../../services/AlbumService/albums.service";
 import "./SingleAlbumPage.css";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 export const SingleAlbumPage = () => {
   const { id } = useParams();
+  const { user } = useAuth();
+  console.log(user)
+
   console.log(id);
   const [singleAlbum, setSingleAlbum] = useState([]);
   const [isReady, setIsReady] = useState(false);
@@ -46,23 +50,10 @@ export const SingleAlbumPage = () => {
           return <li key={item.songName}>{item.songName}</li>;
         })}
       </ul>
+      {user.role === 'admin' && (
+        <button>DELETE ALBUM</button>
+      )}
     </div>
   );
 
   }
-/** albumName
-"am"
-albumLength
-41
-genres
-Array (2)
-producers
-Array (1)
-year
-2013
-songs
-Array (11)
-likedBy
-Array (empty)
-artist
-"arctic monkeys" */

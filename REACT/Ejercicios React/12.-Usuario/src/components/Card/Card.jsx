@@ -3,36 +3,31 @@ import "./Card.css";
 import { useState } from "react";
 import { toggleLikedAlbum } from "../../services";
 
-export const Card = ({ name, src, id, initialLikes, year, isLiked, className }) => {
+export const Card = ({ name, src, id, initialLikes, year, isLiked, className, addToLikes }) => {
   let path = `/dashboard/${id}`;
   const [likes, setLikes] = useState(initialLikes);
-  const [isReady, setIsReady] = useState(false)
+    console.log(likes)
 
-  const addToLikes = async (idParam) => {
-    let id = { id: idParam };
-      const response = await toggleLikedAlbum(id);
-      console.log(response?.data)
-      setLikes(response?.data?.albumUnfavorited?.likedBy.length);
-      setIsReady(!isReady)
-    }
-  
 
   return (
     <div className="cardContainer">
-      <Link to={path}>
         <div className={className}>
+        <Link to={path}>
           <img src={src} alt={name} />
-          <h1>{name}</h1>
-          <h3>{initialLikes}</h3>
+          <h2>{name}</h2>
+          </Link>
+          <h3>{initialLikes}  people like this</h3>
           <small>{year}</small>
-        </div>
-      </Link>
-      <span
-        className={`material-symbols-outlined ${isLiked ? "filled" : ""}`}
+          <span
+        className={`material-symbols-outlined`}
+        style={{ fontVariationSettings: isLiked ? "'FILL' 1" : "'FILL' 0" }}
         onClick={() => addToLikes(id)}
       >
         heart_check
       </span>
+        </div>
+      
+  
     </div>
   );
 };

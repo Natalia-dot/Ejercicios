@@ -14,16 +14,9 @@
 
 
 .material-symbols-outlined {
+  padding: 1rem;
   font-variation-settings:
   'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
-
-.favorited .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 100,
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
@@ -32,8 +25,16 @@
 
 .albums {
   background-color: bisque;
+  width: 20vw;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
 }
 
 .albums img {
   width: 15vw;
+  padding: 1rem;
 }

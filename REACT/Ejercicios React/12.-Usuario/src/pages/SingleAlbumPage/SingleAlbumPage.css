@@ -10,3 +10,11 @@
 .singleAlbum img {
     max-width: 40vw;
 }
+
+.singleAlbum button{
+    background-color: red;
+    color: white;
+    width: 30vw;
+    padding: 1rem;
+    margin: 1rem;
+}

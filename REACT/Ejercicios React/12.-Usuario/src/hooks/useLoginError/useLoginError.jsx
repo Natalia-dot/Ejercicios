@@ -5,12 +5,14 @@ console.log(res, "Respuesta en useLoginError")
     if (res?.status == 200) {
         const updatedUser = {
           token: res.data.token,
-          userName: res.data.user.userName,
+          name: res.data.user.name,
           userEmail: res.data.user.userEmail,
           image: res.data.user.image,
           isVerified: res.data.user.isVerified,
           _id: res.data.user._id,
+          role: res.data.user.role
         };
+        console.log(updatedUser)
     
         const userString = JSON.stringify(updatedUser);
         login(userString);
