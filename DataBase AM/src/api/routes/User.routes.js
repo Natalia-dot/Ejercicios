@@ -19,6 +19,8 @@ const {
   toggleFavAlbum,
   getBySwitch,
   sortSwitch,
+  getUserById,
+  getUserByIdLikedAlbums,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -49,7 +51,9 @@ UserRoutes.patch(
   upload.single('image'),
   updateUser
 );
-UserRoutes.delete('/deleteUser', [isAuthorized], deleteUser);
+UserRoutes.get('/userByIdLikes', [isAuthorized], getUserByIdLikedAlbums);
+UserRoutes.get('/userById', [isAuthorized], getUserById);
+UserRoutes.delete('/delete', [isAuthorized], deleteUser);
 UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
 UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);

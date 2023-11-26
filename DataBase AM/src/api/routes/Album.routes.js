@@ -15,7 +15,7 @@ const {
 const AlbumRoutes = require('express').Router();
 
 AlbumRoutes.post('/', upload.single('image'), createAlbum);
-AlbumRoutes.get('/:id', albumById);
+AlbumRoutes.get('/:id', [isAuthorized], albumById);
 AlbumRoutes.get('/', getAll);
 AlbumRoutes.get('/getByName/name', albumByName);
 AlbumRoutes.patch(

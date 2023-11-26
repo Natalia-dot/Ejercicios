@@ -317,6 +317,7 @@ const newUserCheck = async (req, res, next) => {
 const resendCode = async (req, res, next) => {
   //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
   try {
+    console.log('Entro en el try');
     const email = process.env.EMAIL;
     const password = process.env.PASSWORD;
 
@@ -333,12 +334,12 @@ const resendCode = async (req, res, next) => {
         from: email,
         to: req.body.userEmail,
         subject: 'Confirmation code',
-        text: `Sorry about that! Your confirmation code is ${doesUserExist.confirmationEmailCode}`,
+        text: `Hi! Your confirmation code is ${doesUserExist.confirmationEmailCode}`,
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log(error);
-          return res.status(404).json({ resendDone: false });
+          return res.status(200).json({ resendDone: false });
         } else {
           console.log(`Email sent to ${req.body.userEmail}, ${info.response}`);
           return res.status(200).json({ resendDone: true });
@@ -348,7 +349,7 @@ const resendCode = async (req, res, next) => {
       return res.status(404).json('User does not exist.');
     }
   } catch (error) {
-    return next(setError(500, error.message || 'Error in resend code catch.'));
+    return next(error.message);
   }
 };
 
@@ -382,6 +383,7 @@ const userLogin = async (req, res, next) => {
 const autoLogin = async (req, res, next) => {
   try {
     const { userEmail, password } = req.body;
+    console.log(req.body);
     const userFromDB = await User.findOne({ userEmail });
     if (userFromDB) {
       if (password === userFromDB.password) {
@@ -405,6 +407,7 @@ const autoLogin = async (req, res, next) => {
 const passChangeWhileLoggedOut = async (req, res, next) => {
   try {
     const { userEmail } = req.body;
+    console.log(req.body);
     const userFromDB = await User.findOne({ userEmail });
     if (userFromDB) {
       console.log('userFromDB antes del redirect:', userFromDB._id);
@@ -482,7 +485,7 @@ const sendPassword = async (req, res, next) => {
       }
     });
   } catch (error) {
-    return next(setError(500, error.message || 'Catch sendPasswordRedirect'));
+    return next(setError(500, 'Catch sendPasswordRedirect'));
   }
 };
 
@@ -607,56 +610,63 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
+    console.log(req.body, 'req.body');
+    console.log(req.user, 'req.user');
     const { _id } = req.user; // I could also grab the pass and email through the req.user but I thought it safer this way.
     const dataBaseUser = await User.findById(_id);
-    if (
-      req.body.userEmail === dataBaseUser.userEmail &&
-      bcrypt.compareSync(req.body.password, req.user.password)
-    ) {
+    if (bcrypt.compareSync(req.body.password, req.user.password)) {
       try {
         await User.findByIdAndDelete(req.user?._id);
         deleteImgCloudinary(dataBaseUser.image);
         try {
-          await Song.updateMany({ likedBy: _id }, { $pull: { likedBy: _id } });
           try {
-            await Album.updateMany(
+            await Song.updateMany(
               { likedBy: _id },
               { $pull: { likedBy: _id } }
             );
             try {
-              await User.updateMany(
-                { following: _id },
-                { $pull: { following: _id } }
+              await Album.updateMany(
+                { likedBy: _id },
+                { $pull: { likedBy: _id } }
               );
               try {
                 await User.updateMany(
-                  { followers: _id },
-                  { $pull: { followers: _id } }
+                  { following: _id },
+                  { $pull: { following: _id } }
                 );
+                try {
+                  await User.updateMany(
+                    { followers: _id },
+                    { $pull: { followers: _id } }
+                  );
+                } catch (error) {
+                  return res.status(404).json('Error pulling followers.');
+                }
               } catch (error) {
-                return res.status(404).json('Error pulling followers.');
+                return res.status(404).json('Error pulling following.');
               }
             } catch (error) {
-              return res.status(404).json('Error pulling following.');
+              return res.status(404).json('Error pulling albums.');
             }
           } catch (error) {
-            return res.status(404).json('Error pulling albums.');
+            return res.status(404).json('Error pulling songs');
           }
         } catch (error) {
-          return res.status(404).json('Error pulling songs');
+          return res
+            .status(404)
+            .json('Error updating references to other models.');
         }
         const doesUserExist = User.findById(req.user._id);
+        console.log(doesUserExist);
         return res
           .status(doesUserExist ? 404 : 200)
           .json(
             doesUserExist
-              ? 'User deleted successfully.'
-              : 'User not deleted. Pleaser try again.'
+              ? 'User not deleted. Please try again.'
+              : 'User deleted successfully.'
           );
       } catch (error) {
-        return res
-          .status(500)
-          .json({ error: 'Error in delete catch', message: error.message });
+        return res.status(500).json('Error in delete catch');
       }
     } else {
       return res
@@ -836,10 +846,24 @@ const toggleFavSong = async (req, res, next) => {
 //<!--SEC                                          GET USER BY ID                                        -->
 const getUserById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const userById = await User.findById(id);
     if (userById) {
       return res.status(200).json(userById);
+    } else {
+      return res.status(404).json("That user doesn't exist.");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+const getUserByIdLikedAlbums = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const userById = await User.findById(id);
+    if (userById) {
+      return res.status(200).json(userById.favAlbums);
     } else {
       return res.status(404).json("That user doesn't exist.");
     }
@@ -1063,4 +1087,5 @@ module.exports = {
   getUserById,
   getBySwitch,
   sortSwitch,
+  getUserByIdLikedAlbums,
 };

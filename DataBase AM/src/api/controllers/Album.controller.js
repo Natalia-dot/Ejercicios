@@ -72,8 +72,9 @@ const createAlbum = async (req, res, next) => {
 
 const albumById = async (req, res) => {
   try {
+    console.log(req.params);
     const { id } = req.params;
-    const albumById = await Album.findById(id);
+    const albumById = await Album.findById(id).populate('songs');
     if (albumById) {
       return res.status(200).json(albumById);
     } else {
