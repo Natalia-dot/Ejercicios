@@ -1,6 +1,6 @@
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
-export const useForgotPasswordError = (res, setRes, setForgotOk) => {
-
+export const useForgotPasswordError = (res, setRes, setSuccessfulEmailSent) => {
+  console.log(res)
     //sec NO REGISTRADO 404
   if (
     res?.response?.status == 404 &&
@@ -32,9 +32,10 @@ export const useForgotPasswordError = (res, setRes, setForgotOk) => {
     });
   }
  //SEC 200 CORRECT
-  if (res?.status == 200) {
-    if (res?.data?.sendPassword == true && res?.data?.updateUser == true) {
-      setForgotOk(() => true);
+
+    if (res?.status == 200 && res?.data?.message.includes('Mail sent and user updated successfully.')) {
+
+      setSuccessfulEmailSent(() => true);
       setRes(() => ({}));
       Swal.fire({
         icon: "success",
@@ -44,7 +45,7 @@ export const useForgotPasswordError = (res, setRes, setForgotOk) => {
         timer: 3000,
       });
     }
-  }
+  
 
   //SEC ERROR SENDING MAIL
   if (

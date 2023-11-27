@@ -13,6 +13,7 @@ import {
   SingleAlbumPage,
   CreateAlbum,
   FavAlbumsTab,
+  ForgotPassword,
 } from "../pages";
 import { App } from "../App";
 import { ProtectedCodeConfirmation, ProtectedRoute } from "../components";
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/forgotPassword",
+        element: <ForgotPassword />,
       },
       {
         path: "/dashboard",
