@@ -19,10 +19,9 @@ export const ProfileUpdate = () => {
     name: user?.user,
   };
 
-  //! ------------ 1) La funcion que gestiona el formulario----
   const formSubmit = (formData) => {
     Swal.fire({
-      title: "Are you sure you want to change your data profile?",
+      title: "Are you sure you want to change your data?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "rgb(73, 193, 162)",
@@ -52,8 +51,6 @@ export const ProfileUpdate = () => {
       }
     });
   };
-
-  //! -------------- 2 ) useEffect que gestiona la parte de la respuesta ------- customHook
 
   useEffect(() => {
     console.log(res);

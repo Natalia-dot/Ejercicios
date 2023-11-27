@@ -2,26 +2,26 @@ import Swal from "sweetalert2/dist/sweetalert2.all.js";
 
 
 export const useUpdateError = (res, setRes, setUser, logout) => {
-  //!---------------------------------------> 200
-  let contador;
+
+  let counter;
   if (res?.data) {
-    contador = 0;
-    res?.data?.testUpdate?.map((item) => {
-      for (let clave in item) {
-        if (item[clave] == false) {
-          contador++;
+    counter = 0;
+    res?.data?.testingUpdate?.map((item) => {
+      for (let key in item) {
+        if (item[key] == false) {
+          counter++;
         }
       }
     });
   }
 
-  if (contador == 0) {
+  if (counter == 0) {
     let check = "";
 
-    res?.data?.testUpdate?.forEach((item) => {
-      for (let clave in item) {
-        if (item[clave] == true) {
-          check += `-${clave}-`;
+    res?.data?.testingUpdate?.forEach((item) => {
+      for (let key in item) {
+        if (item[key] == true) {
+          check += `-${key}-`;
         }
       }
     });
@@ -30,32 +30,30 @@ export const useUpdateError = (res, setRes, setUser, logout) => {
       setRes(() => ({}));
       return Swal.fire({
         icon: "success",
-        title: `Update data user✅`,
-        text: ` Update: ${check} `,
+        title: `User Updated Successfully. Please login.`,
         showConfirmButton: false,
-        timer: 1500,
+        timer: 2500,
       });
     }
   }
-  //! -------------------------------------> 404 general y el 500
 
   if (res?.response?.status == 500 || res?.response?.status == 404) {
     setRes(() => ({}));
     return Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Interval Server Error! Don't update user ❎ ",
+      text: "Sorry, server is being troublesome! Try again later...",
       showConfirmButton: false,
       timer: 1500,
     });
   }
 
-  if (contador != 0) {
+  if (counter != 0) {
     if (res?.status == 200) {
       setRes(() => ({}));
       return Swal.fire({
         icon: "error",
-        title: `Error update data user ❌`,
+        title: `Something was not updated correctly.`,
         showConfirmButton: false,
         timer: 1500,
       });
