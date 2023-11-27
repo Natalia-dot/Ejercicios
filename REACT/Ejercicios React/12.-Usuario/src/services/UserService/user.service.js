@@ -90,6 +90,17 @@ export const getLikesById = async () => {
     .catch((error) => error);
 };
 
+export const getPopulatedLikesById = async () => {
+  return APIRoute.get("/users/populatedAlbums", {
+    headers: {
+      Authorization: `Bearer ${getUpdatedToken()}`,
+    },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+
   
 export const toggleLikedAlbum = async (id) => {
   return APIRoute.patch('/users/setFavAlbum', id, {
@@ -101,15 +112,3 @@ export const toggleLikedAlbum = async (id) => {
     .catch((error) => error);
 };
 
-
-export const updateUser = async (formData) => {
-  return APIuser.patch("/users/update/update", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${updateToken()}`,
-    },
-  })
-    .then((res) => res)
-    .catch((error) => error);
-};
- 

@@ -11,6 +11,8 @@ import {
   DeleteUser,
   ProfileUpdate,
   SingleAlbumPage,
+  CreateAlbum,
+  FavAlbumsTab,
 } from "../pages";
 import { App } from "../App";
 import { ProtectedCodeConfirmation, ProtectedRoute } from "../components";
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/dashboard/add",
+        element: (
+          <ProtectedRoute>
+            <CreateAlbum />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/profile",
         element: (
           <ProtectedRoute>
@@ -67,6 +77,8 @@ export const router = createBrowserRouter([
           { path: "/profile/changePassword", element: <ChangePassword /> },
           { path: "/profile/deleteUser", element: <DeleteUser /> },
           { path: "/profile/", element: <ProfileUpdate /> },
+          { path: "/profile/favAlbums", element: <FavAlbumsTab /> },
+
         ],
       },
       {

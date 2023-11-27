@@ -5,29 +5,42 @@ import { useState } from "react";
 
 export const NavInProfile = () => {
   const { setUser, setDeleteUser } = useAuth();
-  const [activeSection, setActiveSection] = useState("profileUpdate");
+  const [activeSection, setActiveSection] = useState("favAlbums");
   const navigate = useNavigate();
 
   const handleButtonClickProfileUpdate = () => {
-    navigate("/profile/")
-    setActiveSection('profileUpdate');
+    navigate("/profile/");
+    setActiveSection("profileUpdate");
   };
 
   const handleButtonClickChangePassword = () => {
-    navigate("/profile/changePassword")
+    navigate("/profile/changePassword");
     setActiveSection("changePassword");
   };
 
   const handleButtonClickDeleteUser = () => {
-    navigate("/profile/deleteUser")
+    navigate("/profile/deleteUser");
     setActiveSection("deleteUser");
   };
 
+  const handleButtonClickFavAlbums = () => {
+    navigate("/profile/favAlbums");
+    setActiveSection("favAlbums");
+  };
 
   return (
     <div className="profileButtons">
-      <button onClick={() => handleButtonClickProfileUpdate()}
-      className={activeSection === "profileUpdate" ? "active" : null}>
+      <button
+        onClick={() => handleButtonClickFavAlbums()}
+        className={activeSection === "favAlbums" ? "active" : null}
+      >
+        Favourite Albums
+      </button>
+
+      <button
+        onClick={() => handleButtonClickProfileUpdate()}
+        className={activeSection === "profileUpdate" ? "active" : null}
+      >
         Profile Update
       </button>
 
@@ -39,7 +52,7 @@ export const NavInProfile = () => {
       </button>
 
       <button
-        onClick={() => (handleButtonClickDeleteUser())}
+        onClick={() => handleButtonClickDeleteUser()}
         className={activeSection === "deleteUser" ? "active" : null}
       >
         Delete User

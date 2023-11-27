@@ -1,17 +1,28 @@
-import { useParams } from "react-router-dom";
-import { getAlbumByIdService } from "../../services/AlbumService/albums.service";
+import { Navigate, useParams } from "react-router-dom";
+import { deleteAlbumAdminService, getAlbumByIdService } from "../../services/AlbumService/albums.service";
 import "./SingleAlbumPage.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
+import { Swal } from "sweetalert2/dist/sweetalert2.all";
 
 export const SingleAlbumPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const [ deletedAlbumSuccessful, setDeletedAlbumSuccessful] = useState(false)
+
   console.log(user)
 
   console.log(id);
   const [singleAlbum, setSingleAlbum] = useState([]);
   const [isReady, setIsReady] = useState(false);
+
+
+  const handleDeleteAlbum = async (id) => {
+    let res = await deleteAlbumAdminService(id)
+    if(res.status=200) {
+        setDeletedAlbumSuccessful(true)
+    }
+}
 
   const useGetSingleAlbum = async (id) => {
     const res = await getAlbumByIdService(id);
@@ -24,6 +35,12 @@ export const SingleAlbumPage = () => {
   useEffect(() => {
     useGetSingleAlbum(id);
   }, [id, setIsReady]);
+
+  if (deletedAlbumSuccessful) {
+    setDeletedAlbumSuccessful(false)
+    return <Navigate to="/dashboard" />;
+  }
+
 
   if (!isReady) {
     return <div>Loading...</div>;
@@ -51,7 +68,7 @@ export const SingleAlbumPage = () => {
         })}
       </ul>
       {user.role === 'admin' && (
-        <button>DELETE ALBUM</button>
+        <button onClick={() => handleDeleteAlbum(id)}>DELETE ALBUM</button>
       )}
     </div>
   );

@@ -26,7 +26,7 @@ export const Header = () => {
           </div>
           </NavLink>)}
           {user !== null && (
-            <NavLink to="/profile">
+            <NavLink to="/profile/favAlbums">
             <div className="profileIcon">
               <img
                 src={user.image}

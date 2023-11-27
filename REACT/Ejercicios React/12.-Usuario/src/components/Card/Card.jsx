@@ -6,7 +6,7 @@ import { toggleLikedAlbum } from "../../services";
 export const Card = ({ name, src, id, initialLikes, year, isLiked, className, addToLikes }) => {
   let path = `/dashboard/${id}`;
   const [likes, setLikes] = useState(initialLikes);
-    console.log(likes)
+    console.log(isLiked)
 
 
   return (
