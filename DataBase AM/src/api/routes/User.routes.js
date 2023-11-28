@@ -21,6 +21,8 @@ const {
   sortSwitch,
   getUserById,
   getUserByIdLikedAlbums,
+  toggleFavAlbumIndiv,
+  getUserByIdPopulatedLikedAlbums,
 } = require('../controllers/User.controller');
 
 //!--------ROUTES----------------------------------------------
@@ -36,7 +38,7 @@ UserRoutes.post(
 );
 UserRoutes.post('/login', userLogin);
 UserRoutes.post('/login/autologin', autoLogin);
-UserRoutes.post('/resend', resendCode);
+UserRoutes.post('/resend/code', resendCode);
 UserRoutes.post('/check', newUserCheck);
 UserRoutes.patch(
   '/changeUserPassword/changeUserPassword',
@@ -52,11 +54,17 @@ UserRoutes.patch(
   updateUser
 );
 UserRoutes.get('/userByIdLikes', [isAuthorized], getUserByIdLikedAlbums);
+UserRoutes.get(
+  '/populatedAlbums',
+  [isAuthorized],
+  getUserByIdPopulatedLikedAlbums
+);
 UserRoutes.get('/userById', [isAuthorized], getUserById);
 UserRoutes.delete('/delete', [isAuthorized], deleteUser);
 UserRoutes.patch('/follow/:id', [isAuthorized], toggleFollow);
 UserRoutes.patch('/favSong/:id', [isAuthorized], toggleFavSong);
-UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbum);
+UserRoutes.patch('/favAlbum/:id', [isAuthorized], toggleFavAlbumIndiv);
+UserRoutes.patch('/setFavAlbum', [isAuthorized], toggleFavAlbum); //este lo pilla por el body
 UserRoutes.get('/', [isAuthorized], getBySwitch);
 UserRoutes.get('/sort', [isAuthorized], sortSwitch);
 

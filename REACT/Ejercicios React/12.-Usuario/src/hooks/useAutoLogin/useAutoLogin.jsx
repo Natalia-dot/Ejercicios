@@ -2,8 +2,8 @@ import { Navigate } from "react-router-dom";
 import { autoLoginService } from "../../services";
 import { useAuth } from "../../contexts/authContext";
 
-export const useAutoLogin = async () => {
-  const { completeUserInfo, login } = useAuth();
+export const useAutoLogin = async (completeUserInfo) => {
+  const { login } = useAuth();
   try {
     console.log(completeUserInfo, "complete user info")
     const customFormData = {

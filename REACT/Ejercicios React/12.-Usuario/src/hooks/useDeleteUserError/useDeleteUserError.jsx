@@ -56,7 +56,7 @@ export const useDeleteUserError = (res, setRes, setDeletedUser, setUser) => {
     setRes(() => ({}));
   }
 
-  if (res?.response?.data?.error.includes("'Error in delete catch'")) {
+  if (res?.response?.data?.error?.includes("'Error in delete catch'")) {
     Swal.fire({
       icon: "error",
       title: "Server error.",

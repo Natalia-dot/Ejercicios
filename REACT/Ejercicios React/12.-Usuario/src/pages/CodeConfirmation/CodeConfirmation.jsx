@@ -79,13 +79,15 @@ export const CodeConfirmation = () => {
       setIsSent(false);
     } else {
       const formData2 = {
-        userEmail: completeUserInfo?.user?.userEmail,
+        userEmail: completeUserInfo?.data?.user?.userEmail,
       };
+      console.log(completeUserInfo, "dentro")
       setIsSent(true);
       setResResend(await resendEmailService(formData2));
       setIsSent(false);
     }
   };
+  console.log(completeUserInfo, "fuera")
 
   useEffect(() => {
     useCodeConfirmationError(
@@ -159,7 +161,7 @@ export const CodeConfirmation = () => {
           </button>
         </div>
 
-        <p className="bottom-text">
+        <p className="bottomText">
           <small>
             If the code is not correct ❌, your user will be deleted from the
             database and you will need to register again.{" "}

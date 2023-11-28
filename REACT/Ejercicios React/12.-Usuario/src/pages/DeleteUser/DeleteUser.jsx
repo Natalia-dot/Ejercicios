@@ -5,12 +5,14 @@ import Swal from "sweetalert2/dist/sweetalert2.all";
 import { useEffect, useState } from "react";
 import { useDeleteUserError } from "../../hooks";
 import { deleteUserService } from "../../services";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const DeleteUser = () => {
   const { register, handleSubmit } = useForm();
-  const { setUser, setDeletedUser } = useAuth();
+  const { setUser, setDeletedUser, deletedUser } = useAuth();
   const [ res, setRes ] = useState({})
   const [isSent, setIsSent] = useState(false);
+  const navigate = useNavigate();
   const formSubmit = async(formData) => {
     Swal.fire({
       title: "Are you sure you want to delete your profile?",
@@ -31,7 +33,9 @@ export const DeleteUser = () => {
     useDeleteUserError(res, setRes, setDeletedUser, setUser)
   }, [res]);
 
-
+if(deletedUser == true) {
+  <Navigate to="/register"/>
+}
 //Error updating references to other models.
   return (
     <div className="profileContent">

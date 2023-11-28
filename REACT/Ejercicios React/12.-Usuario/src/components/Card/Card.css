@@ -29,13 +29,13 @@
   width: 20vw;
   height: 60vh;
   display: flex;
-  justify-content: space-evenly;
-  align-items: stretch;
+  justify-content: flex-start;
+  align-items: center;
   flex-direction: column;
   padding: 2rem;
 }
 
 .albums img {
   width: 15vw;
-  padding: 1rem;
+  padding: 1rem 0 1rem 0;
 }

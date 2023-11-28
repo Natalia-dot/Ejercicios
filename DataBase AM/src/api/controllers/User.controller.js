@@ -316,6 +316,7 @@ const newUserCheck = async (req, res, next) => {
 
 const resendCode = async (req, res, next) => {
   //ESTA ES LA UNICA QUE ES ASINCRONA DE MANDAR UN CODIGO
+  console.log(req.body);
   try {
     console.log('Entro en el try');
     const email = process.env.EMAIL;
@@ -558,13 +559,14 @@ const updateUser = async (req, res, next) => {
     patchedUser.favSongs = req.user.favSongs;
     patchedUser.followers = req.user.followers;
     patchedUser.following = req.user.following;
+    patchedUser.gender = req.user.gender;
 
-    if (req.body?.gender) {
-      const enumResult = enumOk(req.body?.gender);
-      patchedUser.gender = enumResult.check
-        ? req.body?.gender
-        : req.user.gender;
-    }
+    // if (req.body?.gender) {
+    //   const enumResult = enumOk(req.body?.gender);
+    //   patchedUser.gender = enumResult.check
+    //     ? req.body?.gender
+    //     : req.user.gender;
+    // }
 
     try {
       await User.findByIdAndUpdate(req.user._id, patchedUser);
@@ -610,9 +612,9 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
-    console.log(req.body, 'req.body');
-    console.log(req.user, 'req.user');
-    const { _id } = req.user; // I could also grab the pass and email through the req.user but I thought it safer this way.
+    console.log(req?.user?.password, "passsssss")
+    const _id = req?.user?._id;
+    // I could also grab the pass and email through the req.user but I thought it safer this way.
     const dataBaseUser = await User.findById(_id);
     if (bcrypt.compareSync(req.body.password, req.user.password)) {
       try {
@@ -656,7 +658,7 @@ const deleteUser = async (req, res) => {
             .status(404)
             .json('Error updating references to other models.');
         }
-        const doesUserExist = User.findById(req.user._id);
+        const doesUserExist = await User.findById(req.user._id);
         console.log(doesUserExist);
         return res
           .status(doesUserExist ? 404 : 200)
@@ -739,6 +741,59 @@ const toggleFollow = async (req, res, next) => {
 //<!--SEC                                          TOGGLE FAV ALBUMS                                                 ->
 //FIX SHOULDNT THESE CONTROLLERS GO IN THEIR RESPECTIVE PLACES? (SONGCONTROLLER & ALBUMCONTROLLER)
 const toggleFavAlbum = async (req, res, next) => {
+  try {
+    console.log('Hola', req.body, req.user);
+    const { id } = req.body;
+    const { _id, favAlbums } = req.user;
+    if (favAlbums.includes(id)) {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $pull: { favAlbums: id },
+        });
+        try {
+          await Album.findByIdAndUpdate(id, {
+            $pull: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            albumUnfavorited: await Album.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json('Error in pulling user from likedBy.');
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pulling album from favAlbum.');
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $push: { favAlbums: id },
+        });
+        try {
+          await Album.findByIdAndUpdate(id, {
+            $push: { likedBy: _id },
+          });
+          return res.status(200).json({
+            user: await User.findById(_id),
+            addedFavAlbum: await Album.findById(id),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: error.message,
+            message: 'Error in pushing our id to likedBy.',
+          });
+        }
+      } catch (error) {
+        return res.status(404).json('Error in pushing Albums to favAlbum.');
+      }
+    }
+  } catch (error) {
+    return next(setError(404, 'Error in general catch' | error.message));
+  }
+};
+
+//FIx TOGGLE FAV ALBUMS IN PAGE
+const toggleFavAlbumIndiv = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { _id, favAlbums } = req.user;
@@ -858,10 +913,26 @@ const getUserById = async (req, res) => {
   }
 };
 
+//<!--SEC                  GET LIKED ALBUMS                                         -->
 const getUserByIdLikedAlbums = async (req, res) => {
   try {
-    const { id } = req.body;
-    const userById = await User.findById(id);
+    const { id } = req.user;
+    const userById = await User.findById(id); // Populate favAlbums
+    if (userById) {
+      return res.status(200).json(userById.favAlbums);
+    } else {
+      return res.status(404).json("That user doesn't exist.");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+//<!--SEC                  GET POPULATED LIKED ALBUMS                                         -->
+const getUserByIdPopulatedLikedAlbums = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const userById = await User.findById(id).populate('favAlbums'); // Populate favAlbums
     if (userById) {
       return res.status(200).json(userById.favAlbums);
     } else {
@@ -1088,4 +1159,6 @@ module.exports = {
   getBySwitch,
   sortSwitch,
   getUserByIdLikedAlbums,
+  toggleFavAlbumIndiv,
+  getUserByIdPopulatedLikedAlbums,
 };

@@ -346,6 +346,7 @@ const update = async (req, res) => {
 //<!--SEC                                      DELETE ALBUM                                        -->
 
 const deleteAlbum = async (req, res) => {
+  console.log("entroooo")
   try {
     const { id } = req.params;
     const album = await Album.findByIdAndDelete(id);
@@ -366,14 +367,14 @@ const deleteAlbum = async (req, res) => {
         return res.status(404).json('Error pulling songs');
       }
       const findAlbumById = await Album.findById(id);
-      return res.status(findAlbumById ? 404 : 200).json({
+      return res.status(200).json({
         deleteTest: findAlbumById ? false : true,
       });
     } catch (error) {
       return res.status(404).json('Error in catch deleting.');
     }
   } catch (error) {
-    return res.status(404).json(error);
+    return res.status(404).json(error.message);
   }
 };
 

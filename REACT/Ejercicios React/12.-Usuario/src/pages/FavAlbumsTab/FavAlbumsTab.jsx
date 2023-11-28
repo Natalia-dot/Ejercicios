@@ -19,7 +19,9 @@ export const FavAlbumsTab = () => {
   useEffect(() => {
     getAlbums();
   }, []);
-
+  if(getAlbums.length > 0) {
+    return <div className="profileContent "> You have no favorite albums... Start browsing! </div>
+  }
   return (
     <div className="profileContent">
       {allAlbums.map((item) => {
