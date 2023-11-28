@@ -30,7 +30,7 @@ export const useFetch = (url) => {
 
   useEffect(()=> {
     getFetch();
-  }, [url])
+  }, [])
 
   //hacemos un useEffect para que cada vez que cambie la url se ejecute getFetch
   return {
