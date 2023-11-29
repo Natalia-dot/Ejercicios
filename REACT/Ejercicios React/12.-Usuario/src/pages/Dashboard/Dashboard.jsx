@@ -42,6 +42,7 @@ export const Dashboard = () => {
   return (
     <div className="albumsContainer">
       {allAlbums.map((item) => {
+        console.log(item)
         const isLiked = userLikedAlbums.includes(item._id);
         return (
           <Card

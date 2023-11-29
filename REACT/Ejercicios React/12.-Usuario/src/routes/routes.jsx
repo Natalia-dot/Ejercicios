@@ -12,8 +12,8 @@ import {
   ProfileUpdate,
   SingleAlbumPage,
   CreateAlbum,
-  FavAlbumsTab,
   ForgotPassword,
+  FavsTab,
 } from "../pages";
 import { App } from "../App";
 import { ProtectedCodeConfirmation, ProtectedRoute } from "../components";
@@ -82,7 +82,9 @@ export const router = createBrowserRouter([
           { path: "/profile/changePassword", element: <ChangePassword /> },
           { path: "/profile/deleteUser", element: <DeleteUser /> },
           { path: "/profile/", element: <ProfileUpdate /> },
-          { path: "/profile/favAlbums", element: <FavAlbumsTab /> },
+          { path: "/profile/favAlbums", element: <FavsTab /> },
+
+          //{ path: "/profile/favAlbums", element: <FavAlbumsTab /> },
 
         ],
       },
