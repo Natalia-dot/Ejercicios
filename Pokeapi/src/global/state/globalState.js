@@ -31,13 +31,11 @@ const currentUser = {                                         //? Asigna al name
 
 
 export const setUserData = (data) => {
-    console.log(dataGlobal);
     userData.fav = data?.fav;
     userData.name = data?.name;
   
     const stringUserObject = JSON.stringify(userData);
     localStorage.removeItem(`${currentUser.name}`);
-    console.log(userData.name);
     localStorage.setItem(`${currentUser.name}`, stringUserObject);
   };
   

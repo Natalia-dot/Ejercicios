@@ -7,7 +7,7 @@ const template = () =>
 `
 <div id='login'>
 <h1> Please input your trainer name.</h1>
-<p> We need to check if you are in the region's trainer database.</p>
+<p> We have to check your name in the region's database.</p>
 <input id='username' name='username' required></input>
 <button id='inputButton'> Done </button>
 </div>
@@ -30,7 +30,6 @@ const addListeners = () =>{
             setUser(`${inputValue}USER`);                               //para que currentUser.name tenga un valor y puedas referenciar el name mediante currentUser
       
             setUserData(parseUserObject);                                     //setUserData actualiza la informacion
-            console.log(parseUserObject);
           } else {
             const customUserObject = {
               name: username.value,

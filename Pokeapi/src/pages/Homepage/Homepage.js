@@ -21,7 +21,6 @@ const addListeners = () =>{
     const Whack = document.getElementById('Whack')
     const Quiz = document.getElementById('Quiz')
     Pokedex.addEventListener('click', () =>{
-        console.log('Pokedex');
         initController('Pokedex');
     });
     // Memory.addEventListener('click', () =>{
@@ -29,11 +28,9 @@ const addListeners = () =>{
     //     initController('Memory');
     // });
     Quiz.addEventListener('click', () =>{
-        console.log('Quiz');
         initController('Quiz');
     });
     Whack.addEventListener('click', () =>{
-        console.log('Whack');
         initController('Whack');
     });
     

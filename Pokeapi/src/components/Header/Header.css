@@ -7,6 +7,14 @@ header h1{
     color: #ffffff;
     font-size: 3em;
     font-family: 'Pixelify Sans';
+    position: fixed;
+    right: 41%;
+    background-color: rgb(100, 170, 185);
+    -webkit-box-shadow: 3px 3px 4px 1px rgba(0,0,0,0.3);
+    -moz-box-shadow: 3px 3px 4px 1px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 4px 1px rgba(0,0,0,0.3);  
+    border-radius: 25px;
+    padding: 1rem;
 
 }
 
@@ -22,6 +30,7 @@ ul > li > img{
     cursor: pointer;
     width: 70%;
     height: 90%;
+
         &:hover {
             transform: scale(1.2);
 }

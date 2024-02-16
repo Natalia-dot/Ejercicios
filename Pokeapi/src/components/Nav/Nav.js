@@ -19,7 +19,6 @@ const addEventListeners = () =>{
 
     home.addEventListener('click', (e) => {
         initController('Homepage');
-        console.log("hola")
     })
 
       logout.addEventListener("click", (e) => {
@@ -35,7 +34,6 @@ const addEventListeners = () =>{
     })
 
       switchMode.addEventListener("click", (e) => {
-        console.log("He clicao")
         const main = document.querySelector("main");
         const header = document.querySelector("header");
         const switchMode = document.querySelector('#switchMode');

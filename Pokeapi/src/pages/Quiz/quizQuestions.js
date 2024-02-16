@@ -37,11 +37,9 @@ const template = (pokemonQuiz, i) => `
                     answerCounter ++;
                     allQButtons.forEach(button => button.setAttribute("disabled", "true"));
 
-                    console.log("Wii");
                     nextQuestionButton.removeAttribute("disabled");
                  } else {
                     allQButtons.forEach(button => button.setAttribute("disabled", "true"));
-                    console.log("Noo");
                     nextQuestionButton.removeAttribute("disabled");
                     
                  }

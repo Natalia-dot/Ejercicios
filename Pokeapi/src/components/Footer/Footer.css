@@ -22,7 +22,7 @@ footer{
     background-image: url(https://res.cloudinary.com/drbssyzr7/image/upload/v1697294302/GameHut/village_fchpoe.png);
     background-color: greenyellow;
     background-size: cover;
-    position: fixed;
+    position: static;
     bottom: 0;
     width: 100vw;
     border-top: dotted 4px rgb(128, 128, 128, 0.6);
